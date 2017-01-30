@@ -1,3 +1,4 @@
+<pre>
 MixIn
 Group 18
 CMPS 183
@@ -28,3 +29,4 @@ Master Branch includes:
     real images for website go into static/images/
   deliverables
     SCRUM process files
+</pre>

@@ -17,13 +17,15 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
+    if (auth.is_logged_in()):
+        redirect(URL('home'))
     form = auth()
     if response.title:
         welcomemessage = "Welcome to %s" % response.title
     else:
         welcomemessage = "Welcome"
-    if form.process().accepted:
-        redirect(URL('home'))
+    #if form.process().accepted:
+    #    redirect(URL('home'))
     return dict(message=T(welcomemessage), form=form)
 
 
@@ -46,15 +48,43 @@ def user():
     """
     return dict(form=auth())
 
-# @auth.requires_login()
+@auth.requires_login()
 def home():
-    return dict(message=T('Hello %s' % auth.first_name))
+    return dict(message=T('Hello %(first_name)s' % auth.user))
     #return dict(message=T("Hello %s", % auth.user))
     #return dict(message=('Hello'))
 
-# @auth.requires_login()
+@auth.requires_login()
 def musicroom():
     return dict(message=T('This is the music room'), message2=T('Thanks for coming to %(first_name)s\'s music room' % auth.user))
+
+@auth.requires_login()
+def about():
+    return dict()
+
+@auth.requires_login()
+def contact():
+    return dict()
+
+@auth.requires_login()
+def mbrain():
+    return dict()
+
+@auth.requires_login()
+def sdinay():
+    return dict()
+
+@auth.requires_login()
+def ryanho():
+    return dict()
+
+@auth.requires_login()
+def jli306():
+    return dict()
+
+@auth.requires_login()
+def katakeda():
+    return dict()
 
 @cache.action()
 def download():

@@ -132,3 +132,10 @@ auth.settings.reset_password_requires_verification = True
 # auth.enable_record_versioning(db)
 
 # Alternate login, facebook, aol, google
+from gluon.contrib.login_methods.rpx_account import RPXAccount
+auth.settings.login_form.mappings.Facebook = lambda profile:
+                 dict(registration_id = profile["identifier"],
+                 username = profile["preferredUsername"],
+                 email = profile["email"],
+                 first_name = profile["name"]["givenName"],
+                 last_name = profile["name"]["familyName"])

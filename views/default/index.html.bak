@@ -1,17 +1,6 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
 {{extend 'layout.html'}}
 
-{{block header}}
-    <header class="container-fluid background">
-      <div class="jumbotron text-center">
-        {{if response.title:}}
-        <h1>{{=response.title}}
-          <small>{{=response.subtitle or ''}}</small></h1>
-        {{pass}}
-      </div>
-    </header>
-{{end}}
-
 {{if 'message' in globals():}}
 <h2>{{=message}}</h2>
 <p class="lead">{{=T('Connect to the world through music! Share music with your friends through a live playlists or join an ongoing playlist with thousands of users across the word.')}}</p>
@@ -24,42 +13,23 @@
 {{block right_sidebar}}
 <div class="panel panel-info">
   <div class="panel-heading">
-      <h3 class="panel-title"><a class="btn-block" href="{{=URL('admin','default','index')}}">
+      <h3 class="panel-title">
         <i class="glyphicon glyphicon-cog"></i>
         {{=T("Signup")}}
-      </a></h3>
+      </h3>
   </div>
-  <div class="panel-body">
+  <div class="panel-body mi-small-auth-form">
+      {{
+      if request.args(0)=='login':
+            if not 'register' in auth.settings.actions_disabled:
+                form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default btn-xs')
+            pass
+            if not 'request_reset_password' in auth.settings.actions_disabled:
+                form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default btn-xs')
+            pass
+        pass
+      =form
+      }}
   </div>
-  <!-- Sign up / Login in Form -->
-  <div class="container">
-    <div class="row">
-      <div id="web2py_user_form">
-         {{
-         if request.args(0)=='login':
-           if not 'register' in auth.settings.actions_disabled:
-             form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default')
-           pass
-           if not 'request_reset_password' in auth.settings.actions_disabled:
-             form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default')
-           pass
-         pass
-         =form
-         }}
-      </div>
-    </div>
-  </div>
-
-  {{block page_js}}
-  <script>
-    jQuery("#web2py_user_form input:visible:enabled:first").focus();
-    {{if request.args(0)=='register':}}
-        web2py_validate_entropy(jQuery('#auth_user_password'),100);
-    {{elif request.args(0)=='change_password':}}
-        web2py_validate_entropy(jQuery('#no_table_new_password'),100);
-    {{pass}}
-  </script>
-  
-
 </div>
 {{end}}

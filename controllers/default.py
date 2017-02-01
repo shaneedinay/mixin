@@ -17,11 +17,18 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to MixIn'), form=auth())
+    form = auth()
+    if response.title:
+        welcomemessage = "Welcome to %s" % response.title
+    else:
+        welcomemessage = "Welcome"
+    if form.process().accepted:
+        redirect(URL('home'))
+    return dict(message=T(welcomemessage), form=form)
 
 
 def user():
+    # Chapter 09 Authorization
     """
     exposes:
     http://..../[app]/default/user/login
@@ -39,6 +46,15 @@ def user():
     """
     return dict(form=auth())
 
+# @auth.requires_login()
+def home():
+    return dict(message=T('Hello %(first_name)s' % auth.user))
+    #return dict(message=T("Hello %s", % auth.user))
+    #return dict(message=('Hello'))
+
+# @auth.requires_login()
+def musicroom():
+    return dict(message=T('This is the music room'), message2=T('Thanks for coming to %(first_name)s\'s music room' % auth.user))
 
 @cache.action()
 def download():

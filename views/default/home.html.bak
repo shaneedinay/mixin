@@ -1,0 +1,4 @@
+{{extend 'layout.html'}}
+<h1>{{=message}}</h1>
+<h2>This is the Home Page</h2>
+{{=A(BUTTON('Go to Music Room'), _href=URL('musicroom'))}}

@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 <h1>Kaitaku Takeda</h1>
-<img ../../img/katakeda_cat.jpg" alt="katakeda_cat" height="200" width="150" />
+<img src="{{=URL('static', 'images/katakeda_cat')}}" alt="katakeda_cat" height="200" width="150" />
 
 {{=response.toolbar()}}
 {{=BEAUTIFY(response._vars)}}

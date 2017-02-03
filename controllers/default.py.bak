@@ -84,6 +84,11 @@ def jli306():
 
 @auth.requires_login()
 def katakeda():
+    pic = db(db.images).select().first().picture
+    return dict(pic=pic)
+
+@auth.requires_login()
+def cdwheele():
     return dict()
 
 @cache.action()

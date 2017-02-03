@@ -129,6 +129,6 @@ db.define_table('images',Field('picture','upload'))
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)
 
 # Alternate login, facebook, aol, google

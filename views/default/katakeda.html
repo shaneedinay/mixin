@@ -1,5 +1,7 @@
 {{extend 'layout.html'}}
-<h1>Kaitaku Takeda</h1>
-<img src="{{=URL('download', args=db(db.images).select().first().picture)}}" alt="katakeda_cat" height="200" width="150" />
+<link rel="stylesheet" href="{{=URL('static', 'css/katakeda_style.css')}}"/>
+<header class="container-fluid background">
+    <h1>Kaitaku Takeda<h1/>
+</header>
 
 {{=BEAUTIFY(response._vars)}}

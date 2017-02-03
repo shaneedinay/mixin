@@ -5,7 +5,7 @@
 # Customize your APP title, subtitle and menus here
 # ----------------------------------------------------------------------------------------------------------------------
 
-response.logo = A(IMG(_src="/mixin1/static/images/logo.png", _width="65"),
+response.logo = A(IMG(_src="../static/images/logo.png", _width="65"),
                   _class="navbar-brand", _id="mi-navbar-logo", _href="http://www.mixin.com/")
 response.title = request.application.replace('_', ' ').title()
 response.subtitle = ''

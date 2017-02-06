@@ -51,12 +51,22 @@ def user():
 @auth.requires_login()
 def home():
     return dict(message=T('Hello %(first_name)s' % auth.user))
-    #return dict(message=T("Hello %s", % auth.user))
-    #return dict(message=('Hello'))
 
 @auth.requires_login()
 def musicroom():
-    return dict(message=T('This is the music room'), message2=T('Thanks for coming to %(first_name)s\'s music room' % auth.user))
+    users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
+    #friendlist = (LI("%(first_name)s" % auth.user))
+    friendlist = (LI(""))
+    #friendlist = (LI("%s" % users[0].first_name))
+    #friendlist = (LI("Start:"))
+    #images[0].title
+    #i = 0
+    for i in users:
+        #friendlist.append(LI("%s" % i.first_name))
+        friendlist += (LI("%s" % i.first_name))
+    #i = i + 1
+    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
+    #return users
 
 @auth.requires_login()
 def about():
@@ -84,6 +94,10 @@ def jli306():
 
 @auth.requires_login()
 def katakeda():
+    return dict()
+
+@auth.requires_login()
+def cdwheele():
     return dict()
 
 @cache.action()

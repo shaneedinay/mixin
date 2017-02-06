@@ -34,6 +34,12 @@
     }
 }
 
+#sdinay-image {
+    background: url(../images/jellyfish-sm.jpg) no-repeat center center;
+    width:auto;
+    height:100px;
+}
+
 /* Override bootstrap.css */
 .navbar-default {
     background-color: #909090;

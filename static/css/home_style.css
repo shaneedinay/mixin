@@ -1,0 +1,41 @@
+.main-container{
+  margin: 0;
+}
+
+.sidebar{
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 500px;
+  padding: 10px;
+  margin-top: 20px;
+  z-index: 10;
+}
+
+/*@media (max-width: 1000px) {
+  .sidebar{
+    background: red;
+  }
+}*/
+
+.sidebar.input-group{
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.carousel-inner{
+  background-color: #bbb;
+  position: relative;
+  height: 500px;
+  width: 100%;
+  margin: 20px 0 10px;
+}
+
+.description{
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  margin: auto;
+}

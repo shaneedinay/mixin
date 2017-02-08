@@ -1,3 +1,7 @@
 {{extend 'layout.html'}}
-<h1>Kaitaku Takeda</h1>
+<link rel="stylesheet" href="{{=URL('static', 'css/katakeda_style.css')}}"/>
+<header class="container-fluid background">
+    <h1>Kaitaku Takeda<h1/>
+</header>
+
 {{=BEAUTIFY(response._vars)}}

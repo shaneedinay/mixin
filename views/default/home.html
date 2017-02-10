@@ -5,8 +5,8 @@
 
 <div class="container-fluid main-container">
   <div class="col-md-2 sidebar">
-    <div class="input-group">
-        <input type="text" name="name" placeholder="Search">
+    <div class="input-group input-group-sm">
+        <input type="text" class="form-control" placeholder="Search">
         <span class="input-group-btn">
             <button class="btn btn-default" type="button">
                 <span class="glyphicon glyphicon-search"></span>
@@ -14,9 +14,11 @@
         </span>
     </div>
     <div class="sidebar-list">
-      <ul>
-        <!-- Something -->
-      </ul>
+      <div class="list-group">
+        {{for group in groups:}}
+        {{=A(group.role, _class="list-group-item", _href="#")}}
+        {{pass}}
+      </div>
     </div>
   </div>
 

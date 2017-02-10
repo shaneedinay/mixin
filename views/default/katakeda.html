@@ -1,7 +1,15 @@
 {{extend 'layout.html'}}
-<link rel="stylesheet" href="{{=URL('static', 'css/katakeda_style.css')}}"/>
-<header class="container-fluid background">
-    <h1>Kaitaku Takeda<h1/>
-</header>
+<div class="container-fluid main-container" style="margin:0px;">
+  <div class="row" style="margin:10px;">
+    <div class="col-md-8">
+      <h1>Kaitaku Takeda</h1>
+      <h2>MixIn Team Member</h2>
+      <h3><a href="{{=URL('default', 'contact.html')}}">Contact</a></h3>
+    </div>
+    <div class="col-md-4">
+      <img src="{{=URL('static', 'images/katakeda_cat.jpg')}}" alt="cat" style="height:400px; width:100%;"/>
+    </div>
+  </div>
+</div>
 
 {{=BEAUTIFY(response._vars)}}

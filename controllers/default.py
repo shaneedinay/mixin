@@ -70,6 +70,10 @@ def musicroom():
     #return users
 
 @auth.requires_login()
+def settings():
+    return dict(form=auth())
+
+@auth.requires_login()
 def about():
     return dict()
 

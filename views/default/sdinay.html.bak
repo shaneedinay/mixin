@@ -1,3 +1,8 @@
 {{extend 'layout.html'}}
-<h1>This is the default/sdinay.html template</h1>
+
+<div id="sdinay-image"></div>
+<h1>Shanee Dinay</h1>
+<h4>Product Owner for MixIn</h4>
+<p>UCSC Computer Science Undergraduate Student</p>
+
 {{=BEAUTIFY(response._vars)}}

@@ -90,7 +90,14 @@ plugins = PluginManager()
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
 # -------------------------------------------------------------------------
+auth.settings.extra_fields['auth_user']= [
+  Field('dob', 'date', label='Date of Birth'),
+  Field('gender')
+  ]
 auth.define_tables(username=False, signature=False)
+
+db.auth_user.dob.requires = IS_DATE(format=T('%m/%d/%Y'))
+db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------
 # configure email
@@ -108,7 +115,7 @@ mail.settings.ssl = myconf.get('smtp.ssl') or False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-
+auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
 #

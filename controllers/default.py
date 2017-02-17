@@ -50,7 +50,8 @@ def user():
 
 @auth.requires_login()
 def home():
-    return dict(message=T('Hello %(first_name)s' % auth.user))
+    groups = db().select(db.auth_group.ALL, orderby=db.auth_group.role)
+    return dict(groups=groups)
 
 @auth.requires_login()
 def musicroom():
@@ -67,6 +68,10 @@ def musicroom():
     #i = i + 1
     return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
     #return users
+
+@auth.requires_login()
+def settings():
+    return dict(form=auth())
 
 @auth.requires_login()
 def about():

@@ -50,6 +50,7 @@ def _():
     response.menu += [
         (T('About'), False, URL(app, 'default', 'about')),
         (T('Contact'), False, URL(app, 'default', 'contact')),
+        (T('Settings'), False, URL(app, 'default', 'settings/profile')),
         (T('Team Members'), False, '#', [
             (T('Maximillian Brain'), False, URL(app, 'default', 'mbrain')),
             LI(_class="divider"),

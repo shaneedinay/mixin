@@ -1,3 +1,0 @@
-{{extend 'layout.html'}}
-<h1>This is the template_examples/test_for.html template</h1>
-{{=BEAUTIFY(response._vars)}}

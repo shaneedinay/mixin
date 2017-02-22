@@ -80,7 +80,15 @@ response.form_label_separator = myconf.get('forms.separator') or ''
 # (more options discussed in gluon/tools.py)
 # -------------------------------------------------------------------------
 
-from gluon.tools import Auth, Service, PluginManager
+from gluon.tools import Auth, Service, PluginManager, datetime
+
+# temporary, in order for chat to work
+now = datetime.datetime.today()
+db = DAL('sqlite://db.db')
+Chat = db.define_table('chat', Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                               Field('author','text'),
+                               Field('time_created', 'time', default=now)
+                      )
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))

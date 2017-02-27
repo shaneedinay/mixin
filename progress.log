@@ -1,0 +1,17 @@
+[2017-02-01 15:35:50] START
+[2017-02-06 09:38:23] EDIT MixInv1/models/db.py: 19
+[2017-02-06 09:40:19] EDIT MixInv1/models/db.py: 0
+[2017-02-06 09:40:27] EDIT MixInv1/models/db.py: 0
+[2017-02-06 09:41:06] EDIT MixInv1/models/db.py: -2
+[2017-02-06 09:42:49] EDIT MixInv1/controllers/default.py: 2
+[2017-02-06 09:42:58] EDIT MixInv1/controllers/default.py: 0
+[2017-02-06 09:43:43] EDIT MixInv1/controllers/default.py: 0
+[2017-02-06 09:45:31] CREATE register.html: 0
+[2017-02-06 09:46:14] EDIT MixInv1/views/register.html: 2
+[2017-02-06 09:47:07] EDIT MixInv1/controllers/default.py: 0
+[2017-02-06 09:47:53] EDIT MixInv1/controllers/default.py: 0
+[2017-02-06 09:48:18] EDIT MixInv1/controllers/default.py: 2
+[2017-02-06 09:48:50] EDIT MixInv1/controllers/default.py: -2
+[2017-02-06 09:54:50] EDIT MixInv1/controllers/default.py: 10
+[2017-02-06 09:56:15] EDIT MixInv1/models/db.py: -17
+[2017-02-06 10:00:18] DELETE MixInv1/views/register.html: -5

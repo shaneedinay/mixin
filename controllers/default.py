@@ -8,7 +8,6 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
-from gluon.contrib.websocket_messaging import websocket_send
 
 def index():
     """
@@ -51,28 +50,13 @@ def user():
 
 @auth.requires_login()
 def home():
-    groups = db().select(db.auth_group.ALL, orderby=db.auth_group.role)
-    return dict(groups=groups)
+    return dict(message=T('Hello %(first_name)s' % auth.user))
+    #return dict(message=T("Hello %s", % auth.user))
+    #return dict(message=('Hello'))
 
 @auth.requires_login()
 def musicroom():
-    users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
-    #friendlist = (LI("%(first_name)s" % auth.user))
-    friendlist = (LI(""))
-    #friendlist = (LI("%s" % users[0].first_name))
-    #friendlist = (LI("Start:"))
-    #images[0].title
-    #i = 0
-    for i in users:
-        #friendlist.append(LI("%s" % i.first_name))
-        friendlist += (LI("%s" % i.first_name))
-    #i = i + 1
-    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
-    #return users
-
-@auth.requires_login()
-def settings():
-    return dict(form=auth())
+    return dict(message=T('This is the music room'), message2=T('Thanks for coming to %(first_name)s\'s music room' % auth.user))
 
 @auth.requires_login()
 def about():
@@ -92,9 +76,7 @@ def sdinay():
 
 @auth.requires_login()
 def ryanho():
-    # not working on time_created
-    messages = db(Chat).select(orderby=~Chat.time_created)
-    return dict(messages=messages)
+    return dict()
 
 @auth.requires_login()
 def jli306():
@@ -107,17 +89,6 @@ def katakeda():
 @auth.requires_login()
 def cdwheele():
     return dict()
-
-def new_message():
-    form = SQLFORM(db.chat)
-    # not working
-    #db(Chat).author=auth.user.first_name
-    messageSent = request.vars.your_message
-    if form.accepts(request, formname=None):
-        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
-    elif form.errors:
-        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-    return (db)
 
 @cache.action()
 def download():

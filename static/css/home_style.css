@@ -1,0 +1,40 @@
+body{
+  background-image: url("{{=URL('static', 'images/background.jpg')}}");
+}
+.main-container{
+  margin: 20px;
+}
+.sidebar{
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 500px;
+  padding: 10px;
+}
+.sidebar-list{
+  background-color: rgba(255, 255, 255, 0.3);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 90%;
+  width: 100%;
+  padding: 5px;
+  margin: 10px 0;
+}
+.list-group{
+  height: 100%;
+}
+.list-group-item{
+  height: 40px;
+}
+#myCarousel{
+  background-color: #bbb;
+  height: 500px;
+}
+.carousel-inner{
+  height: 100%;
+  margin: 0px;
+}
+.description{
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  margin: 200px auto;
+}

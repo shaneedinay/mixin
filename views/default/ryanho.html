@@ -1,0 +1,41 @@
+{{extend 'layout.html'}}
+<h1>Ryan Ho</h1>
+<link href="{{=URL('static', 'css/chat.css')}}" rel="stylesheet" type="text/css" />
+<div id="wrapper">
+    <div id ="menu">
+        <p class="welcome"> Welcome, <b>{{=auth.user.first_name}}</b> </p>
+        <div style="clear:both"></div>
+    </div>
+    		<p> very early verison chat </br>
+    		need tornado server for this to work</br>
+    		messages are lost when refreshed </br>
+    		need to add time message was posted</p>
+            <--->not linking to current user </--->
+
+    <div id="chatbox">
+
+    </div>
+
+
+    </div>
+    <form id="sendMessage">
+      <input name="your_message" id="your_message" size="63" />
+      <input type="submit" Value="Send" />
+    </form>
+</div>
+<script>
+       $(document).ready(function(){
+        var callback=function(e){
+            $("#chatbox").append("<b>{{=auth.user.first_name}}</b>" + ":" + e.data + "<br>" );
+        };
+      if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/mygroup', callback))
+         alert("html5 websocket not supported by your browser, try Google Chrome");
+   });
+  jQuery('#sendMessage').submit(function() {
+  ajax('{{=URL('new_message')}}',
+       ['your_message'], 'chatbox');
+  return false;
+});
+
+</script>
+

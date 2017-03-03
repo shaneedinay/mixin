@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 <div class="container-fluid main-container" style="margin:0px;">
   <div class="row" style="margin:10px;">
-    <div class="col-md-4">
+    <div class="col-md-1">
       <h1>Kaitaku Takeda</h1>
       <h2>MixIn Team Member</h2>
       <h3><a href="{{=URL('default', 'contact.html')}}">Contact</a></h3>
@@ -9,7 +9,66 @@
     <div class="col-md-4">
       <img src="{{=URL('static', 'images/katakeda_cat.jpg')}}" class="img-circle" alt="cat" style="height:400px; width:100%;"/>
     </div>
+    <div class="col-md-4">
+      <div id="player"></div>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="next">Next</button>
+    </div>
   </div>
 </div>
 
+<script>
+
+</script>
+<script>
+  // This code loads the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // This function creates an <iframe> (and YouTube player)
+  // after the API code downloads.
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '0',
+      width: '0',
+      playerVars: {
+        playlist: 'JUn6sr7-7gM,8sV6AT6jVuI'
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+
+  }
+
+  $('#play').on('click', function(){
+    player.playVideo();
+  });
+
+  $('#pause').on('click', function(){
+    player.pauseVideo();
+  });
+
+  $('#next').on('click', function(){
+    player.nextVideo();
+  });
+
+
+  function onPlayerStateChange(event) {
+
+  }
+
+  function stopVideo() {
+    player.stopVideo();
+  }
+</script>
 {{=BEAUTIFY(response._vars)}}

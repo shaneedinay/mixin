@@ -1,8 +1,4 @@
 {{extend 'layout.html'}}
-<div class="col-md-12 text-center">
-    <h1>{{=message}}</h1>
-</div>
-
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
     <!-- Blog Search Well -->
@@ -34,18 +30,20 @@
 
     <!-- Music Room Voting Widget Well -->
     <div class="well">
-        <h4>Vote for this Playroom</h4>
+        <h4>Vote for this Music Room</h4>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <button class="btn btn-default" type="button">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <button id="mi-music-room-like" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
+                    <span id="mi-music-room-like-count">0</span>
                 </div>
-                <div class="col-md-6">
-                    <button class="btn btn-default" type="button">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <button id="mi-music-room-dislike" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
+                    <span id="mi-music-room-dislike-count">0</span>
                 </div>
             </div>
         </div>
@@ -55,7 +53,9 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1>Web Socket Goes Here</h1>
+        <h1>Title</h1>
+        <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
+        </div>
     </div>
 </div>
 

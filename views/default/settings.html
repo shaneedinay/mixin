@@ -1,21 +1,26 @@
 {{extend 'layout.html'}}
-<style>
-  .main-container{
-    margin: 10px;
-  }
-</style>
 
-<div class="container-fluid main-container">
-  <h1>Settings</h1>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="list-group">
-        <a href="profile" class="list-group-item">General Settings</a>
-        <a href="change_password" class="list-group-item">Security Settings</a>
-      </div>
+<div class="col-md-3 col-sm-3">
+    <div class="well mi-settings">
+      <a href={{=URL('contact')}}>
+        <span class="glyphicon glyphicon-envelope"></span>
+        Contact Us
+      </a>
+      <a href={{=URL('about')}}>
+        <span class="glyphicon glyphicon-headphones"></span>
+        About Us
+      </a>
     </div>
-    <div class="col-md-6">
-      {{=form}}
-    </div>
+</div>
+
+<div class="col-md-6 col-sm-6">
+  {{=form}}
+</div>
+
+<div class="col-md-3 col-sm-3">
+  <div class="list-group">
+    <a href="profile" class="list-group-item">General Settings</a>
+    <a href="change_password" class="list-group-item">Security Settings</a>
+    <a href="request_reset_password" class="list-group-item">Reset Password</a>
   </div>
 </div>

@@ -8,6 +8,7 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
+from gluon.contrib.websocket_messaging import websocket_send
 
 def index():
     """
@@ -50,7 +51,8 @@ def user():
 
 @auth.requires_login()
 def home():
-    return dict(message=T('Hello %(first_name)s' % auth.user))
+    groups = db().select(db.auth_group.ALL, orderby=db.auth_group.role)
+    return dict(groups=groups)
 
 @auth.requires_login()
 def musicroom():
@@ -67,6 +69,10 @@ def musicroom():
     #i = i + 1
     return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
     #return users
+
+@auth.requires_login()
+def settings():
+    return dict(form=auth())
 
 @auth.requires_login()
 def about():
@@ -86,7 +92,9 @@ def sdinay():
 
 @auth.requires_login()
 def ryanho():
-    return dict()
+    # not working on time_created
+    messages = db(Chat).select(orderby=~Chat.time_created)
+    return dict(messages=messages)
 
 @auth.requires_login()
 def jli306():
@@ -99,6 +107,17 @@ def katakeda():
 @auth.requires_login()
 def cdwheele():
     return dict()
+
+def new_message():
+    form = SQLFORM(db.chat)
+    # not working
+    #db(Chat).author=auth.user.first_name
+    messageSent = request.vars.your_message
+    if form.accepts(request, formname=None):
+        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
+    elif form.errors:
+        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
+    return (db)
 
 @cache.action()
 def download():

@@ -1,15 +1,72 @@
+/* boostrap-overrides.css */
+.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+  margin-left: 5px;
+}
+.panel {
+  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
+  border: 1px solid #f1f1f1;
+}
 /* Shanee added css */
-/*.signin-form {
-    margin-left: 5px;
+body {
+  background-color: #f1f1f1;
 }
-.signin-form .form-group label {
-    width: 70px;
-    text-align: left;
-
+.well {
+  background-color: #ffffff;
+  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
+  padding: 15px;
 }
-.signin-form-div {
-    width: 100%;
-}*/
+.mi-mixin-music-room-list a {
+  text-decoration: none;
+}
+.mi-mixin-music-room-list a div {
+  color: #ffffff;
+  background-color: #393a35;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 100px;
+  height: 80px;
+}
+.mi-mixin-music-room-list a div:hover {
+  background-color: #353630; /* #393a35; */
+  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,0.35);
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.35);
+}
+.mi-settings a {
+  display: block;
+  text-decoration: none;
+  color: #3e3f3a;
+}
+.mi-settings a:hover {
+  color: #000000;
+  background-color: #f5f5f5; /*#f6f7f9; */
+}
+.mi-contact-container h4 {
+  display: inline;
+}
+.mi-contact-container .mi-contact-user {
+  margin-bottom: 15px;
+}
+@media (max-width: 1170px) {
+  .mi-h4-sm-adjustment {
+    font-size: 15px;
+  }
+}
+@media (max-width: 900px) {
+  .mi-h4-sm-adjustment {
+    font-size: 12px;
+  }
+}
+@media (max-width: 767px) {
+  .mi-h4-sm-adjustment {
+    font-size: 18px;
+  }
+}
+.mi-settings-main-container {
+  margin-top: 10px;
+}
 #mi-navbar-logo:hover {
     opacity: 0.5;
     filter: alpha(opacity=50); /* For IE8 and earlier */
@@ -33,11 +90,10 @@
         width: 90%;
     }
 }
-
-#sdinay-image {
-    background: url(../images/jellyfish_sm.jpg) no-repeat center center;
-    width:auto;
-    height:100px;
+@media (min-width: 992px) {
+  .mi-index-row .mi-index-description {
+    margin-top: 60px;
+  }
 }
 
 /* Override bootstrap.css */

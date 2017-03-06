@@ -1,3 +1,31 @@
 {{extend 'layout.html'}}
-<h1>Maximillian Brain</h1>
+<!doctype html>
+<html>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+ <script src="http://w.soundcloud.com/player/api.js"></script>
+</head>
+<body>
+ <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/thechainsmokers/sets/originals-1" width="100%" height="465" scrolling="no" frameborder="no"></iframe>
+<script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
+<script type="text/javascript">
+  (function(){
+    var widgetIframe = document.getElementById('sc-widget'),
+        widget       = SC.Widget(widgetIframe);
+
+   widget.bind(SC.Widget.Events.READY, function() {
+
+    widget.bind(SC.Widget.Events.PLAY, function() {
+        // get information about currently playing sound
+     widget.getCurrentSound(function(currentSound));
+
+    widget.setVolume(100);
+      // get the value of the current position
+    });
+
+ }());
+</script>
+
+</body>
+</html>
 {{=BEAUTIFY(response._vars)}}

@@ -1,0 +1,578 @@
+(dp1
+S'output'
+p2
+S"<class 'requests.exceptions.HTTPError'> 401 Client Error: Unauthorized for url: https://api.soundcloud.com/oembed?url=http%3A%2F%2Fsoundcloud.com%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID"
+p3
+sS'layer'
+p4
+S'C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n# -------------------------------------------------------------------------\n# This is a sample controller\n# - index is the default action of any application\n# - user is required for authentication and authorization\n# - download is for downloading files uploaded in the db (does streaming)\n# -------------------------------------------------------------------------\nimport soundcloud\n\ndef signin():\n# create client object with app credentials\n    client = soundcloud.Client(client_id=\'M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW\',\n                          client_secret=\'qolACQko5MrQzXDF2aZCDXkbh4awdMfq\',\n                         redirect_uri=\'https://ec2-54-213-123-55.us-west-2.compute.amazonaws.com:8000/mixin/default/index/login\')\n# redirect user to authorize URL\n    redirect(client.authorize_url())\n    #return dict()\n\ndef index():\n    """\n    example action using the internationalization operator T and flash\n    rendered by views/default/index.html or views/generic.html\n\n    if you need a simple wiki simply replace the two lines below with:\n    return auth.wiki()\n    """\n#  client = soundcloud.Client(client_id=\'M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW\',\n   #                       client_secret=\'qolACQko5MrQzXDF2aZCDXkbh4awdMfq\',\n    #                     redirect_uri=\'https://ec2-54-213-123-55.us-west-2.compute.amazonaws.com:8000/mixin/default/index/login\')\n# redirect user to authorize URL\n    #redirect(client.authorize_url())\n    \n    import soundcloud\n\n# create a client object with your app credentials\n    client = soundcloud.Client(client_id=\'YOUR_CLIENT_ID\')\n\n# get a tracks oembed data\n    track_url = \'http://soundcloud.com/forss/flickermood\'\n    embed_info = client.get(\'/oembed\', url=track_url)\n\n# print the html for the player widget\n    print embed_info[\'html\']\n\n    if (auth.is_logged_in()):\n        redirect(URL(\'home\'))\n    form = auth()\n    if response.title:\n        welcomemessage = "Welcome to %s" % response.title\n    else:\n        welcomemessage = "Welcome"\n    #if form.process().accepted:\n    #    redirect(URL(\'home\'))\n    return dict(message=T(welcomemessage), form=form)\n\n\ndef user():\n    # Chapter 09 Authorization\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/bulk_register\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users\n    """\n    return dict(form=auth())\n\n@auth.requires_login()\ndef home():\n    return dict(message=T(\'Hello %(first_name)s\' % auth.user))\n    #return dict(message=T("Hello %s", % auth.user))\n    #return dict(message=(\'Hello\'))\n\n@auth.requires_login()\ndef musicroom():\n    return dict(message=T(\'This is the music room\'), message2=T(\'Thanks for coming to %(first_name)s\\\'s music room\' % auth.user))\n\n@auth.requires_login()\ndef about():\n    return dict()\n\n@auth.requires_login()\ndef contact():\n    return dict()\n\n@auth.requires_login()\ndef mbrain():\n    return dict()\n\n@auth.requires_login()\ndef sdinay():\n    return dict()\n\n@auth.requires_login()\ndef ryanho():\n    return dict()\n\n@auth.requires_login()\ndef jli306():\n    return dict()\n\n@auth.requires_login()\ndef katakeda():\n    return dict()\n\n@auth.requires_login()\ndef cdwheele():\n    return dict()\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\nresponse._vars=response._caller(index)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__module__'
+p12
+S"'requests.exceptions'"
+p13
+sS'__getslice__'
+p14
+S"<method-wrapper '__getslice__' of HTTPError object>"
+p15
+sS'__str__'
+p16
+S"<method-wrapper '__str__' of HTTPError object>"
+p17
+sS'__reduce__'
+p18
+S'<built-in method __reduce__ of HTTPError object>'
+p19
+sS'__dict__'
+p20
+S"{'request': <PreparedRequest [GET]>, 'response': <Response [401]>}"
+p21
+sS'__sizeof__'
+p22
+S'<built-in method __sizeof__ of HTTPError object>'
+p23
+sS'__weakref__'
+p24
+S'None'
+p25
+sS'__init__'
+p26
+S"<bound method HTTPError.__init__ of HTTPError(u'...Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID',)>"
+p27
+sS'__setattr__'
+p28
+S"<method-wrapper '__setattr__' of HTTPError object>"
+p29
+sS'__reduce_ex__'
+p30
+S'<built-in method __reduce_ex__ of HTTPError object>'
+p31
+sS'__new__'
+p32
+S'<built-in method __new__ of type object>'
+p33
+sS'errno'
+p34
+S'None'
+p35
+sS'__format__'
+p36
+S'<built-in method __format__ of HTTPError object>'
+p37
+sS'__class__'
+p38
+S"<class 'requests.exceptions.HTTPError'>"
+p39
+sS'filename'
+p40
+S'None'
+p41
+sS'__doc__'
+p42
+S"'An HTTP error occurred.'"
+p43
+sS'__getitem__'
+p44
+S"<method-wrapper '__getitem__' of HTTPError object>"
+p45
+sS'__setstate__'
+p46
+S'<built-in method __setstate__ of HTTPError object>'
+p47
+sS'__getattribute__'
+p48
+S"<method-wrapper '__getattribute__' of HTTPError object>"
+p49
+sS'args'
+p50
+S"(u'401 Client Error: Unauthorized for url: https:...m%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID',)"
+p51
+sS'__subclasshook__'
+p52
+S'<built-in method __subclasshook__ of type object>'
+p53
+sS'response'
+p54
+S'<Response [401]>'
+p55
+sS'__unicode__'
+p56
+S'<built-in method __unicode__ of HTTPError object>'
+p57
+sS'request'
+p58
+S'<PreparedRequest [GET]>'
+p59
+sS'strerror'
+p60
+S'None'
+p61
+sS'__delattr__'
+p62
+S"<method-wrapper '__delattr__' of HTTPError object>"
+p63
+sS'__repr__'
+p64
+S"<method-wrapper '__repr__' of HTTPError object>"
+p65
+sS'__hash__'
+p66
+S"<method-wrapper '__hash__' of HTTPError object>"
+p67
+ssS'evalue'
+p68
+S'401 Client Error: Unauthorized for url: https://api.soundcloud.com/oembed?url=http%3A%2F%2Fsoundcloud.com%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID'
+p69
+sg58
+cgluon.html
+XML_unpickle
+p70
+(S's\x16\x89\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>MixInv1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-e4f2c4f4-98bc-47d5-9fcf-3a1960bb6004<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_authtest</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-b6bf08ab-b5f8-4a09-b5d4-520d49729edd<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_grading1</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-3422faa7-3e77-46fb-b45b-89d1e4c989da<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_grading2</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-e4fd5228-fdf0-41e3-95cc-a071d296ee4b<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_grading3</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-c0be7714-21d8-4172-822c-433f083232dc<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_grading4</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-91b37cf3-7db3-4a21-83fa-1c35f929db12<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_grid</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-71935b3c-faa6-4922-a683-9a260dc6c80c<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_hw2</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-9e83108e-1da5-4e61-8784-8a2442a3957f<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixinv1</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-b3c0507c-bfc7-4171-8014-5cbdb9fca789<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_youtube</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-3a9190db-5cd0-458d-9000-03c33aeda331<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch, br</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_youtube=127.0.0.1-3a9190db-5cd0-458d-9000-03c33aeda331; session_id_grid=127.0.0.1-71935b3c-faa6-4922-a683-9a260dc6c80c; session_id_authtest=127.0.0.1-b6bf08ab-b5f8-4a09-b5d4-520d49729edd; session_id_grading1=127.0.0.1-3422faa7-3e77-46fb-b45b-89d1e4c989da; session_id_grading2=127.0.0.1-e4fd5228-fdf0-41e3-95cc-a071d296ee4b; session_id_grading3=127.0.0.1-c0be7714-21d8-4172-822c-433f083232dc; session_id_grading4=127.0.0.1-91b37cf3-7db3-4a21-83fa-1c35f929db12; session_id_hw2=127.0.0.1-9e83108e-1da5-4e61-8784-8a2442a3957f; session_id_welcome=127.0.0.1-b3c0507c-bfc7-4171-8014-5cbdb9fca789; session_id_admin=127.0.0.1-e4f2c4f4-98bc-47d5-9fcf-3a1960bb6004; session_id_mixinv1=127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_UPGRADE_INSECURE_REQUESTS</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/MixInv1/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>61350</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>DESKTOP-JRL6R7G</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading3\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading2\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading1\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\MixInv1\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading4\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\Hw2\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\welcome\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x2e7c030: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;DESKTOP-JRL6R7G&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch, br</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_youtube=127.0.0.1-3a9190db-5cd0-458d-9000-03c33aeda331; session_id_grid=127.0.0.1-71935b3c-faa6-4922-a683-9a260dc6c80c; session_id_authtest=127.0.0.1-b6bf08ab-b5f8-4a09-b5d4-520d49729edd; session_id_grading1=127.0.0.1-3422faa7-3e77-46fb-b45b-89d1e4c989da; session_id_grading2=127.0.0.1-e4fd5228-fdf0-41e3-95cc-a071d296ee4b; session_id_grading3=127.0.0.1-c0be7714-21d8-4172-822c-433f083232dc; session_id_grading4=127.0.0.1-91b37cf3-7db3-4a21-83fa-1c35f929db12; session_id_hw2=127.0.0.1-9e83108e-1da5-4e61-8784-8a2442a3957f; session_id_welcome=127.0.0.1-b3c0507c-bfc7-4171-8014-5cbdb9fca789; session_id_admin=127.0.0.1-e4f2c4f4-98bc-47d5-9fcf-3a1960bb6004; session_id_mixinv1=127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_upgrade_insecure_requests</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::200:5efe:169.233.172.4%19</div></td></tr><tr><td><div>169.233.172.4</div></td></tr><tr><td><div>127.0.0.1</div></td></tr><tr><td><div>fe80::1da5:66b4:cafe:26f8%16</div></td></tr><tr><td><div>DESKTOP-JRL6R7G</div></td></tr><tr><td><div>DESKTOP-JRL6R7G.ucsc.edu</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/MixInv1/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>61350</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/MixInv1/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>DESKTOP-JRL6R7G</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x021DD0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x02F35260&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x08000230&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x021DD0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x02F35260&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x08000230&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading3\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading2\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading1\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\MixInv1\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\grading4\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\Hw2\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\welcome\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x2e7c030: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;DESKTOP-JRL6R7G&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::200:5efe:169.233.172.4%19</div></td></tr><tr><td><div>169.233.172.4</div></td></tr><tr><td><div>127.0.0.1</div></td></tr><tr><td><div>fe80::1da5:66b4:cafe:26f8%16</div></td></tr><tr><td><div>DESKTOP-JRL6R7G</div></td></tr><tr><td><div>DESKTOP-JRL6R7G.ucsc.edu</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_scheduler</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 5, 16, 47, 52, 544000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/MixInv1/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 6, 0, 47, 52, 544000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x0938D710&gt;</div></td></tr></table></div>'
+tRp71
+sS'frames'
+p72
+(lp73
+(dp74
+S'file'
+p75
+S'C:\\Users\\Cameron\\Desktop\\web2py\\gluon\\restricted.py'
+p76
+sS'dump'
+p77
+(dp78
+S'environment'
+p79
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p80
+sS'ccode'
+p81
+S'<code object <module> at 093B1530, file "C:\\User...cations\\MixInv1\\controllers/default.py", line 10>'
+p82
+ssS'lnum'
+p83
+I227
+sS'lines'
+p84
+(dp85
+I224
+S'            ccode = code'
+p86
+sI225
+S'        else:'
+p87
+sI226
+S'            ccode = compile2(code, layer)'
+p88
+sI227
+S'        exec ccode in environment'
+p89
+sI228
+S'    except HTTP:'
+p90
+sI229
+S'        raise'
+p91
+sI230
+S'    except RestrictedError:'
+p92
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p93
+sI222
+S'    try:'
+p94
+sI223
+S'        if isinstance(code, types.CodeType):'
+p95
+ssS'call'
+p96
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ...ervice()\\n\\nresponse._vars=response._caller(index)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}, layer=r'C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers/default.py')"
+p97
+sS'func'
+p98
+S'restricted'
+p99
+sa(dp100
+g75
+S'C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers\\default.py'
+p101
+sg77
+(dp102
+sg83
+I138
+sg84
+(dp103
+I128
+S''
+sI129
+S'def call():'
+p104
+sI130
+S'    """'
+p105
+sI131
+S'    exposes services. for example:'
+p106
+sI132
+S'    http://..../[app]/default/call/jsonrpc'
+p107
+sI133
+S'    decorate with @services.jsonrpc the functions to expose'
+p108
+sI134
+S'    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv'
+p109
+sI135
+S'    """'
+p110
+sI136
+S'    return service()'
+p111
+sI127
+S''
+ssg96
+S'()'
+p112
+sg98
+S'<module>'
+p113
+sa(dp114
+g75
+S'C:\\Users\\Cameron\\Desktop\\web2py\\gluon\\globals.py'
+p115
+sg77
+(dp116
+S'self'
+p117
+S'undefined'
+p118
+sS'f'
+S'<function index>'
+p119
+ssg83
+I417
+sg84
+(dp120
+I416
+S'        self._vars = None'
+p121
+sI417
+S'        self._caller = lambda f: f()'
+p122
+sI418
+S'        self._view_environment = None'
+p123
+sI419
+S'        self._custom_commit = None'
+p124
+sI420
+S'        self._custom_rollback = None'
+p125
+sI421
+S"        self.generic_patterns = ['*']"
+p126
+sI412
+S"        self.flash = ''            # used by the default view layout"
+p127
+sI413
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p128
+sI414
+S'        self.menu = []             # used by the default view layout'
+p129
+sI415
+S'        self.files = []            # used by web2py_ajax.html'
+p130
+ssg96
+S'(f=<function index>)'
+p131
+sg98
+S'<lambda>'
+p132
+sa(dp133
+g75
+S'C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers\\default.py'
+p134
+sg77
+(dp135
+S'embed_info'
+p136
+g118
+sS'url'
+p137
+g118
+sS'track_url'
+p138
+S"'http://soundcloud.com/forss/flickermood'"
+p139
+sS'client'
+p140
+S'<soundcloud.client.Client object>'
+p141
+sS'client.get'
+p142
+S'<functools.partial object>'
+p143
+ssg83
+I42
+sg84
+(dp144
+I37
+S'# create a client object with your app credentials'
+p145
+sI38
+S"    client = soundcloud.Client(client_id='YOUR_CLIENT_ID')"
+p146
+sI39
+S''
+sI40
+S'# get a tracks oembed data'
+p147
+sI41
+S"    track_url = 'http://soundcloud.com/forss/flickermood'"
+p148
+sI42
+S"    embed_info = client.get('/oembed', url=track_url)"
+p149
+sI43
+S''
+sI44
+S'# print the html for the player widget'
+p150
+sI45
+S"    print embed_info['html']"
+p151
+sI46
+S''
+ssg96
+S'()'
+p152
+sg98
+S'index'
+p153
+sa(dp154
+g75
+S'C:\\Python27\\lib\\site-packages\\soundcloud\\client.py'
+p155
+sg77
+(dp156
+S'global make_request'
+p157
+S'<function make_request>'
+p158
+sS'url'
+p159
+S"'https://api.soundcloud.com/oembed'"
+p160
+sS'global wrapped_resource'
+p161
+S'<function wrapped_resource>'
+p162
+sS'method'
+p163
+S"'get'"
+p164
+sS'kwargs'
+p165
+S"{'client_id': 'YOUR_CLIENT_ID', 'url': 'http://soundcloud.com/forss/flickermood'}"
+p166
+ssg83
+I133
+sg84
+(dp167
+I128
+S''
+sI129
+S'        kwargs.update({'
+p168
+sI130
+S"            'verify_ssl': self.options.get('verify_ssl', True),"
+p169
+sI131
+S"            'proxies': self.options.get('proxies', None)"
+p170
+sI132
+S'        })'
+p171
+sI133
+S'        return wrapped_resource(make_request(method, url, kwargs))'
+p172
+sI134
+S''
+sI135
+S'    def __getattr__(self, name, **kwargs):'
+p173
+sI136
+S'        """Translate an HTTP verb into a request method."""'
+p174
+sI137
+S"        if name not in ('get', 'post', 'put', 'head', 'delete'):"
+p175
+ssg96
+S"(self=<soundcloud.client.Client object>, method='get', resource='/oembed', **kwargs={'client_id': 'YOUR_CLIENT_ID', 'url': 'http://soundcloud.com/forss/flickermood'})"
+p176
+sg98
+S'_request'
+p177
+sa(dp178
+g75
+S'C:\\Python27\\lib\\site-packages\\soundcloud\\request.py'
+p179
+sg77
+(dp180
+S'result'
+p181
+S'<Response [401]>'
+p182
+sS'result.raise_for_status'
+p183
+S'<bound method Response.raise_for_status of <Response [401]>>'
+p184
+ssg83
+I148
+sg84
+(dp185
+I140
+S"            kwargs['files'] = files"
+p186
+sI141
+S'        result = request_func(url, **kwargs)'
+p187
+sI142
+S''
+sI143
+S"    # if redirects are disabled, don't raise for 301 / 302"
+p188
+sI144
+S'    if result.status_code in (301, 302):'
+p189
+sI145
+S'        if allow_redirects:'
+p190
+sI146
+S'            result.raise_for_status()'
+p191
+sI147
+S'    else:'
+p192
+sI148
+S'        result.raise_for_status()'
+p193
+sI149
+S'    return result'
+p194
+ssg96
+S"(method='get', url='https://api.soundcloud.com/oembed', params={'client_id': 'YOUR_CLIENT_ID', 'url': 'http://soundcloud.com/forss/flickermood'})"
+p195
+sg98
+S'make_request'
+p196
+sa(dp197
+g75
+S'C:\\Python27\\lib\\site-packages\\requests\\models.py'
+p198
+sg77
+(dp199
+S'http_error_msg'
+p200
+S"u'401 Client Error: Unauthorized for url: https:...m%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID'"
+p201
+sS'self'
+p202
+S'<Response [401]>'
+p203
+sS'global HTTPError'
+p204
+S"<class 'requests.exceptions.HTTPError'>"
+p205
+sS'response'
+p206
+g118
+ssg83
+I909
+sg84
+(dp207
+I904
+S''
+sI905
+S'        elif 500 <= self.status_code < 600:'
+p208
+sI906
+S"            http_error_msg = u'%s Server Error: %s for url: %s' % (self.status_code, reason, self.url)"
+p209
+sI907
+S''
+sI908
+S'        if http_error_msg:'
+p210
+sI909
+S'            raise HTTPError(http_error_msg, response=self)'
+p211
+sI910
+S''
+sI911
+S'    def close(self):'
+p212
+sI912
+S'        """Releases the connection back to the pool. Once this method has been'
+p213
+sI913
+S'        called the underlying ``raw`` object must not be accessed again.'
+p214
+ssg96
+S'(self=<Response [401]>)'
+p215
+sg98
+S'raise_for_status'
+p216
+sasS'pyver'
+p217
+S'Python 2.7.9: C:\\Users\\Cameron\\Desktop\\web2py\\web2py.exe (prefix: C:\\Python27)'
+p218
+sS'session'
+p219
+g70
+(S's\xee\x08\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">auth</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">expiration</td><td style="vertical-align:top;">:</td><td><div>2592000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">hmac_key</td><td style="vertical-align:top;">:</td><td><div>575498b4-cc9b-4dd7-bd1e-05b4788a02c4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_visit</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 2, 22, 15, 17, 57, 770000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remember_me</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">email</td><td style="vertical-align:top;">:</td><td><div>cdwheele@ucsc.edu</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">first_name</td><td style="vertical-align:top;">:</td><td><div>Cameron</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">id</td><td style="vertical-align:top;">:</td><td><div>1L</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_name</td><td style="vertical-align:top;">:</td><td><div>Wheeler</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_id</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">reset_password_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user_groups</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">1</td><td style="vertical-align:top;">:</td><td><div>user_1</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr></table></div>'
+tRp220
+sS'etype'
+p221
+S"<class 'requests.exceptions.HTTPError'>"
+p222
+sS'date'
+p223
+S'Sun Mar 05 16:47:54 2017'
+p224
+sg54
+g70
+(S's\xc9$\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x08AFC580&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixinv1</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="navbar-brand" href="http://www.mixin.com/" id="mi-navbar-logo"><img src="/mixin/static/images/logo.png" width="65" /></a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/home</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>About</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/about</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Contact</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/contact</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Team Members</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Maximillian Brain</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/mbrain</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Shanee Dinay</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/sdinay</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Ryan Ho</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/ryanho</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Jinlin Li</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/jli306</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Kaitaku Takeda</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/katakeda</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Cameron Wheeler</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/MixInv1/default/cdwheele</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">description</td><td style="vertical-align:top;">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>web2py</div></td></tr><tr><td><div>python</div></td></tr><tr><td><div>framework</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/index/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>2592000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_mixinv1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;C:\\\\Users\\\\Cameron\\\\Desktop\\\\web2py\\\\applications\\\\MixInv1\\\\sessions\\\\111\\\\1c7\\\\127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e&#x27;, mode &#x27;rb+&#x27; at 0x0918F230&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\sessions\\127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>dc4898db44a8a67363f3519d1706d72e</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-111eb4b5-775e-48cb-aecd-c9573a8c149e</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_mixinv1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>MixInv1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Mixinv1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>default/index.html</div></td></tr></table></div>'
+tRp225
+sS'locals'
+p226
+(dp227
+S'self'
+p228
+S'<Response [401]>'
+p229
+sS'http_error_msg'
+p230
+S"u'401 Client Error: Unauthorized for url: https:...m%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID'"
+p231
+sS'reason'
+p232
+S"u'Unauthorized'"
+p233
+sssS'traceback'
+p234
+S'Traceback (most recent call last):\n  File "C:\\Users\\Cameron\\Desktop\\web2py\\gluon\\restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers/default.py", line 138, in <module>\n  File "C:\\Users\\Cameron\\Desktop\\web2py\\gluon\\globals.py", line 417, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Users\\Cameron\\Desktop\\web2py\\applications\\MixInv1\\controllers/default.py", line 42, in index\n    embed_info = client.get(\'/oembed\', url=track_url)\n  File "C:\\Python27\\lib\\site-packages\\soundcloud\\client.py", line 133, in _request\n    return wrapped_resource(make_request(method, url, kwargs))\n  File "C:\\Python27\\lib\\site-packages\\soundcloud\\request.py", line 148, in make_request\n    result.raise_for_status()\n  File "C:\\Python27\\lib\\site-packages\\requests\\models.py", line 909, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nHTTPError: 401 Client Error: Unauthorized for url: https://api.soundcloud.com/oembed?url=http%3A%2F%2Fsoundcloud.com%2Fforss%2Fflickermood&client_id=YOUR_CLIENT_ID\n'
+p235
+s.

@@ -7,7 +7,43 @@
 # - user is required for authentication and authorization
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
+import soundcloud
 
+def signin():
+# create client object with app credentials
+    client = soundcloud.Client(client_id='M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW',
+                          client_secret='qolACQko5MrQzXDF2aZCDXkbh4awdMfq',
+                         redirect_uri='https://ec2-54-213-123-55.us-west-2.compute.amazonaws.com:8000/mixin/default/index/login')
+# redirect user to authorize URL
+    redirect(client.authorize_url())
+    #return dict()
+    
+def play():
+    import soundcloud
+
+   # import soundcloud
+
+# create a client object with your app credentials
+    client = soundcloud.Client(client_id='M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW')
+
+# fetch track to stream
+    track = client.get('/tracks/293')
+
+# get the tracks streaming URL
+    stream_url = client.get(track.stream_url, allow_redirects=False)
+
+# print the tracks stream URL
+    print stream_url.location
+    
+# create a client object with your app credentials
+    #client = soundcloud.Client(client_id='M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW')
+
+# get a tracks oembed data
+    #track_url = 'http://soundcloud.com/forss/flickermood'
+    #embed_info = client.get('/oembed', url=track_url)
+
+# print the html for the player widget
+    #print embed_info['html']
 
 def index():
     """
@@ -17,6 +53,13 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
+#  client = soundcloud.Client(client_id='M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW',
+   #                       client_secret='qolACQko5MrQzXDF2aZCDXkbh4awdMfq',
+    #                     redirect_uri='https://ec2-54-213-123-55.us-west-2.compute.amazonaws.com:8000/mixin/default/index/login')
+# redirect user to authorize URL
+    #redirect(client.authorize_url())
+    play()
+
     if (auth.is_logged_in()):
         redirect(URL('home'))
     form = auth()

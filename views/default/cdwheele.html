@@ -1,5 +1,46 @@
 {{extend 'layout.html'}}
-<h1>Cameron Wheeler</h1>
-<h2>4th Year Computer Science Student at UCSC</h2>
-<p>Is currently one of the developers working on the MixIn project.</p>
+
+<!doctype html>
+<html>
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="http://w.soundcloud.com/player/api.js"></script>
+  <script>
+   $(document).ready(function() {
+     var widget = SC.Widget(document.getElementById('soundcloud_widget'));
+     widget.bind(SC.Widget.Events.READY, function() {
+       console.log('Ready...');
+     });
+     $('button').click(function() {
+       widget.toggle();
+     });
+   });
+    widget.getCurrentSound(function(music){
+    artwork_url = music.artwork_url.replace('-large', '-t200x200');
+    $('#song1').css('background', 'url(\"'+artwork_url+'\") ');
+});
+  </script>
+</head>
+<body>
+  <iframe id="soundcloud_widget"
+      src="http://w.soundcloud.com/player/?url=https://soundcloud.com/illeniumofficial/the-chainsmokers-dont-let-me-down-illenium-remix"
+      width="420"
+      height="120"
+      frameborder="no"></iframe>
+  <button>Play / Pause</button>
+</body>
+    <img src = artwork_url />
+   <!--  <form>
+    Put song link here:
+    <input type="text" name = "song">
+    <button onclick="<iframe id="soundcloud_widget
+      src="http://w.soundcloud.com/player/?url=https://soundcloud.com/" + song
+      width="420"
+      height="120"
+      frameborder="no"></iframe>">
+         Submit
+        </button>
+    </form>  -->
+    
+</html>
 {{=BEAUTIFY(response._vars)}}

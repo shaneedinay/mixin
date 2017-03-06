@@ -32,4 +32,19 @@
       }}
   </div>
 </div>
+
+<script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+<script>
+SC.initialize({
+  client_id: 'M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW'
+});
+
+// find all sounds of buskers licensed under 'creative commons share alike'
+SC.get('/tracks', {
+  q: 'buskers', license: 'cc-by-sa'
+}).then(function(tracks) {
+  console.log(tracks);
+});
+</script>
+
 {{end}}

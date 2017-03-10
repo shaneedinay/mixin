@@ -139,4 +139,18 @@ auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 # auth.enable_record_versioning(db)
 
+import datetime
+
 # Alternate login, facebook, aol, google
+db.define_table('friend_table',
+                Field('user_id', 'reference auth_user'),
+                Field('friend_user_id', 'reference auth_user'),
+                Field('accepted', 'boolean', default=False),
+                )
+
+# By default user email does not appear in any forms.
+#db.friend_table.friend_user_id.requires = IS_IN_DB(db, db.auth_user.id)
+#db.friend_table.user_id.requires = IS_IN_DB(db, db.auth_user.id)
+
+def name_of(user):
+    return '%(first_name)s %(last_name)s' % user

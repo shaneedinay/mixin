@@ -1,32 +1,38 @@
 {{extend 'layout.html'}}
+
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3 col-sm-3">
-    <!-- Blog Search Well -->
-    <div class="well">
-        <h4 class="mi-h4-sm-adjustment">Search for your Friends</h4>
-        <div class="input-group">
-            <input type="text" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
-        <!-- /.input-group -->
-    </div>
 
-    <!-- Music Room Voting Widget Well -->
+    <!-- Create a Music Room -->
     <div class="well">
-        <h4>Create a Music Room</h4>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <button id="mi-create-music-room-button" class="btn btn-default" type="button">
+                <div class="mi-create-music-room col-lg-10 col-md-10 col-sm-10">
+                  <h4 class="">Create a Music Room</h4>
+                </div>
+                <div class="mi-create-music-room col-lg-2 col-md-2 col-sm-2">
+                    <button id="mi-create-music-room-button" class="btn btn-default btn-sm" type="button">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Friend List -->
+    <div class="well">
+        <h4 class="mi-h4-sm-adjustment">Friends List</h4>
+        <div class="mi-friends-list">
+          {{=friendlist}}
+        </div>
+        <!-- /.input-group -->
+    </div>
+    <div class="well">
+        <h4 class="mi-h4-sm-adjustment">Requests List</h4>
+        <div class="mi-friends-list">
+          {{=requestlist}}
+        </div>
+        <!-- /.input-group -->
     </div>
 </div>
 
@@ -94,19 +100,33 @@
     </div>
 </div>
 
-<!-- Blog Sidebar Widgets Column -->
+<!-- Sidebar -->
 <div class="col-md-3 col-sm-3">
-    <!-- Blog Search Well -->
-    <div class="well">
-        <h4 class="mi-h4-sm-adjustment">Search for your Music</h4>
-        <div class="input-group">
-            <input type="text" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
-        <!-- /.input-group -->
-    </div>
+
+  <!-- Search for Friends -->
+  <div class="well">
+    <h4>Search for friends:</h4>
+    {{=form}}
+  </div>
+  {{if people:}}
+  <div class="well">
+    <h3>Results</h3>
+    <table>
+      {{for user in people:}}
+      <!-- Check if Already Friends -->
+
+      <!-- Check if Friend Request Pending-->
+        <tr class="mi-search-friends-tr">
+          <td>{{=A(name_of(user), _href=URL('wall',args=user.id))}}</td>
+          <td class="mi-search-friend-add">
+            <button class="btn btn-sm btn-default" onclick="ajax('{{=URL('friendship',args=('request',user.id))}}',[],null);$(this).parent().html('')">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </td>
+        </tr>
+      {{pass}}
+    </table>
+  </div>
+  {{pass}}
+
 </div>

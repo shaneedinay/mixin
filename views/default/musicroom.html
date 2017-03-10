@@ -53,7 +53,10 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1>Title</h1>
+        <div id="mi-music-room-artwork">
+          <img style="display:inline-block" class="img-responsive" src="">
+          <h1 style="display:inline-block">Title</h1>
+        </div>
         <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
         </div>
     </div>
@@ -76,7 +79,7 @@
     </div>
     <div class="well">
       <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
-      <script src="//connect.soundcloud.com/sdk.js"></script>
+
       <script>
       // initialization
         $("#search-mee").click(function () {
@@ -94,12 +97,24 @@
               var artist = $('.artistName').val();  // the artist name will be deifined as a string of text in the
               artist = artist.replace(/\s/g, "_");
               artist = artist.replace(".", "_");
-              SC.oEmbed('https://soundcloud.com/' + artist, {
-                  //maxheight: 150,
-                  maxwidth: 200
-              }, function(res) {
-                  $("#SCplayer").html(res.html); //this will get the data that the call sends back to and append it to the dom
-                  $('.contain-player').css("visibility","visible");// this will make the tweet box visible if the function is success
+
+              SC.get('/tracks', {
+                q: artist,
+              }).then(function(tracks) {
+                resultArray = tracks;
+                console.log(tracks);
+                $("#mi-music-room-artwork img").attr("src", tracks[0].artwork_url);
+                $("#mi-music-room-artwork h1").text(tracks[0].genre);
+                console.log(tracks[0].permalink_url);
+
+                var track_url = tracks[0].permalink_url;
+                SC.oEmbed(track_url, {
+                    //maxheight: 150,
+                    maxwidth: 200
+                }).then(function(oEmded) {
+                    $("#SCplayer").html(oEmded.html); //this will get the data that the call sends back to and append it to the dom
+                    //$('.contain-player').css("visibility","visible");// this will make the tweet box visible if the function is success
+                });
               });
       }
       </script>

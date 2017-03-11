@@ -95,6 +95,39 @@ body {
     margin-top: 60px;
   }
 }
+.mi-search-friends-tr button {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+@media (min-width: 921px) {
+  .mi-create-music-room {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .mi-create-music-room button {
+    margin-top: 10px;
+    margin-left: -5px;
+  }
+
+}
+@media (min-width: 800px) {
+  .mi-create-music-room {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .mi-create-music-room button {
+    margin-top: 10px;
+    margin-left: -5px;
+  }
+}
+.mi-create-music-room h4 {
+  font-size: 18px
+}
+@media (min-width: 921px) {
+  .mi-create-music-room {
+    font-size: 13px
+  }
+}
 
 /* Override bootstrap.css */
 .navbar-default {

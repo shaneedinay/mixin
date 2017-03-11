@@ -17,7 +17,7 @@
 
     <!-- User List -->
     <div class="well">
-        <h4>Members in this Music Room</h4>
+        <h4>Friends List</h4>
          <div class="row">
              <div class="col-lg-6">
                 <ul class="list-unstyled">
@@ -53,7 +53,10 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1>Title</h1>
+        <div id="mi-music-room-artwork">
+          <img style="display:inline-block" class="img-responsive" src="">
+          <h1 style="display:inline-block">Title</h1>
+        </div>
         <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
         </div>
     </div>
@@ -65,13 +68,62 @@
     <div class="well">
         <h4>Search for your Music</h4>
         <div class="input-group">
-            <input type="text" class="form-control">
-            <span class="input-group-btn">
+            <input type="text" class="form-control artistName">
+            <span id="search-mee" class="input-group-btn">
                 <button class="btn btn-default" type="button">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </span>
         </div>
         <!-- /.input-group -->
+    </div>
+    <div class="well">
+      <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+
+      <script>
+      // initialization
+        $("#search-mee").click(function () {
+            getSoundCloudSong(); //when the document loads the api functions will be ready
+        });
+
+      function getSoundCloudSong(){ //this is the function that holds the SOundcloud song player api
+          SC.initialize({ // this will initialize the client id needed for access to the SC api
+              client_id: "M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW"
+          });
+
+          // Play audio
+          //---the soundcloud api call does not use ajax---it uses only javscript and there is an external script attatched in the index that adds more functionality
+              var player = $("#SCplayer"); //the variable of SC player will be set to the id of the song media player
+              var artist = $('.artistName').val();  // the artist name will be deifined as a string of text in the
+              artist = artist.replace(/\s/g, "_");
+              artist = artist.replace(".", "_");
+
+              SC.get('/tracks', {
+                q: artist,
+              }).then(function(tracks) {
+                resultArray = tracks;
+                console.log(tracks);
+                $("#mi-music-room-artwork img").attr("src", tracks[0].artwork_url);
+                $("#mi-music-room-artwork h1").text(tracks[0].genre);
+                console.log(tracks[0].permalink_url);
+
+                var track_url = tracks[0].permalink_url;
+                SC.oEmbed(track_url, {
+                    //maxheight: 150,
+                    maxwidth: 200
+                }).then(function(oEmded) {
+                    $("#SCplayer").html(oEmded.html); //this will get the data that the call sends back to and append it to the dom
+                    //$('.contain-player').css("visibility","visible");// this will make the tweet box visible if the function is success
+                });
+              });
+      }
+      </script>
+    </div>
+    <div class="well">
+      <div class="container contain-api-data">
+        <div class='contain-player'>
+            <div id="SCplayer"></div>
+        </div>
+      </div>
     </div>
 </div>

@@ -85,10 +85,6 @@ from gluon.tools import Auth, Service, PluginManager, datetime
 # temporary, in order for chat to work
 now = datetime.datetime.today()
 db = DAL('sqlite://db.db')
-Chat = db.define_table('chat', Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
-                               Field('author','text'),
-                               Field('time_created', 'time', default=now)
-                      )
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
@@ -140,10 +136,27 @@ auth.settings.create_user_groups="Room_%(id)s"
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
+if auth.user:
+    user_name = auth.user.username
+else:
+    user_name = ''
 
+ChatRoom = db.define_table('chatRoom',
+                            Field('name', requires=IS_NOT_EMPTY())
+                            )
+
+Chat = db.define_table('chat',
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('author','string', 'reference auth_user', default=user_name),
+                        Field('time_created', 'datetime', default=datetime.datetime.now()),
+                        Field('room_id', 'reference chatRoom')
+                        )
+
+db.chat.time_created.writable = False
+db.chat.author.writable = False
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)
 
 # Alternate login, facebook, aol, google

@@ -8,7 +8,9 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
-# from gluon.contrib.websocket_messaging import websocket_send
+from gluon.contrib.websocket_messaging import websocket_send
+from gluon.contrib.simplejson import loads
+
 
 def index():
     """
@@ -51,24 +53,33 @@ def user():
 
 @auth.requires_login()
 def home():
-    groups = db().select(db.auth_group.ALL, orderby=db.auth_group.role)
-    return dict(groups=groups)
+    form = SQLFORM(db.chatRoom)
+    if form.process(keepvalues=True).accepted:
+       redirect(URL('home'))
+
+    chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)
+    return dict(chatRooms=chatRooms, form=form)
 
 @auth.requires_login()
 def musicroom():
     users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
-    #friendlist = (LI("%(first_name)s" % auth.user))
     friendlist = (LI(""))
-    #friendlist = (LI("%s" % users[0].first_name))
-    #friendlist = (LI("Start:"))
-    #images[0].title
-    #i = 0
     for i in users:
-        #friendlist.append(LI("%s" % i.first_name))
         friendlist += (LI("%s" % i.first_name))
-    #i = i + 1
-    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
-    #return users
+
+    chats = db(db.chat.room_id == request.args[0]).select(db.chat.ALL, orderby=db.chat.time_created)
+
+    return dict(message=T('%(first_name)s\'s music room' % auth.user),                    friendlist=friendlist,chats=chats)
+
+def new_message():
+    form = SQLFORM(db.chat)
+    chatroomId = request.vars.room_id
+    messageSent = user_name + ": " + request.vars.your_message
+    if form.accepts(request, formname=None):
+        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId)
+        return "$('#chatbox').append(%s);" % repr('<div class="message">'+messageSent+'</div><br>')
+    elif form.errors:
+        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
 
 @auth.requires_login()
 def settings():
@@ -108,16 +119,6 @@ def katakeda():
 def cdwheele():
     return dict()
 
-def new_message():
-    form = SQLFORM(db.chat)
-    # not working
-    #db(Chat).author=auth.user.first_name
-    messageSent = request.vars.your_message
-    if form.accepts(request, formname=None):
-        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
-    elif form.errors:
-        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-    return (db)
 
 @cache.action()
 def download():

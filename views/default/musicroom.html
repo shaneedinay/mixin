@@ -1,8 +1,15 @@
 {{extend 'layout.html'}}
-<div class="col-md-12 text-center">
-    <h1>{{=message}}</h1>
-</div>
-
+<link href="{{=URL('static', 'css/chat.css')}}" rel="stylesheet" type="text/css" />
+<style media="screen">
+  .message{
+    background-color: dodgerblue;
+    border-radius: 30px;
+    color: white;
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+  }
+</style>
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
     <!-- Blog Search Well -->
@@ -34,18 +41,20 @@
 
     <!-- Music Room Voting Widget Well -->
     <div class="well">
-        <h4>Vote for this Playroom</h4>
+        <h4>Vote for this Music Room</h4>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <button class="btn btn-default" type="button">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <button id="mi-music-room-like" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
+                    <span id="mi-music-room-like-count">0</span>
                 </div>
-                <div class="col-md-6">
-                    <button class="btn btn-default" type="button">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <button id="mi-music-room-dislike" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
+                    <span id="mi-music-room-dislike-count">0</span>
                 </div>
             </div>
         </div>
@@ -55,7 +64,21 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1>Web Socket Goes Here</h1>
+        <h1> Hi </h1>
+        <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
+          <div id="chatbox">
+            <p>
+            {{for chat in chats:}}
+              <div class="message">{{=chat.author}}: {{=chat.your_message}}</div> <br>
+            {{pass}}
+            </p>
+          </div>
+            <form id="sendMessage">
+              <input name="your_message" id="your_message" size="63" />
+              <input name="room_id" id="room_id" type ="hidden" value="{{=request.args(0)}}" />
+              <input type="submit" Value="Send" />
+            </form>
+        </div>
     </div>
 </div>
 
@@ -75,3 +98,24 @@
         <!-- /.input-group -->
     </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    // if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/' + chatroomId)){
+    //   alert("html5 websocket not supported by your browser, try Google Chrome");
+    // }
+    // var callback = function(){
+    //   $('#chatbox').load('musicroom #chatbox', function() {
+    //     $('#chatbox').children('#chatbox').unwrap();
+    //     $('#chatbox').animate({ scrollTop: log.prop('scrollHeight')}, 0);
+    //   });
+    // };
+    setInterval(function(){
+      // $('#chatbox').load("{{=URL('default', 'musicroom')}} #chatbox");
+    }, 3000);
+    $('#sendMessage').submit(function(){
+      ajax("{{=URL('new_message')}}", ['your_message','room_id'], ':eval');
+      return false;
+    });
+  });
+</script>

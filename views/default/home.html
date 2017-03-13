@@ -4,7 +4,17 @@
 <link rel="stylesheet" href="{{=URL('static', 'css/home_style.css')}}">
 <style media="screen">
   body{
-    background-image: url("{{=URL('static', 'images/background.jpg')}}");
+    /*background-image: url("{{=URL('static', 'images/background.jpg')}}");*/
+  }
+  #pop-up{
+    height: 40%;
+    width: 40%;
+    display: none;
+    background-color: white;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    padding: 20px;
   }
 </style>
 <div class="container-fluid main-container">
@@ -20,8 +30,8 @@
       </div>
       <div class="sidebar-list">
         <div class="list-group">
-          {{for group in groups:}}
-          {{=A(group.role, _class="list-group-item", _href="#")}}
+          {{for chatRoom in chatRooms:}}
+            {{=A(chatRoom.name, _class="list-group-item", _href=URL('musicroom', args=chatRoom.id))}}
           {{pass}}
         </div>
       </div>
@@ -39,7 +49,7 @@
             <div class="description">
               <h2>Join</h2>
               <p><h3>Share your music and chat with friends<br>Join a room now!</h3></p>
-              {{=A(BUTTON('Go to Music Room'), _href=URL('musicroom'))}}
+              <button id="create-room">Create Music Room</button>
             </div>
           </div>
         </div>
@@ -83,3 +93,14 @@
     </div>
   </div>
 </div>
+<div id="pop-up">
+  {{=form}}
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#create-room').click(function(){
+      $('#pop-up').show();
+    });
+  });
+</script>

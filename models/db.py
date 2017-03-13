@@ -85,10 +85,6 @@ from gluon.tools import Auth, Service, PluginManager, datetime
 # temporary, in order for chat to work
 now = datetime.datetime.today()
 db = DAL('sqlite://db.db')
-Chat = db.define_table('chat', Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
-                               Field('author','text'),
-                               Field('time_created', 'time', default=now)
-                      )
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
@@ -102,7 +98,7 @@ auth.settings.extra_fields['auth_user']= [
   Field('dob', 'date', label='Date of Birth'),
   Field('gender')
   ]
-auth.define_tables(username=False, signature=False)
+auth.define_tables(username=True, signature=False)
 
 db.auth_user.dob.requires = IS_DATE(format=T('%m/%d/%Y'))
 db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
@@ -140,10 +136,92 @@ auth.settings.create_user_groups="Room_%(id)s"
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
+if auth.user:
+    username = auth.user.username
+else:
+    username = ''
+
+ChatRoom = db.define_table('chatRoom',
+                            Field('name', requires=IS_NOT_EMPTY())
+                            )
+
+Chat = db.define_table('chat',
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('author','string', 'reference auth_user', default=username),
+                        Field('time_created', 'datetime', default=datetime.datetime.now()),
+                        Field('room_id', 'reference chatRoom')
+                        )
+
+db.chat.time_created.writable = False
+db.chat.author.writable = False
+
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)
+
 
 # Alternate login, facebook, aol, google
+'''
+
+## Define oauth application id and secret.
+FB_CLIENT_ID='194719664345387'
+FB_CLIENT_SECRET="ca4825112d4dd54ba857d068654d3f66"
+
+## import required modules
+try:
+    import json
+except ImportError:
+    from gluon.contrib import simplejson as json
+from facebook import GraphAPI, GraphAPIError
+from gluon.contrib.login_methods.oauth20_account import OAuthAccount
+
+
+## extend the OAUthAccount class
+class FaceBookAccount(OAuthAccount):
+    """OAuth impl for FaceBook"""
+    AUTH_URL="https://graph.facebook.com/oauth/authorize"
+    TOKEN_URL="https://graph.facebook.com/oauth/access_token"
+
+    def __init__(self):
+        OAuthAccount.__init__(self, None, FB_CLIENT_ID, FB_CLIENT_SECRET,
+                              self.AUTH_URL, self.TOKEN_URL,
+                              scope='email,user_about_me,user_activities, user_birthday, user_education_history, user_groups, user_hometown, user_interests, user_likes, user_location, user_relationships, user_relationship_details, user_religion_politics, user_subscriptions, user_work_history, user_photos, user_status, user_videos, publish_actions, friends_hometown, friends_location,friends_photos',
+                              state="auth_provider=facebook",
+                              display='popup')
+        self.graph = None
+
+    def get_user(self):
+        if not self.accessToken():
+            return None
+
+        if not self.graph:
+            self.graph = GraphAPI((self.accessToken()))
+
+        user = None
+        try:
+            user = self.graph.get_object("me")
+        except GraphAPIError, e:
+            session.token = None
+            self.graph = None
+
+        if user:
+            if not user.has_key('username'):
+                username = user['id']
+            else:
+                username = user['username']
+                
+            if not user.has_key('email'):
+                email = '%s.fakemail' %(user['id'])
+            else:
+                email = user['email']    
+
+            return dict(first_name = user['first_name'],
+                        last_name = user['last_name'],
+                        username = username,
+                        email = '%s' %(email) )
+
+## use the above class to build a new login form
+auth.settings.login_form=FaceBookAccount()
+'''

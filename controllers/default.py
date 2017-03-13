@@ -51,8 +51,11 @@ def user():
 
 @auth.requires_login()
 def home():
-    groups = db().select(db.auth_group.ALL, orderby=db.auth_group.role)
-    return dict(groups=groups)
+    form = SQLFORM(db.chatRoom)
+    if form.process(keepvalues=True).accepted:
+       redirect(URL('home'))
+    chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)
+    return dict(chatRooms=chatRooms, form=form)
 
 @auth.requires_login()
 def musicroom():
@@ -67,7 +70,15 @@ def musicroom():
         #friendlist.append(LI("%s" % i.first_name))
         friendlist += (LI("%s" % i.first_name))
     #i = i + 1
-    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
+    r_id = request.args[0]
+    chatroomName = db(db.chatRoom.id == int(r_id)).select(db.chatRoom.name)[0].name
+    chats = db(db.chat.room_id == int(r_id)).select(orderby=db.chat.time_created)
+
+    existChat = db.chatRoom[r_id]
+    if not(existChat):
+        redirect(URL('home'))
+
+    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist,chats=chats,chatroomName=chatroomName)
     #return users
 
 @auth.requires_login()
@@ -92,9 +103,7 @@ def sdinay():
 
 @auth.requires_login()
 def ryanho():
-    # not working on time_created
-    messages = db(Chat).select(orderby=~Chat.time_created)
-    return dict(messages=messages)
+    return dict()
 
 @auth.requires_login()
 def jli306():
@@ -109,15 +118,20 @@ def cdwheele():
     return dict()
 
 def new_message():
-    form = SQLFORM(db.chat)
+    form = SQLFORM(Chat)
     # not working
     #db(Chat).author=auth.user.first_name
     messageSent = request.vars.your_message
+    chatroomId = request.vars.room_id
+    # default  websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
     if form.accepts(request, formname=None):
-        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
+         websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId )
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-    return (db)
+    return ()
+
+
+
 
 @cache.action()
 def download():

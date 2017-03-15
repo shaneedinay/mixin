@@ -44,38 +44,17 @@ def user():
 @auth.requires_login()
 def home():
     author = auth.user.id;
-    users = db().select(db.friend_table.ALL, orderby=db.friend_table.id)
+    users = db().select(db.follow_table.ALL, orderby=db.follow_table.id)
     # Friends Lists
     friendlist = (DIV(""))
     for i in users:
-        if i.accepted:
             if i.user_id == author:
-                friend = i.friend_user_id
-                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-            elif i.friend_user_id == author:
+                friend = i.follow_user_id
+                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))
+            elif i.follow_user_id == author:
                 friend = i.user_id
-                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-    # Requests Lists
-    requestlist = (DIV(""))
-    for i in users:
-        if not i.accepted:
-            if i.user_id == author:
-                friend = i.friend_user_id
-                requestlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-            elif i.friend_user_id == author:
-                friend = i.user_id
-                requestlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-    #Form Search friendlist
-    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
-    if form.accepts(request):
-        tokens = form.vars.name.split()
-        query = reduce(lambda a,b:a&b,
-                       [db.auth_user.first_name.contains(k)|db.auth_user.last_name.contains(k) \
-                            for k in tokens])
-        people = db(query).select(orderby=db.auth_user.first_name|db.auth_user.last_name)
-    else:
-        people = []
-    return dict(friendlist=friendlist, requestlist=requestlist, form=form, people=people, friendtable=users, author=author)
+                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))
+    return dict(friendlist=friendlist, friendtable=users, author=author)
 
 @auth.requires_login()
 def musicroom():
@@ -104,27 +83,6 @@ def about():
 def contact():
     return dict()
 
-# this is the Ajax callback
-@auth.requires_login()
-def friendship():
-    """AJAX callback!"""
-    me, a0, a1 = auth.user_id, request.args(0), request.args(1)
-    FT = db.friend_table
-    if request.env.request_method!='POST': raise HTTP(400)
-    if a0=='request' and not FT(user_id=a1,friend_user_id=me):
-        # insert a new friendship request
-        FT.insert(user_id=me,friend_user_id=a1)
-    #elif a0=='accept':
-        # accept an existing friendship request
-    #    db(FT.friend_user_id==me)(FT.user_id==request.args(0)).update(accepted=True)
-    #    if not db(FT.user_id==me)(FT.friend_user_id==request.args(1)).count():
-    #        FT.insert(user_id=me,friend_user_id=a1)
-    #elif a0=='deny':
-        # deny an existing friendship request
-    #    db(FT.friend_user_id==me)(FT.user_id==a1).delete()
-    #elif a0=='remove':
-        # delete a previous friendship request
-    #    db(FT.user_id==me)(FT.friend_user_id==a1).delete()
 
 @auth.requires_login()
 def mbrain():

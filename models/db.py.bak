@@ -90,7 +90,15 @@ plugins = PluginManager()
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
 # -------------------------------------------------------------------------
-auth.define_tables(username=False, signature=False)
+auth.settings.extra_fields['auth_user']= [
+  Field('dob', 'date', label='Date of Birth'),
+  Field('gender')
+  ]
+#auth.define_tables(username=False, signature=False)
+auth.define_tables(username=True, signature=False )
+
+db.auth_user.dob.requires = IS_DATE()
+db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------
 # configure email
@@ -108,7 +116,7 @@ mail.settings.ssl = myconf.get('smtp.ssl') or False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-
+auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
 #
@@ -125,10 +133,23 @@ auth.settings.reset_password_requires_verification = True
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
-db.define_table('images',Field('picture','upload'))
+
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-auth.enable_record_versioning(db)
+# auth.enable_record_versioning(db)
+
+import datetime
 
 # Alternate login, facebook, aol, google
+db.define_table('follow_table',
+                Field('user_id', 'reference auth_user', writable=False, default=auth.user_id),
+                Field('follow_user_id', 'reference auth_user'),
+                )
+
+# By default user email does not appear in any forms.
+#db.friend_table.friend_user_id.requires = IS_IN_DB(db, db.auth_user.id)
+#db.friend_table.user_id.requires = IS_IN_DB(db, db.auth_user.id)
+
+def name_of(user):
+    return '%(first_name)s %(last_name)s' % user

@@ -10,13 +10,6 @@
 
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
     if (auth.is_logged_in()):
         redirect(URL('home'))
     form = auth()
@@ -50,23 +43,37 @@ def user():
 
 @auth.requires_login()
 def home():
-    return dict(message=T('Hello %(first_name)s' % auth.user))
+    author = auth.user.id;
+    users = db().select(db.follow_table.ALL, orderby=db.follow_table.id)
+    # Friends Lists
+    friendlist = (DIV(""))
+    for i in users:
+            if i.user_id == author:
+                friend = i.follow_user_id
+                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))
+            elif i.follow_user_id == author:
+                friend = i.user_id
+                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))
+    return dict(friendlist=friendlist, form=form, friendtable=users, author=author)
 
 @auth.requires_login()
 def musicroom():
-    users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
-    #friendlist = (LI("%(first_name)s" % auth.user))
-    friendlist = (LI(""))
-    #friendlist = (LI("%s" % users[0].first_name))
-    #friendlist = (LI("Start:"))
-    #images[0].title
-    #i = 0
+    author = auth.user.id;
+    users = db().select(db.friend_table.ALL, orderby=db.friend_table.id)
+    friendlist = (DIV(""))
     for i in users:
-        #friendlist.append(LI("%s" % i.first_name))
-        friendlist += (LI("%s" % i.first_name))
-    #i = i + 1
-    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist)
-    #return users
+        if i.accepted:
+            if i.user_id == author:
+                friend = i.friend_user_id
+                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
+            elif i.friend_user_id == author:
+                friend = i.user_id
+                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
+    return dict(friendlist=friendlist)
+
+@auth.requires_login()
+def settings():
+    return dict(form=auth())
 
 @auth.requires_login()
 def about():
@@ -75,6 +82,7 @@ def about():
 @auth.requires_login()
 def contact():
     return dict()
+
 
 @auth.requires_login()
 def mbrain():
@@ -94,11 +102,6 @@ def jli306():
 
 @auth.requires_login()
 def katakeda():
-    pic = db(db.images).select().first().picture
-    return dict(pic=pic)
-
-@auth.requires_login()
-def cdwheele():
     return dict()
 
 @auth.requires_login()

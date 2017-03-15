@@ -1,74 +1,125 @@
 {{extend 'layout.html'}}
-<link rel="stylesheet" href="{{=URL('static', 'css/bootstrap-social.css')}}">
-<link rel="stylesheet" href="{{=URL('static', 'css/font-awesome.min.css')}}">
-<link rel="stylesheet" href="{{=URL('static', 'css/home_style.css')}}">
 
-<div class="container-fluid main-container">
-  <div class="col-md-2 sidebar">
-    <div class="input-group input-group-sm">
-        <input type="text" class="form-control" placeholder="Search">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-search"></span>
+<!-- Blog Sidebar Widgets Column -->
+<div class="col-md-3 col-sm-3">
+
+    <!-- Create a Music Room -->
+    <div class="well">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="mi-create-music-room col-lg-10 col-md-10 col-sm-10">
+                  <h4 class="">Create a Music Room</h4>
+                </div>
+                <div class="mi-create-music-room col-lg-2 col-md-2 col-sm-2">
+                    <button id="mi-create-music-room-button" class="btn btn-default btn-sm" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend List -->
+    <div class="well">
+        <h4 class="mi-h4-sm-adjustment">Friends List</h4>
+        <div class="mi-friends-list">
+          {{=friendlist}}
+        </div>
+        <!-- /.input-group -->
+    </div>
+</div>
+
+<!-- Main Music Playlist Widget -->
+<div class="col-md-6 col-sm-6">
+    <div class="well mi-mixin-music-room-list">
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Your Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Your Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Your Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+    </div>
+    <div class="well mi-mixin-music-room-list">
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Popular Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Popular Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Popular Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+    </div>
+    <div class="well mi-mixin-music-room-list">
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Suggested Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Suggested Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+      <a href={{=URL('musicroom')}}>
+        <div class="mi-music-room-link">
+          Suggested Music Room
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </a>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="col-md-3 col-sm-3">
+    
+<!-- Search for Friends -->
+  <div class="well">
+    <h4>Search for friends:</h4>
+    {{=form}}
+  </div>
+  {{if people:}}
+  <div class="well">
+    <h3>Results</h3>
+    <table>
+      {{for user in people:}}
+      <!-- Check if Already Friends -->
+
+      <!-- Check if Friend Request Pending-->
+        <tr class="mi-search-friends-tr">
+          <td>{{=A(name_of(user), _href=URL('wall',args=user.id))}}</td>
+          <td class="mi-search-friend-add">
+            <button class="btn btn-sm btn-default" onclick="ajax('{{=URL('friendship',args=('request',user.id))}}',[],null);$(this).parent().html('')">
+              <span class="glyphicon glyphicon-plus"></span>
             </button>
-        </span>
-    </div>
-    <div class="sidebar-list">
-      <ul>
-        <!-- Something -->
-      </ul>
-    </div>
+          </td>
+        </tr>
+      {{pass}}
+    </table>
   </div>
+  {{pass}}
 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-        <div class="carousel-inner">
-          <div class="description">
-            <h2>Join</h2>
-            <p><h3>Share your music and chat with friends<br>Join a room now!</h3></p>
-            {{=A(BUTTON('Go to Music Room'), _href=URL('musicroom'))}}
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="carousel-inner">
-          <div class="description">
-            <h2>Discover</h2>
-            <p><h3>Explore new rooms</h3></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="carousel-inner">
-          <div class="description">
-            <h2>Share</h2>
-            <p><h3>Share your room on social media</h3></p>
-            <a class="btn btn-social-icon btn-facebook">
-              <span class="fa fa-facebook"></span>
-            </a>
-            <a class="btn btn-social-con btn-twitter">
-              <span class="fa fa-twitter"></span>
-            </a>
-            <a class="btn btn-social-icon btn-soundcloud">
-              <span class="fa fa-soundcloud"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
 </div>

@@ -1,0 +1,704 @@
+(dp1
+S'output'
+p2
+S"<class 'sqlite3.IntegrityError'> foreign key constraint failed"
+p3
+sS'layer'
+p4
+S'C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n# -------------------------------------------------------------------------\n# This is a sample controller\n# - index is the default action of any application\n# - user is required for authentication and authorization\n# - download is for downloading files uploaded in the db (does streaming)\n# -------------------------------------------------------------------------\n\n\ndef index():\n    if (auth.is_logged_in()):\n        redirect(URL(\'home\'))\n    form = auth()\n    if response.title:\n        welcomemessage = "Welcome to %s" % response.title\n    else:\n        welcomemessage = "Welcome"\n    #if form.process().accepted:\n    #    redirect(URL(\'home\'))\n    return dict(message=T(welcomemessage), form=form)\n\n\ndef user():\n    # Chapter 09 Authorization\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/bulk_register\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users\n    """\n    return dict(form=auth())\n\n@auth.requires_login()\ndef home():\n    author = auth.user.id;\n    users = db().select(db.follow_table.ALL, orderby=db.follow_table.id)\n    # Friends Lists\n    friendlist = (DIV(""))\n    for i in users:\n            if i.user_id == author:\n                friend = i.follow_user_id\n                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))\n            elif i.follow_user_id == author:\n                friend = i.user_id\n                friendlist += (DIV("%s %s" % (follow.first_name, follow.last_name)))\n    return dict(friendlist=friendlist, followtable=users, author=author)\n\n@auth.requires_login()\ndef musicroom():\n    author = auth.user.id;\n    users = db().select(db.friend_table.ALL, orderby=db.friend_table.id)\n    friendlist = (DIV(""))\n    for i in users:\n        if i.accepted:\n            if i.user_id == author:\n                friend = i.friend_user_id\n                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))\n            elif i.friend_user_id == author:\n                friend = i.user_id\n                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))\n    return dict(friendlist=friendlist)\n\n@auth.requires_login()\ndef settings():\n    return dict(form=auth())\n\n@auth.requires_login()\ndef about():\n    return dict()\n\n@auth.requires_login()\ndef contact():\n    return dict()\n\n# this is the Ajax callback\n@auth.requires_login()\ndef friendship():\n    """AJAX callback!"""\n    me, a0, a1 = auth.user_id, request.args(0), request.args(1)\n    FT = db.friend_table\n    if request.env.request_method!=\'POST\': raise HTTP(400)\n    if a0==\'request\' and not FT(user_id=a1,friend_user_id=me):\n        # insert a new friendship request\n        FT.insert(user_id=me,friend_user_id=a1)\n    #elif a0==\'accept\':\n        # accept an existing friendship request\n    #    db(FT.friend_user_id==me)(FT.user_id==request.args(0)).update(accepted=True)\n    #    if not db(FT.user_id==me)(FT.friend_user_id==request.args(1)).count():\n    #        FT.insert(user_id=me,friend_user_id=a1)\n    #elif a0==\'deny\':\n        # deny an existing friendship request\n    #    db(FT.friend_user_id==me)(FT.user_id==a1).delete()\n    #elif a0==\'remove\':\n        # delete a previous friendship request\n    #    db(FT.user_id==me)(FT.friend_user_id==a1).delete()\n\n@auth.requires_login()\ndef mbrain():\n    return dict()\n\n@auth.requires_login()\ndef sdinay():\n    return dict()\n\n@auth.requires_login()\ndef ryanho():\n    return dict()\n\n@auth.requires_login()\ndef jli306():\n    return dict()\n\n@auth.requires_login()\ndef katakeda():\n    return dict()\n\n@auth.requires_login()\ndef cdwheele():\n    return dict()\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\nresponse._vars=response._caller(user)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__module__'
+p12
+S"'sqlite3'"
+p13
+sS'__getslice__'
+p14
+S"<method-wrapper '__getslice__' of IntegrityError object>"
+p15
+sS'__str__'
+p16
+S"<method-wrapper '__str__' of IntegrityError object>"
+p17
+sS'__reduce__'
+p18
+S'<built-in method __reduce__ of IntegrityError object>'
+p19
+sS'__dict__'
+p20
+S'{}'
+p21
+sS'__sizeof__'
+p22
+S'<built-in method __sizeof__ of IntegrityError object>'
+p23
+sS'__weakref__'
+p24
+S'None'
+p25
+sS'__init__'
+p26
+S"<method-wrapper '__init__' of IntegrityError object>"
+p27
+sS'__setattr__'
+p28
+S"<method-wrapper '__setattr__' of IntegrityError object>"
+p29
+sS'__reduce_ex__'
+p30
+S'<built-in method __reduce_ex__ of IntegrityError object>'
+p31
+sS'__new__'
+p32
+S'<built-in method __new__ of type object>'
+p33
+sS'__format__'
+p34
+S'<built-in method __format__ of IntegrityError object>'
+p35
+sS'__class__'
+p36
+S"<class 'sqlite3.IntegrityError'>"
+p37
+sS'__doc__'
+p38
+S'None'
+p39
+sS'__getitem__'
+p40
+S"<method-wrapper '__getitem__' of IntegrityError object>"
+p41
+sS'__setstate__'
+p42
+S'<built-in method __setstate__ of IntegrityError object>'
+p43
+sS'__getattribute__'
+p44
+S"<method-wrapper '__getattribute__' of IntegrityError object>"
+p45
+sS'args'
+p46
+S"('foreign key constraint failed',)"
+p47
+sS'__subclasshook__'
+p48
+S'<built-in method __subclasshook__ of type object>'
+p49
+sS'__unicode__'
+p50
+S'<built-in method __unicode__ of IntegrityError object>'
+p51
+sS'__delattr__'
+p52
+S"<method-wrapper '__delattr__' of IntegrityError object>"
+p53
+sS'__repr__'
+p54
+S"<method-wrapper '__repr__' of IntegrityError object>"
+p55
+sS'__hash__'
+p56
+S"<method-wrapper '__hash__' of IntegrityError object>"
+p57
+ssS'evalue'
+p58
+S'foreign key constraint failed'
+p59
+sS'request'
+p60
+cgluon.html
+XML_unpickle
+p61
+(S'sqp\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>logout</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_1</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-4ca47a95-e7c4-44e8-b751-17e10f211b99<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_21</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-c2a90d05-dd85-4aa5-8fa4-dae54662a69c<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-12c05797-9849-484f-bdc0-e1bba560bfac<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixinv3new</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-ab7a705b-7900-4c66-9f68-90712016d104<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-eadfbc5a-d62b-462c-ba54-2225aaf53951<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8,ja;q=0.6,zh-CN;q=0.4,zh;q=0.2,zh-TW;q=0.2</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_mixinv3new=127.0.0.1-ab7a705b-7900-4c66-9f68-90712016d104; session_id_1=127.0.0.1-4ca47a95-e7c4-44e8-b751-17e10f211b99; session_id_21=127.0.0.1-c2a90d05-dd85-4aa5-8fa4-dae54662a69c; session_id_welcome=127.0.0.1-eadfbc5a-d62b-462c-ba54-2225aaf53951; session_id_admin=127.0.0.1-12c05797-9849-484f-bdc0-e1bba560bfac; session_id_mixin=127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/mixin/default/home</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_UPGRADE_INSECURE_REQUESTS</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/mixin/default/user/logout</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div>_next=/mixin/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>52424</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>DESKTOP-0SODVPA</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\mixinv3new\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\1\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\welcome\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\mixin\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\21\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x2e20df0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;DESKTOP-0SODVPA&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8,ja;q=0.6,zh-CN;q=0.4,zh;q=0.2,zh-TW;q=0.2</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_mixinv3new=127.0.0.1-ab7a705b-7900-4c66-9f68-90712016d104; session_id_1=127.0.0.1-4ca47a95-e7c4-44e8-b751-17e10f211b99; session_id_21=127.0.0.1-c2a90d05-dd85-4aa5-8fa4-dae54662a69c; session_id_welcome=127.0.0.1-eadfbc5a-d62b-462c-ba54-2225aaf53951; session_id_admin=127.0.0.1-12c05797-9849-484f-bdc0-e1bba560bfac; session_id_mixin=127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/mixin/default/home</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_upgrade_insecure_requests</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>DESKTOP-0SODVPA</div></td></tr><tr><td><div>fe80::5c9c:cd71:d73c:7d36%8</div></td></tr><tr><td><div>fe80::200:5efe:169.233.227.215%14</div></td></tr><tr><td><div>169.233.227.215</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.200.1</div></td></tr><tr><td><div>fe80::1d8d:be6f:69bb:681f%13</div></td></tr><tr><td><div>192.168.152.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr><tr><td><div>fe80::95c9:864e:b294:2299%12</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/mixin/default/user/logout</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div>_next=/mixin/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>52424</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/mixin/default/user/logout?_next=/mixin/default/index</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>DESKTOP-0SODVPA</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x0215D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x030AB2D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x0A41DCF0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x0215D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x030AB2D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x0A41DCF0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>user</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\mixinv3new\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\1\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\welcome\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\mixin\\\\&#x27;, &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\21\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x2e20df0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;DESKTOP-0SODVPA&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>DESKTOP-0SODVPA</div></td></tr><tr><td><div>fe80::5c9c:cd71:d73c:7d36%8</div></td></tr><tr><td><div>fe80::200:5efe:169.233.227.215%14</div></td></tr><tr><td><div>169.233.227.215</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.200.1</div></td></tr><tr><td><div>fe80::1d8d:be6f:69bb:681f%13</div></td></tr><tr><td><div>192.168.152.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr><tr><td><div>fe80::95c9:864e:b294:2299%12</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_scheduler</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 11, 17, 15, 3, 589000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div>logout</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/mixin/default/user/logout</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 12, 1, 15, 3, 589000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x0A6BBF70&gt;</div></td></tr></table></div>'
+tRp62
+sS'frames'
+p63
+(lp64
+(dp65
+S'file'
+p66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\restricted.py'
+p67
+sS'dump'
+p68
+(dp69
+S'environment'
+p70
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p71
+sS'ccode'
+p72
+S'<code object <module> at 03CCE920, file "C:\\User...lications\\mixin\\controllers/default.py", line 12>'
+p73
+ssS'lnum'
+p74
+I227
+sS'lines'
+p75
+(dp76
+I224
+S'            ccode = code'
+p77
+sI225
+S'        else:'
+p78
+sI226
+S'            ccode = compile2(code, layer)'
+p79
+sI227
+S'        exec ccode in environment'
+p80
+sI228
+S'    except HTTP:'
+p81
+sI229
+S'        raise'
+p82
+sI230
+S'    except RestrictedError:'
+p83
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p84
+sI222
+S'    try:'
+p85
+sI223
+S'        if isinstance(code, types.CodeType):'
+p86
+ssS'call'
+p87
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ...service()\\n\\nresponse._vars=response._caller(user)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}, layer=r'C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers/default.py')"
+p88
+sS'func'
+p89
+S'restricted'
+p90
+sa(dp91
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers\\default.py'
+p92
+sg68
+(dp93
+sg74
+I150
+sg75
+(dp94
+I139
+S''
+sI140
+S''
+sI141
+S'def call():'
+p95
+sI142
+S'    """'
+p96
+sI143
+S'    exposes services. for example:'
+p97
+sI144
+S'    http://..../[app]/default/call/jsonrpc'
+p98
+sI145
+S'    decorate with @services.jsonrpc the functions to expose'
+p99
+sI146
+S'    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv'
+p100
+sI147
+S'    """'
+p101
+sI148
+S'    return service()'
+p102
+ssg87
+S'()'
+p103
+sg89
+S'<module>'
+p104
+sa(dp105
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\globals.py'
+p106
+sg68
+(dp107
+S'self'
+p108
+S'undefined'
+p109
+sS'f'
+S'<function user>'
+p110
+ssg74
+I417
+sg75
+(dp111
+I416
+S'        self._vars = None'
+p112
+sI417
+S'        self._caller = lambda f: f()'
+p113
+sI418
+S'        self._view_environment = None'
+p114
+sI419
+S'        self._custom_commit = None'
+p115
+sI420
+S'        self._custom_rollback = None'
+p116
+sI421
+S"        self.generic_patterns = ['*']"
+p117
+sI412
+S"        self.flash = ''            # used by the default view layout"
+p118
+sI413
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p119
+sI414
+S'        self.menu = []             # used by the default view layout'
+p120
+sI415
+S'        self.files = []            # used by web2py_ajax.html'
+p121
+ssg87
+S'(f=<function user>)'
+p122
+sg89
+S'<lambda>'
+p123
+sa(dp124
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers\\default.py'
+p125
+sg68
+(dp126
+S'global auth'
+p127
+S'<gluon.tools.Auth object>'
+p128
+sS'form'
+p129
+g109
+sS'builtindict'
+p130
+S"<type 'dict'>"
+p131
+ssg74
+I42
+sg75
+(dp132
+I37
+S"        @auth.requires_membership('group name')"
+p133
+sI38
+S"        @auth.requires_permission('read','table name',record_id)"
+p134
+sI39
+S'    to decorate functions that need access control'
+p135
+sI40
+S'    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users'
+p136
+sI41
+S'    """'
+p137
+sI42
+S'    return dict(form=auth())'
+p138
+sI43
+S''
+sI44
+S'@auth.requires_login()'
+p139
+sI45
+S'def home():'
+p140
+sI46
+S'    author = auth.user.id;'
+p141
+ssg87
+S'()'
+p142
+sg89
+S'user'
+p143
+sa(dp144
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py'
+p145
+sg68
+(dp146
+S'self'
+p147
+S'<gluon.tools.Auth object>'
+p148
+sS'args'
+p149
+S"['logout']"
+p150
+sS'builtingetattr'
+p151
+S'<built-in function getattr>'
+p152
+ssg74
+I1941
+sg75
+(dp153
+I1936
+S"                       'impersonate', 'not_authorized', 'confirm_registration',"
+p154
+sI1937
+S"                       'bulk_register', 'manage_tokens', 'jwt'):"
+p155
+sI1938
+S"            if len(request.args) >= 2 and args[0] == 'impersonate':"
+p156
+sI1939
+S'                return getattr(self, args[0])(request.args[1])'
+p157
+sI1940
+S'            else:'
+p158
+sI1941
+S'                return getattr(self, args[0])()'
+p159
+sI1942
+S"        elif args[0] == 'cas' and not self.settings.cas_provider:"
+p160
+sI1943
+S"            if args(1) == self.settings.cas_actions['login']:"
+p161
+sI1944
+S'                return self.cas_login(version=2)'
+p162
+sI1945
+S"            elif args(1) == self.settings.cas_actions['validate']:"
+p163
+ssg87
+S'(self=<gluon.tools.Auth object>)'
+p164
+sg89
+S'__call__'
+p165
+sa(dp166
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py'
+p167
+sg68
+(dp168
+S'self'
+p169
+S'<gluon.tools.Auth object>'
+p170
+sS'self.user'
+p171
+S"<Row {'first_name': 'Jinlin', 'last_name': 'Li',...word_key': '', 'registration_key': '', 'id': 1L}>"
+p172
+sS'self.log_event'
+p173
+S'<bound method Auth.log_event of <gluon.tools.Auth object>>'
+p174
+sS'log'
+p175
+S"'User %(id)s Logged-out'"
+p176
+ssg74
+I3235
+sg75
+(dp177
+I3232
+S'        if log is DEFAULT:'
+p178
+sI3233
+S"            log = self.messages['logout_log']"
+p179
+sI3234
+S'        if self.user:'
+p180
+sI3235
+S'            self.log_event(log, self.user)'
+p181
+sI3236
+S'        if self.settings.login_form != self:'
+p182
+sI3237
+S'            cas = self.settings.login_form'
+p183
+sI3238
+S'            cas_user = cas.get_user()'
+p184
+sI3239
+S'            if cas_user:'
+p185
+sI3230
+S'        if onlogout:'
+p186
+sI3231
+S'            onlogout(self.user)'
+p187
+ssg87
+S"(self=<gluon.tools.Auth object>, next='/mixin/default/index', onlogout=None, log='User %(id)s Logged-out')"
+p188
+sg89
+S'logout'
+p189
+sa(dp190
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py'
+p191
+sg68
+(dp192
+S'origin'
+p193
+S"'auth'"
+p194
+sS'user_id'
+p195
+S'1L'
+p196
+sS'description'
+p197
+S"'User %(id)s Logged-out'"
+p198
+sS'vars'
+p199
+S"<Row {'first_name': 'Jinlin', 'last_name': 'Li',...word_key': '', 'registration_key': '', 'id': 1L}>"
+p200
+sS'builtinstr'
+p201
+S"<type 'str'>"
+p202
+sS').insert'
+p203
+g109
+sS'self.table_event'
+p204
+S'<bound method Auth.table_event of <gluon.tools.Auth object>>'
+p205
+sS'self'
+p206
+S'<gluon.tools.Auth object>'
+p207
+ssg74
+I2530
+sg75
+(dp208
+I2528
+S"        if type(description).__name__ == 'lazyT':"
+p209
+sI2529
+S'            description = description.m'
+p210
+sI2530
+S'        self.table_event().insert(description=str(description % vars), origin=origin, user_id=user_id)'
+p211
+sI2531
+S''
+sI2532
+S"    def get_or_create_user(self, keys, update_fields=['email'],"
+p212
+sI2533
+S'                           login=True, get=True):'
+p213
+sI2534
+S'        """'
+p214
+sI2525
+S'            user_id = None  # user unknown'
+p215
+sI2526
+S'        vars = vars or {}'
+p216
+sI2527
+S'        # log messages should not be translated'
+p217
+ssg87
+S"(self=<gluon.tools.Auth object>, description='User %(id)s Logged-out', vars=<Row {'first_name': 'Jinlin', 'last_name': 'Li',...word_key': '', 'registration_key': '', 'id': 1L}>, origin='auth')"
+p218
+sg89
+S'log_event'
+p219
+sa(dp220
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\packages\\dal\\pydal\\objects.py'
+p221
+sg68
+(dp222
+S'self._listify'
+p223
+S'<bound method Table._listify of <Table auth_even...stamp, client_ip, user_id, origin, description)>>'
+p224
+sS'fields'
+p225
+S"{'client_ip': '127.0.0.1', 'description': 'User 1 Logged-out', 'origin': 'auth', 'time_stamp': datetime.datetime(2017, 3, 11, 17, 15, 3, 589000), 'user_id': 1L}"
+p226
+sS'self'
+p227
+S'<Table auth_event (id, time_stamp, client_ip, user_id, origin, description)>'
+p228
+sS'ret'
+p229
+g109
+sS'self._db._adapter'
+p230
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p231
+sS'self._db._adapter.insert'
+p232
+S'<bound method SQLiteAdapter.insert of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p233
+sS'self._db'
+p234
+S'<DAL uri="sqlite://storage.sqlite">'
+p235
+ssg74
+I726
+sg75
+(dp236
+I721
+S'    def insert(self, **fields):'
+p237
+sI722
+S'        fields = self._defaults(fields)'
+p238
+sI723
+S'        self._attempt_upload(fields)'
+p239
+sI724
+S'        if any(f(fields) for f in self._before_insert):'
+p240
+sI725
+S'            return 0'
+p241
+sI726
+S'        ret = self._db._adapter.insert(self, self._listify(fields))'
+p242
+sI727
+S'        if ret and self._after_insert:'
+p243
+sI728
+S'            fields = Row(fields)'
+p244
+sI729
+S'            [f(fields, ret) for f in self._after_insert]'
+p245
+sI730
+S'        return ret'
+p246
+ssg87
+S"(self=<Table auth_event (id, time_stamp, client_ip, user_id, origin, description)>, **fields={'client_ip': '127.0.0.1', 'description': 'User 1 Logged-out', 'origin': 'auth', 'time_stamp': datetime.datetime(2017, 3, 11, 17, 15, 3, 589000), 'user_id': 1L})"
+p247
+sg89
+S'insert'
+p248
+sa(dp249
+g66
+S'C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p250
+sg68
+(dp251
+S'e'
+S"IntegrityError('foreign key constraint failed',)"
+p252
+ssg74
+I746
+sg75
+(dp253
+I741
+S'            self.execute(query)'
+p254
+sI742
+S'        except Exception:'
+p255
+sI743
+S'            e = sys.exc_info()[1]'
+p256
+sI744
+S"            if hasattr(table,'_on_insert_error'):"
+p257
+sI745
+S'                return table._on_insert_error(table,fields,e)'
+p258
+sI746
+S'            raise e'
+p259
+sI747
+S"        if hasattr(table, '_primarykey'):"
+p260
+sI748
+S'            mydict = dict([(k[0].name, k[1]) for k in fields if k[0].name in table._primarykey])'
+p261
+sI749
+S'            if mydict != {}:'
+p262
+sI750
+S'                return mydict'
+p263
+ssg87
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, table=<Table auth_event (id, time_stamp, client_ip, user_id, origin, description)>, fields=[(<pydal.objects.Field object>, 'auth'), (<pydal.objects.Field object>, datetime.datetime(2017, 3, 11, 17, 15, 3, 589000)), (<pydal.objects.Field object>, '127.0.0.1'), (<pydal.objects.Field object>, 1L), (<pydal.objects.Field object>, 'User 1 Logged-out')])"
+p264
+sg89
+g248
+sasS'pyver'
+p265
+S'Python 2.7.9: C:\\Users\\Jacob\\Desktop\\web2py\\web2py.exe (prefix: )'
+p266
+sS'session'
+p267
+g61
+(S'sR\x0c\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">auth</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">expiration</td><td style="vertical-align:top;">:</td><td><div>2592000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">hmac_key</td><td style="vertical-align:top;">:</td><td><div>e61caa18-474c-4dd5-84b8-d8336c237bdc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_visit</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 2, 12, 17, 41, 43, 356000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remember_me</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">email</td><td style="vertical-align:top;">:</td><td><div>jacobleeljl@gmail.com</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">first_name</td><td style="vertical-align:top;">:</td><td><div>Jinlin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">id</td><td style="vertical-align:top;">:</td><td><div>1L</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_name</td><td style="vertical-align:top;">:</td><td><div>Li</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_id</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">reset_password_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user_groups</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">1</td><td style="vertical-align:top;">:</td><td><div>user_1</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">auth_two_factor</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">auth_two_factor_enabled</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">auth_two_factor_tries_left</td><td style="vertical-align:top;">:</td><td><div>3</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">auth_two_factor_user</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_orderby</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_query</td><td style="vertical-align:top;">:</td><td><div>db.auth_user.id&gt;0</div></td></tr></table></div>'
+tRp268
+sS'etype'
+p269
+S"<class 'sqlite3.IntegrityError'>"
+p270
+sS'date'
+p271
+S'Sat Mar 11 17:15:03 2017'
+p272
+sS'response'
+p273
+g61
+(S'sR%\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x0A6BBE40&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="navbar-brand" href="http://www.mixin.com/" id="mi-navbar-logo"><img src="/mixin/static/images/logo.png" width="65" /></a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/home</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>About</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/about</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Contact</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/contact</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Settings</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/settings/profile</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Team Members</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Maximillian Brain</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/mbrain</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Shanee Dinay</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/sdinay</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Ryan Ho</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/ryanho</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Jinlin Li</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/jli306</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Kaitaku Takeda</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/katakeda</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Cameron Wheeler</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/default/cdwheele</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">description</td><td style="vertical-align:top;">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>web2py</div></td></tr><tr><td><div>python</div></td></tr><tr><td><div>framework</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/user/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>2592000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;C:\\\\Users\\\\Jacob\\\\Desktop\\\\web2py\\\\applications\\\\mixin\\\\sessions\\\\1c5\\\\1ca\\\\127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84&#x27;, mode &#x27;rb+&#x27; at 0x0A638E90&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\sessions\\127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>371d5fc98db70624a1bc33bd8de1fc45</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-62de8693-8e32-45e7-8bc3-cd90c5138e84</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>default/user.html</div></td></tr></table></div>'
+tRp274
+sS'locals'
+p275
+(dp276
+S'fields'
+p277
+S"[(<pydal.objects.Field object>, 'auth'), (<pydal.objects.Field object>, datetime.datetime(2017, 3, 11, 17, 15, 3, 589000)), (<pydal.objects.Field object>, '127.0.0.1'), (<pydal.objects.Field object>, 1L), (<pydal.objects.Field object>, 'User 1 Logged-out')]"
+p278
+sS'self'
+p279
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p280
+sS'e'
+S"IntegrityError('foreign key constraint failed',)"
+p281
+sS'table'
+p282
+S'<Table auth_event (id, time_stamp, client_ip, user_id, origin, description)>'
+p283
+sS'query'
+p284
+S'"INSERT INTO auth_event(origin,time_stamp,client_...-11 17:15:03\',\'127.0.0.1\',1,\'User 1 Logged-out\');"'
+p285
+sssS'traceback'
+p286
+S'Traceback (most recent call last):\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers/default.py", line 150, in <module>\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\globals.py", line 417, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\applications\\mixin\\controllers/default.py", line 42, in user\n    return dict(form=auth())\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py", line 1941, in __call__\n    return getattr(self, args[0])()\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py", line 3235, in logout\n    self.log_event(log, self.user)\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\tools.py", line 2530, in log_event\n    self.table_event().insert(description=str(description % vars), origin=origin, user_id=user_id)\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\packages\\dal\\pydal\\objects.py", line 726, in insert\n    ret = self._db._adapter.insert(self, self._listify(fields))\n  File "C:\\Users\\Jacob\\Desktop\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 746, in insert\n    raise e\nIntegrityError: foreign key constraint failed\n'
+p287
+s.

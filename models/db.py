@@ -142,11 +142,16 @@ auth.settings.create_user_groups="Room_%(id)s"
 import datetime
 
 # Alternate login, facebook, aol, google
-db.define_table('friend_table',
-                Field('user_id', 'reference auth_user'),
-                Field('friend_user_id', 'reference auth_user'),
-                Field('accepted', 'boolean', default=False),
+db.define_table('follow_table',
+                Field('user_id', 'reference auth_user', writable=False, default=auth.user_id),
+                Field('follow_user_id', 'reference auth_user'),
                 )
+
+db.define_table('chatmember',
+                Field('room_id', 'reference chatRoom', writable=False),
+                Field('member_id', 'reference auth_user', writable=False)
+                )
+
 
 # By default user email does not appear in any forms.
 #db.friend_table.friend_user_id.requires = IS_IN_DB(db, db.auth_user.id)

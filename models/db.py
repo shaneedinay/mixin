@@ -104,7 +104,6 @@ auth.settings.extra_fields['auth_user']= [
   ]
 auth.define_tables(username=False, signature=False)
 
-db.auth_user.dob.requires = IS_DATE(format=T('%m/%d/%Y'))
 db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------

@@ -1,0 +1,940 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.IOError'> [Errno socket error] [Errno 61] Connection refused"
+p3
+sS'layer'
+p4
+S'/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n# -------------------------------------------------------------------------\n# This is a sample controller\n# - index is the default action of any application\n# - user is required for authentication and authorization\n# - download is for downloading files uploaded in the db (does streaming)\n# -------------------------------------------------------------------------\n\nfrom gluon.contrib.websocket_messaging import websocket_send\nfrom gluon.contrib.simplejson import loads\n\n\ndef index():\n    """\n    example action using the internationalization operator T and flash\n    rendered by views/default/index.html or views/generic.html\n\n    if you need a simple wiki simply replace the two lines below with:\n    return auth.wiki()\n    """\n    if (auth.is_logged_in()):\n        redirect(URL(\'home\'))\n    form = auth()\n    if response.title:\n        welcomemessage = "Welcome to %s" % response.title\n    else:\n        welcomemessage = "Welcome"\n    #if form.process().accepted:\n    #    redirect(URL(\'home\'))\n    return dict(message=T(welcomemessage), form=form)\n\n\ndef user():\n    # Chapter 09 Authorization\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/bulk_register\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users\n    """\n    return dict(form=auth())\n\n@auth.requires_login()\ndef home():\n    form = SQLFORM(db.chatRoom)\n    if form.process(keepvalues=True).accepted:\n       redirect(URL(\'home\'))\n\n    chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)\n    return dict(chatRooms=chatRooms, form=form)\n\n@auth.requires_login()\ndef musicroom():\n    users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)\n    friendlist = (LI(""))\n    for i in users:\n        friendlist += (LI("%s" % i.first_name))\n\n    chats = db(db.chat.room_id == request.args[0]).select(db.chat.ALL, orderby=db.chat.time_created)\n\n    return dict(message=T(\'%(first_name)s\\\'s music room\' % auth.user),                    friendlist=friendlist,chats=chats)\n\ndef new_message():\n    form = SQLFORM(db.chat)\n    chatroomId = request.vars.room_id\n    messageSent = user_name + ": " + request.vars.your_message\n    if form.accepts(request, formname=None):\n        websocket_send(\'http://127.0.0.1:8888\', messageSent, \'mykey\', \'chatroom\' + chatroomId)\n        return "$(\'#chatbox\').append(%s);" % repr(\'<div class="message">\'+messageSent+\'</div><br>\')\n    elif form.errors:\n        return TABLE(*[TR(k, v) for k, v in form.errors.items()])\n\n@auth.requires_login()\ndef settings():\n    return dict(form=auth())\n\n@auth.requires_login()\ndef about():\n    return dict()\n\n@auth.requires_login()\ndef contact():\n    return dict()\n\n@auth.requires_login()\ndef mbrain():\n    return dict()\n\n@auth.requires_login()\ndef sdinay():\n    return dict()\n\n@auth.requires_login()\ndef ryanho():\n    # not working on time_created\n    messages = db(Chat).select(orderby=~Chat.time_created)\n    return dict(messages=messages)\n\n@auth.requires_login()\ndef jli306():\n    return dict()\n\n@auth.requires_login()\ndef katakeda():\n    return dict()\n\n@auth.requires_login()\ndef cdwheele():\n    return dict()\n\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\nresponse._vars=response._caller(new_message)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__getslice__'
+p12
+S"<method-wrapper '__getslice__' of exceptions.IOError object>"
+p13
+sS'__str__'
+p14
+S"<method-wrapper '__str__' of exceptions.IOError object>"
+p15
+sS'__reduce__'
+p16
+S'<built-in method __reduce__ of exceptions.IOError object>'
+p17
+sS'__dict__'
+p18
+S'{}'
+p19
+sS'__sizeof__'
+p20
+S'<built-in method __sizeof__ of exceptions.IOError object>'
+p21
+sS'__init__'
+p22
+S"<method-wrapper '__init__' of exceptions.IOError object>"
+p23
+sS'__setattr__'
+p24
+S"<method-wrapper '__setattr__' of exceptions.IOError object>"
+p25
+sS'__reduce_ex__'
+p26
+S'<built-in method __reduce_ex__ of exceptions.IOError object>'
+p27
+sS'__new__'
+p28
+S'<built-in method __new__ of type object>'
+p29
+sS'errno'
+p30
+S"'socket error'"
+p31
+sS'__format__'
+p32
+S'<built-in method __format__ of exceptions.IOError object>'
+p33
+sS'__class__'
+p34
+S"<type 'exceptions.IOError'>"
+p35
+sS'filename'
+p36
+S'None'
+p37
+sS'__doc__'
+p38
+S"'I/O operation failed.'"
+p39
+sS'__getitem__'
+p40
+S"<method-wrapper '__getitem__' of exceptions.IOError object>"
+p41
+sS'__setstate__'
+p42
+S'<built-in method __setstate__ of exceptions.IOError object>'
+p43
+sS'__getattribute__'
+p44
+S"<method-wrapper '__getattribute__' of exceptions.IOError object>"
+p45
+sS'args'
+p46
+S"('socket error', error(61, 'Connection refused'))"
+p47
+sS'__subclasshook__'
+p48
+S'<built-in method __subclasshook__ of type object>'
+p49
+sS'__unicode__'
+p50
+S'<built-in method __unicode__ of exceptions.IOError object>'
+p51
+sS'strerror'
+p52
+S"error(61, 'Connection refused')"
+p53
+sS'__delattr__'
+p54
+S"<method-wrapper '__delattr__' of exceptions.IOError object>"
+p55
+sS'__repr__'
+p56
+S"<method-wrapper '__repr__' of exceptions.IOError object>"
+p57
+sS'__hash__'
+p58
+S"<method-wrapper '__hash__' of exceptions.IOError object>"
+p59
+ssS'evalue'
+p60
+S'[Errno socket error] [Errno 61] Connection refused'
+p61
+sS'request'
+p62
+cgluon.html
+XML_unpickle
+p63
+(S'se\x92\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-c832819b-3826-4292-b201-f0eeb4825558<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_hw1</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-45be0491-efc5-4fa2-afb0-8776dc019447<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_hw2</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-3655fb89-434f-437b-8dab-d75851ba7644<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_hw3</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-bb9a3a88-5964-4fb0-8863-c7806a59c123<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_images</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-4919890d-e913-420d-b620-2dee0328b548<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin_shanee</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-e568c017-1ad9-4345-8072-72c8dd9ed23e<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin_temp</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-43780839-63c6-45b8-a17d-74a5d7b82d25<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin_temp_2</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-f9d58361-ae4b-4b88-9d47-e21cd078db80<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_styletest</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-322906b3-a97b-4363-8258-280f6ba1999b<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_temp</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-a904a3dc-0656-440a-a38f-68e5ac57d599<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-4d41c5b5-11f2-421a-8b51-ce5941d81afb<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>26</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, br</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8,ja;q=0.6,zh-CN;q=0.4,zh;q=0.2,fr;q=0.2</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>26</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_hw2=127.0.0.1-3655fb89-434f-437b-8dab-d75851ba7644; session_id_hw1=127.0.0.1-45be0491-efc5-4fa2-afb0-8776dc019447; session_id_welcome=127.0.0.1-4d41c5b5-11f2-421a-8b51-ce5941d81afb; session_id_styletest=127.0.0.1-322906b3-a97b-4363-8258-280f6ba1999b; session_id_images=127.0.0.1-4919890d-e913-420d-b620-2dee0328b548; session_id_hw3=127.0.0.1-bb9a3a88-5964-4fb0-8863-c7806a59c123; session_id_temp=127.0.0.1-a904a3dc-0656-440a-a38f-68e5ac57d599; session_id_mixin_temp_2=127.0.0.1-f9d58361-ae4b-4b88-9d47-e21cd078db80; session_id_mixin_temp=127.0.0.1-43780839-63c6-45b8-a17d-74a5d7b82d25; session_id_admin=127.0.0.1-c832819b-3826-4292-b201-f0eeb4825558; session_id_mixin_shanee=127.0.0.1-e568c017-1ad9-4345-8072-72c8dd9ed23e; session_id_mixin=127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ORIGIN</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/mixin/musicroom/1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_X_REQUESTED_WITH</td><td style="vertical-align:top;">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/mixin/new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>56479</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>Kaitakus-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/admin/&#x27;, &#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/mixin_shanee/&#x27;, &#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10febbb90: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Kaitakus-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/Kaitaku/Documents/cs183/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_length</td><td style="vertical-align:top;">:</td><td><div>26</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_type</td><td style="vertical-align:top;">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, br</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8,ja;q=0.6,zh-CN;q=0.4,zh;q=0.2,fr;q=0.2</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_length</td><td style="vertical-align:top;">:</td><td><div>26</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_type</td><td style="vertical-align:top;">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_hw2=127.0.0.1-3655fb89-434f-437b-8dab-d75851ba7644; session_id_hw1=127.0.0.1-45be0491-efc5-4fa2-afb0-8776dc019447; session_id_welcome=127.0.0.1-4d41c5b5-11f2-421a-8b51-ce5941d81afb; session_id_styletest=127.0.0.1-322906b3-a97b-4363-8258-280f6ba1999b; session_id_images=127.0.0.1-4919890d-e913-420d-b620-2dee0328b548; session_id_hw3=127.0.0.1-bb9a3a88-5964-4fb0-8863-c7806a59c123; session_id_temp=127.0.0.1-a904a3dc-0656-440a-a38f-68e5ac57d599; session_id_mixin_temp_2=127.0.0.1-f9d58361-ae4b-4b88-9d47-e21cd078db80; session_id_mixin_temp=127.0.0.1-43780839-63c6-45b8-a17d-74a5d7b82d25; session_id_admin=127.0.0.1-c832819b-3826-4292-b201-f0eeb4825558; session_id_mixin_shanee=127.0.0.1-e568c017-1ad9-4345-8072-72c8dd9ed23e; session_id_mixin=127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_origin</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/mixin/musicroom/1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_x_requested_with</td><td style="vertical-align:top;">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>Kaitakus-MacBook-Pro.local</div></td></tr><tr><td><div>kaitakus-macbook-pro.local</div></td></tr><tr><td><div>192.168.1.102</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::bae8:56ff:fe2b:530a%en0</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/mixin/new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>56479</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/mixin/default/new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>Kaitakus-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_original_uri</td><td style="vertical-align:top;">:</td><td><div>/mixin/new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x10ef081e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x10fe631f0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x116ac2ad0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x10ef081e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x10fe631f0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x116ac2ad0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/admin/&#x27;, &#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/mixin_shanee/&#x27;, &#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10febbb90: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Kaitakus-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Users/Kaitaku/Documents/cs183/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>Kaitakus-MacBook-Pro.local</div></td></tr><tr><td><div>kaitakus-macbook-pro.local</div></td></tr><tr><td><div>192.168.1.102</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>fe80::bae8:56ff:fe2b:530a%en0</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_scheduler</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 13, 1, 3, 4, 713639)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/mixin/new_message</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 13, 8, 3, 4, 713648)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x115c57850&gt;</div></td></tr></table></div>'
+tRp64
+sS'frames'
+p65
+(lp66
+(dp67
+S'file'
+p68
+S'/Users/Kaitaku/Documents/cs183/web2py/gluon/restricted.py'
+p69
+sS'dump'
+p70
+(dp71
+S'environment'
+p72
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p73
+sS'ccode'
+p74
+S'<code object <module> at 0x116d79a30, file "/Use...lications/mixin/controllers/default.py", line 11>'
+p75
+ssS'lnum'
+p76
+I227
+sS'lines'
+p77
+(dp78
+I224
+S'            ccode = code'
+p79
+sI225
+S'        else:'
+p80
+sI226
+S'            ccode = compile2(code, layer)'
+p81
+sI227
+S'        exec ccode in environment'
+p82
+sI228
+S'    except HTTP:'
+p83
+sI229
+S'        raise'
+p84
+sI230
+S'    except RestrictedError:'
+p85
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p86
+sI222
+S'    try:'
+p87
+sI223
+S'        if isinstance(code, types.CodeType):'
+p88
+ssS'call'
+p89
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ...()\\n\\nresponse._vars=response._caller(new_message)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}, layer='/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py')"
+p90
+sS'func'
+p91
+S'restricted'
+p92
+sa(dp93
+g68
+S'/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py'
+p94
+sg70
+(dp95
+sg76
+I141
+sg77
+(dp96
+I130
+S''
+sI131
+S''
+sI132
+S'def call():'
+p97
+sI133
+S'    """'
+p98
+sI134
+S'    exposes services. for example:'
+p99
+sI135
+S'    http://..../[app]/default/call/jsonrpc'
+p100
+sI136
+S'    decorate with @services.jsonrpc the functions to expose'
+p101
+sI137
+S'    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv'
+p102
+sI138
+S'    """'
+p103
+sI139
+S'    return service()'
+p104
+ssg89
+S'()'
+p105
+sg91
+S'<module>'
+p106
+sa(dp107
+g68
+S'/Users/Kaitaku/Documents/cs183/web2py/gluon/globals.py'
+p108
+sg70
+(dp109
+S'self'
+p110
+S'undefined'
+p111
+sS'f'
+S'<function new_message>'
+p112
+ssg76
+I417
+sg77
+(dp113
+I416
+S'        self._vars = None'
+p114
+sI417
+S'        self._caller = lambda f: f()'
+p115
+sI418
+S'        self._view_environment = None'
+p116
+sI419
+S'        self._custom_commit = None'
+p117
+sI420
+S'        self._custom_rollback = None'
+p118
+sI421
+S"        self.generic_patterns = ['*']"
+p119
+sI412
+S"        self.flash = ''            # used by the default view layout"
+p120
+sI413
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p121
+sI414
+S'        self.menu = []             # used by the default view layout'
+p122
+sI415
+S'        self.files = []            # used by web2py_ajax.html'
+p123
+ssg89
+S'(f=<function new_message>)'
+p124
+sg91
+S'<lambda>'
+p125
+sa(dp126
+g68
+S'/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py'
+p127
+sg70
+(dp128
+S'global websocket_send'
+p129
+S'<function websocket_send>'
+p130
+sS'messageSent'
+p131
+S"'katakeda: why'"
+p132
+sS'chatroomId'
+p133
+S"'1'"
+p134
+ssg76
+I79
+sg77
+(dp135
+I74
+S'def new_message():'
+p136
+sI75
+S'    form = SQLFORM(db.chat)'
+p137
+sI76
+S'    chatroomId = request.vars.room_id'
+p138
+sI77
+S'    messageSent = user_name + ": " + request.vars.your_message'
+p139
+sI78
+S'    if form.accepts(request, formname=None):'
+p140
+sI79
+S"        websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId)"
+p141
+sI80
+S'        return "$(\'#chatbox\').append(%s);" % repr(\'<div class="message">\'+messageSent+\'</div><br>\')'
+p142
+sI81
+S'    elif form.errors:'
+p143
+sI82
+S'        return TABLE(*[TR(k, v) for k, v in form.errors.items()])'
+p144
+sI83
+S''
+ssg89
+S'()'
+p145
+sg91
+S'new_message'
+p146
+sa(dp147
+g68
+S'/Users/Kaitaku/Documents/cs183/web2py/gluon/contrib/websocket_messaging.py'
+p148
+sg70
+(dp149
+S'url'
+p150
+S"'http://127.0.0.1:8888'"
+p151
+sS'global urllib'
+p152
+S"<module 'urllib' from '/System/Library/Framework...framework/Versions/2.7/lib/python2.7/urllib.pyc'>"
+p153
+sS'urllib.urlopen'
+p154
+S'<function urlopen>'
+p155
+sS'params'
+p156
+S"'message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p157
+sS'f'
+g111
+ssg76
+I104
+sg77
+(dp158
+I99
+S''
+sI100
+S"def websocket_send(url, message, hmac_key=None, group='default'):"
+p159
+sI101
+S"    sig = hmac_key and hmac.new(hmac_key, message).hexdigest() or ''"
+p160
+sI102
+S'    params = urllib.urlencode('
+p161
+sI103
+S"        {'message': message, 'signature': sig, 'group': group})"
+p162
+sI104
+S'    f = urllib.urlopen(url, params)'
+p163
+sI105
+S'    data = f.read()'
+p164
+sI106
+S'    f.close()'
+p165
+sI107
+S'    return data'
+p166
+sI108
+S''
+ssg89
+S"(url='http://127.0.0.1:8888', message='katakeda: why', hmac_key='mykey', group='chatroom1')"
+p167
+sg91
+S'websocket_send'
+p168
+sa(dp169
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py'
+p170
+sg70
+(dp171
+S'url'
+p172
+S"'http://127.0.0.1:8888'"
+p173
+sS'opener'
+p174
+S'<gluon.contrib.autolinks.VimeoURLOpener instance>'
+p175
+sS'data'
+p176
+S"'message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p177
+sS'opener.open'
+p178
+S'<bound method VimeoURLOpener.open of <gluon.contrib.autolinks.VimeoURLOpener instance>>'
+p179
+ssg76
+I89
+sg77
+(dp180
+I84
+S'    else:'
+p181
+sI85
+S'        opener = _urlopener'
+p182
+sI86
+S'    if data is None:'
+p183
+sI87
+S'        return opener.open(url)'
+p184
+sI88
+S'    else:'
+p185
+sI89
+S'        return opener.open(url, data)'
+p186
+sI90
+S'def urlretrieve(url, filename=None, reporthook=None, data=None, context=None):'
+p187
+sI91
+S'    global _urlopener'
+p188
+sI92
+S'    if context is not None:'
+p189
+sI93
+S'        opener = FancyURLopener(context=context)'
+p190
+ssg89
+S"(url='http://127.0.0.1:8888', data='message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b', proxies=None, context=None)"
+p191
+sg91
+S'urlopen'
+p192
+sa(dp193
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py'
+p194
+sg70
+(dp195
+S'url'
+p196
+S"'//127.0.0.1:8888'"
+p197
+sS'data'
+p198
+S"'message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p199
+sS'self'
+p200
+S'<gluon.contrib.autolinks.VimeoURLOpener instance>'
+p201
+sS'builtingetattr'
+p202
+S'<built-in function getattr>'
+p203
+sS'name'
+p204
+S"'open_http'"
+p205
+ssg76
+I215
+sg77
+(dp206
+I210
+S'                return self.open_unknown(fullurl, data)'
+p207
+sI211
+S'        try:'
+p208
+sI212
+S'            if data is None:'
+p209
+sI213
+S'                return getattr(self, name)(url)'
+p210
+sI214
+S'            else:'
+p211
+sI215
+S'                return getattr(self, name)(url, data)'
+p212
+sI216
+S'        except socket.error, msg:'
+p213
+sI217
+S"            raise IOError, ('socket error', msg), sys.exc_info()[2]"
+p214
+sI218
+S''
+sI219
+S'    def open_unknown(self, fullurl, data=None):'
+p215
+ssg89
+S"(self=<gluon.contrib.autolinks.VimeoURLOpener instance>, fullurl='http://127.0.0.1:8888', data='message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b')"
+p216
+sg91
+S'open'
+p217
+sa(dp218
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py'
+p219
+sg70
+(dp220
+S'h'
+S'<httplib.HTTP instance>'
+p221
+sS'data'
+p222
+S"'message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p223
+sS'h.endheaders'
+p224
+S'<bound method HTTPConnection.endheaders of <httplib.HTTPConnection instance>>'
+p225
+ssg76
+I350
+sg77
+(dp226
+I352
+S'        fp = h.getfile()'
+p227
+sI353
+S'        if errcode == -1:'
+p228
+sI354
+S'            if fp: fp.close()'
+p229
+sI345
+S"            h.putrequest('GET', selector)"
+p230
+sI346
+S"        if proxy_auth: h.putheader('Proxy-Authorization', 'Basic %s' % proxy_auth)"
+p231
+sI347
+S"        if auth: h.putheader('Authorization', 'Basic %s' % auth)"
+p232
+sI348
+S"        if realhost: h.putheader('Host', realhost)"
+p233
+sI349
+S'        for args in self.addheaders: h.putheader(*args)'
+p234
+sI350
+S'        h.endheaders(data)'
+p235
+sI351
+S'        errcode, errmsg, headers = h.getreply()'
+p236
+ssg89
+S"(self=<gluon.contrib.autolinks.VimeoURLOpener instance>, url='//127.0.0.1:8888', data='message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b')"
+p237
+sg91
+S'open_http'
+p238
+sa(dp239
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py'
+p240
+sg70
+(dp241
+S'message_body'
+p242
+S"'message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p243
+sS'self'
+p244
+S'<httplib.HTTPConnection instance>'
+p245
+sS'self._send_output'
+p246
+S'<bound method HTTPConnection._send_output of <httplib.HTTPConnection instance>>'
+p247
+ssg76
+I1049
+sg77
+(dp248
+I1044
+S'        """'
+p249
+sI1045
+S'        if self.__state == _CS_REQ_STARTED:'
+p250
+sI1046
+S'            self.__state = _CS_REQ_SENT'
+p251
+sI1047
+S'        else:'
+p252
+sI1048
+S'            raise CannotSendHeader()'
+p253
+sI1049
+S'        self._send_output(message_body)'
+p254
+sI1050
+S''
+sI1051
+S'    def request(self, method, url, body=None, headers={}):'
+p255
+sI1052
+S'        """Send a complete request to the server."""'
+p256
+sI1053
+S'        self._send_request(method, url, body, headers)'
+p257
+ssg89
+S"(self=<httplib.HTTPConnection instance>, message_body='message=katakeda%3A+why&group=chatroom1&signature=9ed27ab599ea7ff391c81dab4597859b')"
+p258
+sg91
+S'endheaders'
+p259
+sa(dp260
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py'
+p261
+sg70
+(dp262
+S'msg'
+p263
+S"'POST / HTTP/1.0\\r\\nContent-Type: application/x-www...troom1&signature=9ed27ab599ea7ff391c81dab4597859b'"
+p264
+sS'self'
+p265
+S'<httplib.HTTPConnection instance>'
+p266
+sS'self.send'
+p267
+S'<bound method HTTPConnection.send of <httplib.HTTPConnection instance>>'
+p268
+ssg76
+I893
+sg77
+(dp269
+I896
+S'            #we must run the risk of Nagle'
+p270
+sI897
+S'            self.send(message_body)'
+p271
+sI888
+S'        # it will avoid performance problems caused by the interaction'
+p272
+sI889
+S'        # between delayed ack and the Nagle algorithm.'
+p273
+sI890
+S'        if isinstance(message_body, str):'
+p274
+sI891
+S'            msg += message_body'
+p275
+sI892
+S'            message_body = None'
+p276
+sI893
+S'        self.send(msg)'
+p277
+sI894
+S'        if message_body is not None:'
+p278
+sI895
+S'            #message_body was not a string (i.e. it is a file) and'
+p279
+ssg89
+S'(self=<httplib.HTTPConnection instance>, message_body=None)'
+p280
+sg91
+S'_send_output'
+p281
+sa(dp282
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py'
+p283
+sg70
+(dp284
+S'self'
+p285
+S'<httplib.HTTPConnection instance>'
+p286
+sS'self.connect'
+p287
+S'<bound method HTTPConnection.connect of <httplib.HTTPConnection instance>>'
+p288
+ssg76
+I855
+sg77
+(dp289
+I850
+S''
+sI851
+S'    def send(self, data):'
+p290
+sI852
+S'        """Send `data\' to the server."""'
+p291
+sI853
+S'        if self.sock is None:'
+p292
+sI854
+S'            if self.auto_open:'
+p293
+sI855
+S'                self.connect()'
+p294
+sI856
+S'            else:'
+p295
+sI857
+S'                raise NotConnected()'
+p296
+sI858
+S''
+sI859
+S'        if self.debuglevel > 0:'
+p297
+ssg89
+S"(self=<httplib.HTTPConnection instance>, data='POST / HTTP/1.0\\r\\nContent-Type: application/x-www...troom1&signature=9ed27ab599ea7ff391c81dab4597859b')"
+p298
+sg91
+S'send'
+p299
+sa(dp300
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py'
+p301
+sg70
+(dp302
+S'self.timeout'
+p303
+S'<object object>'
+p304
+sS'self'
+p305
+S'<httplib.HTTPConnection instance>'
+p306
+sS'self.source_address'
+p307
+S'None'
+p308
+ssg76
+I832
+sg77
+(dp309
+I832
+S'                                           self.timeout, self.source_address)'
+p310
+sI833
+S''
+sI834
+S'        if self._tunnel_host:'
+p311
+sI835
+S'            self._tunnel()'
+p312
+sI836
+S''
+sI827
+S''
+sI828
+S''
+sI829
+S'    def connect(self):'
+p313
+sI830
+S'        """Connect to the host and port specified in __init__."""'
+p314
+sI831
+S'        self.sock = self._create_connection((self.host,self.port),'
+p315
+ssg89
+S'(self=<httplib.HTTPConnection instance>)'
+p316
+sg91
+S'connect'
+p317
+sa(dp318
+g68
+S'/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py'
+p319
+sg70
+(dp320
+S'err'
+p321
+S"error(61, 'Connection refused')"
+p322
+ssg76
+I575
+sg77
+(dp323
+I576
+S'    else:'
+p324
+sI577
+S'        raise error("getaddrinfo returns an empty list")'
+p325
+sI568
+S''
+sI569
+S'        except error as _:'
+p326
+sI570
+S'            err = _'
+p327
+sI571
+S'            if sock is not None:'
+p328
+sI572
+S'                sock.close()'
+p329
+sI573
+S''
+sI574
+S'    if err is not None:'
+p330
+sI575
+S'        raise err'
+p331
+ssg89
+S"(address=('127.0.0.1', 8888), timeout=<object object>, source_address=None)"
+p332
+sg91
+S'create_connection'
+p333
+sasS'pyver'
+p334
+S'Python 2.7.10: /usr/bin/python (prefix: /System/Library/Frameworks/Python.framework/Versions/2.7)'
+p335
+sS'session'
+p336
+g63
+(S's\x8b\n\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">auth</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">expiration</td><td style="vertical-align:top;">:</td><td><div>3600</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">hmac_key</td><td style="vertical-align:top;">:</td><td><div>5b0179b2-9a60-4844-ac88-e49209f71645</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_visit</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2017, 3, 13, 1, 2, 30, 228394)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remember_me</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">dob</td><td style="vertical-align:top;">:</td><td><div>datetime.date(1994, 7, 10)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">email</td><td style="vertical-align:top;">:</td><td><div>katakeda@ucsc.edu</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">first_name</td><td style="vertical-align:top;">:</td><td><div>Kaitaku</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gender</td><td style="vertical-align:top;">:</td><td><div>Male</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">id</td><td style="vertical-align:top;">:</td><td><div>1L</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_name</td><td style="vertical-align:top;">:</td><td><div>Takeda</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_id</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">registration_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">reset_password_key</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">username</td><td style="vertical-align:top;">:</td><td><div>katakeda</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">user_groups</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">1</td><td style="vertical-align:top;">:</td><td><div>Room_1</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr></table></div>'
+tRp337
+sS'etype'
+p338
+S"<type 'exceptions.IOError'>"
+p339
+sS'date'
+p340
+S'Mon Mar 13 01:03:04 2017'
+p341
+sS'response'
+p342
+g63
+(S's\x15%\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x116a4c030&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_mixin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="navbar-brand" href="http://www.mixin.com/" id="mi-navbar-logo"><img src="/mixin/static/images/logo.png" width="65" /></a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/home</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>About</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/about</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Contact</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/contact</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Settings</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/settings/profile</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Team Members</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Maximillian Brain</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/mbrain</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Shanee Dinay</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/sdinay</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Ryan Ho</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/ryanho</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Jinlin Li</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/jli306</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Kaitaku Takeda</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/katakeda</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Cameron Wheeler</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/mixin/cdwheele</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">description</td><td style="vertical-align:top;">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>web2py</div></td></tr><tr><td><div>python</div></td></tr><tr><td><div>framework</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/new_message/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/sessions/05c/01c/127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a&#x27;, mode &#x27;rb+&#x27; at 0x116428ae0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/sessions/127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>a9fe2276dd7528ff7a780a5eb9d984c2</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-25b0b8a2-3824-43da-854f-3d6782bdb90a</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Mixin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>default/new_message.html</div></td></tr></table></div>'
+tRp343
+sS'locals'
+p344
+(dp345
+S'err'
+p346
+S"error(61, 'Connection refused')"
+p347
+sS'af'
+p348
+S'2'
+sS'canonname'
+p349
+S"''"
+p350
+sS'proto'
+p351
+S'6'
+sS'sock'
+p352
+S'<socket._socketobject object>'
+p353
+sS'host'
+p354
+S"'127.0.0.1'"
+p355
+sS'_'
+S"error(61, 'Connection refused')"
+p356
+sS'timeout'
+p357
+S'<object object>'
+p358
+sS'res'
+p359
+S"(2, 1, 6, '', ('127.0.0.1', 8888))"
+p360
+sS'socktype'
+p361
+S'1'
+sS'sa'
+p362
+S"('127.0.0.1', 8888)"
+p363
+sS'source_address'
+p364
+S'None'
+p365
+sS'port'
+p366
+S'8888'
+p367
+sS'address'
+p368
+S"('127.0.0.1', 8888)"
+p369
+sssS'traceback'
+p370
+S'Traceback (most recent call last):\n  File "/Users/Kaitaku/Documents/cs183/web2py/gluon/restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py", line 141, in <module>\n  File "/Users/Kaitaku/Documents/cs183/web2py/gluon/globals.py", line 417, in <lambda>\n    self._caller = lambda f: f()\n  File "/Users/Kaitaku/Documents/cs183/web2py/applications/mixin/controllers/default.py", line 79, in new_message\n    websocket_send(\'http://127.0.0.1:8888\', messageSent, \'mykey\', \'chatroom\' + chatroomId)\n  File "/Users/Kaitaku/Documents/cs183/web2py/gluon/contrib/websocket_messaging.py", line 104, in websocket_send\n    f = urllib.urlopen(url, params)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py", line 89, in urlopen\n    return opener.open(url, data)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py", line 215, in open\n    return getattr(self, name)(url, data)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/urllib.py", line 350, in open_http\n    h.endheaders(data)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 1049, in endheaders\n    self._send_output(message_body)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 893, in _send_output\n    self.send(msg)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 855, in send\n    self.connect()\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/httplib.py", line 832, in connect\n    self.timeout, self.source_address)\n  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 575, in create_connection\n    raise err\nIOError: [Errno socket error] [Errno 61] Connection refused\n'
+p371
+s.

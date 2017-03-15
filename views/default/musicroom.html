@@ -2,14 +2,13 @@
 <link href="{{=URL('static', 'css/chat.css')}}" rel="stylesheet" type="text/css" />
 <style media="screen">
   .message{
-    background-color: dodgerblue;
-    border-radius: 30px;
-    color: white;
-    display: inline-block;
-    margin: 5px;
-    padding: 5px;
+    margin: 10px 0;
+  }
+  .author{
+    color: dodgerblue;
   }
 </style>
+
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
     <!-- Blog Search Well -->
@@ -36,6 +35,7 @@
                 </ul>
              </div>
          </div>
+         <button id="joinButton">Join</button>
     <!-- /.row -->
     </div>
 
@@ -67,17 +67,19 @@
         <h1> Hi </h1>
         <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
           <div id="chatbox">
-            <p>
             {{for chat in chats:}}
-              <div class="message">{{=chat.author}}: {{=chat.your_message}}</div> <br>
+              <div class="message">
+                <span class="author">{{=chat.author}}</span>  {{=chat.your_message}}
+              </div>
             {{pass}}
-            </p>
           </div>
-            <form id="sendMessage">
-              <input name="your_message" id="your_message" size="63" />
-              <input name="room_id" id="room_id" type ="hidden" value="{{=request.args(0)}}" />
-              <input type="submit" Value="Send" />
-            </form>
+          <form id="sendMessage">
+            <div class="input-group">
+              <input name="your_message" id="your_message" class="form-control" placeholder="New message"  />
+              <input name="room_id" type="hidden" value="{{=request.args(0)}}" />
+              <span class="input-group-btn"><input type="submit" class="form-control" value="Send" /></span>
+            </div>
+          </form>
         </div>
     </div>
 </div>
@@ -101,21 +103,26 @@
 
 <script>
   $(document).ready(function(){
-    // if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/' + chatroomId)){
-    //   alert("html5 websocket not supported by your browser, try Google Chrome");
-    // }
-    // var callback = function(){
-    //   $('#chatbox').load('musicroom #chatbox', function() {
-    //     $('#chatbox').children('#chatbox').unwrap();
-    //     $('#chatbox').animate({ scrollTop: log.prop('scrollHeight')}, 0);
-    //   });
-    // };
-    setInterval(function(){
-      // $('#chatbox').load("{{=URL('default', 'musicroom')}} #chatbox");
-    }, 3000);
+    var chatroomId = "chatroom"+{{=request.args[0]}};
+    var timer = setInterval(function(){
+      $('#chatbox').scrollTop($('#chatbox').prop("scrollHeight"));
+      $('#chatbox').scroll(function(){
+        clearInterval(timer);
+      });
+    }, 0);
+    var callback = function(){
+      $("#chatbox").load(location.href+" #chatbox >*","");
+    };
     $('#sendMessage').submit(function(){
-      ajax("{{=URL('new_message')}}", ['your_message','room_id'], ':eval');
+      if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/'+chatroomId, callback)){
+        alert("html5 websocket not supported by your browser, try Google Chrome");
+      }
+      ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+      $('#your_message').val("");
       return false;
+    });
+    $('#joinButton').click(function(){
+      ajax("{{=URL('default', 'join_room')}}", ['room_id'], ''); 
     });
   });
 </script>

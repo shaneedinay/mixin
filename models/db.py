@@ -119,7 +119,6 @@ mail.settings.ssl = myconf.get('smtp.ssl') or False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
 #
@@ -142,7 +141,8 @@ else:
     user_name = ''
 
 ChatRoom = db.define_table('chatRoom',
-                            Field('name', requires=IS_NOT_EMPTY())
+                            Field('name', requires=IS_NOT_EMPTY()),
+                            Field('members', 'list:integer', default=[])
                             )
 
 Chat = db.define_table('chat',

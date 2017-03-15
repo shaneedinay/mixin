@@ -73,13 +73,22 @@ def musicroom():
 
 def new_message():
     form = SQLFORM(db.chat)
+    messageSent = request.vars.your_message
     chatroomId = request.vars.room_id
-    messageSent = user_name + ": " + request.vars.your_message
     if form.accepts(request, formname=None):
         websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId)
-        return "$('#chatbox').append(%s);" % repr('<div class="message">'+messageSent+'</div><br>')
+        # return "$('#chatbox').append(%s);" % repr('<div class="message">'+messageSent+'</div><br>')
+        # return "$('#chatbox').load(location.href+' #chatbox >*','');"
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
+    return ()
+
+def join_room():
+    room_id = request.vars.room_id
+    chat_room = db.chatRoom(room_id)
+    # chat_room.update_record(chat_room.members.append(room_id))
+    print(chat_room.members)
+    return ()
 
 @auth.requires_login()
 def settings():

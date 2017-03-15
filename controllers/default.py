@@ -59,6 +59,12 @@ def home():
 
 @auth.requires_login()
 def musicroom():
+
+    r_id = request.args[0]
+    check = db(db.chatRoom.id == r_id).select().first()
+    if not (check):
+        redirect(URL('home'))
+
     users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
     #friendlist = (LI("%(first_name)s" % auth.user))
     friendlist = (LI(""))
@@ -70,13 +76,8 @@ def musicroom():
         #friendlist.append(LI("%s" % i.first_name))
         friendlist += (LI("%s" % i.first_name))
     #i = i + 1
-    r_id = request.args[0]
-    chatroomName = db(db.chatRoom.id == int(r_id)).select(db.chatRoom.name)[0].name
-    chats = db(db.chat.room_id == int(r_id)).select(orderby=db.chat.time_created)
-
-    existChat = db.chatRoom[r_id]
-    if not(existChat):
-        redirect(URL('home'))
+    chatroomName = db(db.chatRoom.id == r_id).select(db.chatRoom.name)[0].name
+    chats = db(db.chat.room_id == r_id).select(orderby=db.chat.time_created)
 
     return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist,chats=chats,chatroomName=chatroomName)
     #return users
@@ -130,7 +131,16 @@ def new_message():
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
     return ()
 
-
+def addurlmes():
+    # not working
+    #db(Chat).author=auth.user.first_name
+    CR = db.chat
+    messageSent = request.vars.mi_url
+    print(request.vars.mi_url)
+    chatroomId = request.vars.room_id
+    websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId )
+    CR.insert(your_message=messageSent, room_id=chatroomId)
+    return ()
 
 
 @cache.action()

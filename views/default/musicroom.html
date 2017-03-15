@@ -69,6 +69,7 @@
             <form id="sendMessage" method ="post">
              <textarea rows="2" cols="60" name="your_message" id="your_message" placeholder="New message"> </textarea>
             <input type = "hidden" name="room_id" id="room_id" value = {{=request.args(0)}} />
+
             <input type="submit" id="Submit" Value="Send" />
             </form>
         </div>
@@ -90,6 +91,12 @@
         </div>
         <!-- /.input-group -->
     </div>
+    <div class="well">
+        <input type="text"  name="mi_url", id="mi_url", value=""/>
+        <input id="mi-submit-url" type="button" value="Play" />
+    </div>
+
+
 </div>
 
 
@@ -106,9 +113,13 @@
       if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/' + chatroomId , callback))
          alert("html5 websocket not supported by your browser, try Google Chrome");
    });
-  jQuery('#sendMessage').submit(function() {
-  ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
-  return false;
-});        
+    jQuery('#sendMessage').submit(function() {
+        ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+        return false;
+    });    
+    jQuery("#mi-submit-url").on("click", function(){
+        ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
+        return false;
+    }); 
 
 </script>

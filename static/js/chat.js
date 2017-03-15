@@ -7,8 +7,20 @@
         };
       if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/' + chatroomId , callback))
          alert("html5 websocket not supported by your browser, try Google Chrome");
+
+       /*jQuery('#sendMessage').submit(function() {
+        ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+        return false;
+      });*/
+      $("#Submit").on("click", function() {
+        ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+        return false;
+    });
    });
-  jQuery('#sendMessage').submit(function() {
-  ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
-  return false;
-}); 
+  //jQuery('#sendMessage').submit(function() {
+    /*$("#Submit").on("click", function() {
+      ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+      return false;
+    });*/
+  
+//}); 

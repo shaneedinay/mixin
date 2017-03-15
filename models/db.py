@@ -80,7 +80,11 @@ response.form_label_separator = myconf.get('forms.separator') or ''
 # (more options discussed in gluon/tools.py)
 # -------------------------------------------------------------------------
 
-from gluon.tools import Auth, Service, PluginManager
+from gluon.tools import Auth, Service, PluginManager, datetime
+
+# temporary, in order for chat to work
+now = datetime.datetime.today()
+db = DAL('sqlite://db.db')
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
@@ -134,23 +138,46 @@ auth.settings.create_user_groups="Room_%(id)s"
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
 
+if auth.user:
+    username = auth.user.username
+else:
+    username = ''
+
+ChatRoom = db.define_table('chatRoom',
+                            Field('name', requires=IS_NOT_EMPTY()),
+                            format='%(name)s'
+                            )
+
+Chat = db.define_table('chat',
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('author','string', 'reference auth_user', default=username),
+                        Field('time_created', 'datetime', default=datetime.datetime.now()),
+                        Field('room_id', 'reference chatRoom')
+                        )
+
+db.chat.time_created.writable = False
+db.chat.author.writable = False
+
+db.define_table('chatMembers',
+                Field('chat_room', 'reference chatRoom'),
+                Field('user_id', 'reference auth_user'),
+                )
+                
+db.define_table('followers',
+                Field('user_id', 'reference auth_user'),
+                Field('following_id', 'reference auth_user'),
+                )
+
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)
 
-import datetime
-
-# Alternate login, facebook, aol, google
-db.define_table('friend_table',
-                Field('user_id', 'reference auth_user'),
-                Field('friend_user_id', 'reference auth_user'),
-                Field('accepted', 'boolean', default=False),
-                )
 
 # By default user email does not appear in any forms.
 #db.friend_table.friend_user_id.requires = IS_IN_DB(db, db.auth_user.id)
 #db.friend_table.user_id.requires = IS_IN_DB(db, db.auth_user.id)
 
+# Some Functions
 def name_of(user):
     return '%(first_name)s %(last_name)s' % user

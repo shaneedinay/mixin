@@ -26,12 +26,13 @@
     </div>
 
     <!-- User List -->
+    <form><input name="new-friend" id="new-friend" type="hidden" value="{{=auth.user.first_name}}" /></form>
     <div class="well">
         <h4>Members in this Music Room</h4>
          <div class="row">
-             <div class="col-lg-6">
+             <div id="friendlist" class="col-lg-6">
                 <ul class="list-unstyled">
-                    {{=friendlist}}
+                  {{=friendlist}}
                 </ul>
              </div>
          </div>
@@ -64,7 +65,7 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1> Hi </h1>
+        <h1>{{=db.chatRoom(request.args[0]).name}}</h1>
         <div style="border:1px solid black;margin:20px;padding:10px;height:400px;">
           <div id="chatbox">
             {{for chat in chats:}}
@@ -104,12 +105,7 @@
 <script>
   $(document).ready(function(){
     var chatroomId = "chatroom"+{{=request.args[0]}};
-    var timer = setInterval(function(){
-      $('#chatbox').scrollTop($('#chatbox').prop("scrollHeight"));
-      $('#chatbox').scroll(function(){
-        clearInterval(timer);
-      });
-    }, 0);
+    $('#chatbox').scrollTop($('#chatbox').prop("scrollHeight"));
     var callback = function(){
       $("#chatbox").load(location.href+" #chatbox >*","");
     };
@@ -122,7 +118,7 @@
       return false;
     });
     $('#joinButton').click(function(){
-      ajax("{{=URL('default', 'join_room')}}", ['room_id'], ''); 
+      ajax("{{=URL('default', 'join_room')}}", ['room_id'], '');
     });
   });
 </script>

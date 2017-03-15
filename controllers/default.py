@@ -57,7 +57,7 @@ def home():
     if form.process(keepvalues=True).accepted:
        redirect(URL('home'))
 
-    chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)
+    chatRooms = db(auth.user.id in db.chatRoom.members).select(db.chatRoom.ALL, orderby=db.chatRoom.id)
     return dict(chatRooms=chatRooms, form=form)
 
 @auth.requires_login()
@@ -65,7 +65,8 @@ def musicroom():
     users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
     friendlist = (LI(""))
     for i in users:
-        friendlist += (LI("%s" % i.first_name))
+        if i.id in db.chatRoom(request.args[0]).members:
+            friendlist += (LI("%s" % i.first_name))
 
     chats = db(db.chat.room_id == request.args[0]).select(db.chat.ALL, orderby=db.chat.time_created)
 
@@ -77,18 +78,22 @@ def new_message():
     chatroomId = request.vars.room_id
     if form.accepts(request, formname=None):
         websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId)
-        # return "$('#chatbox').append(%s);" % repr('<div class="message">'+messageSent+'</div><br>')
-        # return "$('#chatbox').load(location.href+' #chatbox >*','');"
-    elif form.errors:
+        return ()
+    else:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-    return ()
 
 def join_room():
     room_id = request.vars.room_id
     chat_room = db.chatRoom(room_id)
-    # chat_room.update_record(chat_room.members.append(room_id))
-    print(chat_room.members)
-    return ()
+    members_list = chat_room.members
+    if auth.user.id in members_list:
+        response.flash = "You are already subscribed"
+        return ()
+    else:
+        members_list.append(auth.user.id)
+        chat_room.update_record(members = list(set(members_list)))
+        response.flash = "Welcome to %s" % str(chat_room.name)
+        return ()
 
 @auth.requires_login()
 def settings():

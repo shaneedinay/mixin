@@ -137,12 +137,14 @@ auth.settings.reset_password_requires_verification = True
 # -------------------------------------------------------------------------
 if auth.user:
     user_name = auth.user.username
+    newList = [auth.user.id]
 else:
     user_name = ''
+    newList = []
 
 ChatRoom = db.define_table('chatRoom',
                             Field('name', requires=IS_NOT_EMPTY()),
-                            Field('members', 'list:integer', default=[])
+                            Field('members', 'list:integer', default=newList)
                             )
 
 Chat = db.define_table('chat',
@@ -154,6 +156,7 @@ Chat = db.define_table('chat',
 
 db.chat.time_created.writable = False
 db.chat.author.writable = False
+db.chatRoom.members.writable = db.chatRoom.members.readable = False
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------

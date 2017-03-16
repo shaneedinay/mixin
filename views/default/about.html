@@ -1,3 +1,25 @@
 {{extend 'layout.html'}}
-<h1>This is the About page</h1>
-{{=BEAUTIFY(response._vars)}}
+<!-- Blog Sidebar Widgets Column -->
+<div class="col-md-3 col-sm-3">
+    <div class="well mi-settings">
+      <a href={{=URL('settings/profile')}}>
+        <span class="glyphicon glyphicon-user"></span>
+        Profile Settings
+      </a>
+      <a href={{=URL('contact')}}>
+        <span class="glyphicon glyphicon-envelope"></span>
+        Contact Us
+      </a>
+    </div>
+</div>
+
+<!-- Main Music Playlist Widget -->
+<div class="col-md-9 col-sm-9">
+    <div class="well">
+      <h2>Founding Mixin</h2>
+      Mixin was founded as a group project for an undergraduate course at
+      the University of California, Santa Cruz in 2017. The web application
+      will be used as the final project for CMPS 183 and is run using web2py
+      and tornado websockets.
+    </div>
+</div>

@@ -1,35 +1,31 @@
-{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
 {{extend 'layout.html'}}
 
-{{if 'message' in globals():}}
-<h2>{{=message}}</h2>
-<p class="lead">{{=T('Connect to the world through music! Share music with your friends through a live playlists or join an ongoing playlist with thousands of users across the word.')}}</p>
-{{elif 'content' in globals():}}
-{{=content}}
-{{else:}}
-{{=BEAUTIFY(response._vars)}}
-{{pass}}
-
-{{block right_sidebar}}
-<div class="panel panel-info">
-  <div class="panel-heading">
-      <h3 class="panel-title">
-        <i class="glyphicon glyphicon-cog"></i>
-        {{=T("Signup")}}
-      </h3>
+<div class="row mi-index-row">
+  <div class="col-lg-8 col-md-8 mi-index-description">
+    <h2>{{=message}}</h2>
+    <p class="lead">{{=T('Connect to the world through music! Share music with your friends through a live playlists or join an ongoing playlist with thousands of users across the word.')}}</p>
   </div>
-  <div class="panel-body mi-small-auth-form">
-      {{
-      if request.args(0)=='login':
-            if not 'register' in auth.settings.actions_disabled:
-                form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default btn-xs')
+  <div class="col-lg-4 col-md-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+          <h3 class="panel-title">
+            <i class="glyphicon glyphicon-off"></i>
+            {{=T("Login")}}
+          </h3>
+      </div>
+      <div class="panel-body mi-small-auth-form">
+          {{
+          if request.args(0)=='login':
+                if not 'register' in auth.settings.actions_disabled:
+                    form.add_button(T('Sign Up'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn btn-default btn-xs')
+                pass
+                if not 'request_reset_password' in auth.settings.actions_disabled:
+                    form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default btn-xs')
+                pass
             pass
-            if not 'request_reset_password' in auth.settings.actions_disabled:
-                form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn btn-default btn-xs')
-            pass
-        pass
-      =form
-      }}
+          =form
+          }}
+      </div>
+    </div>
   </div>
 </div>
-{{end}}

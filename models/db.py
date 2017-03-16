@@ -85,10 +85,6 @@ from gluon.tools import Auth, Service, PluginManager, datetime
 # temporary, in order for chat to work
 now = datetime.datetime.today()
 db = DAL('sqlite://db.db')
-Chat = db.define_table('chat', Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
-                               Field('author','text'),
-                               Field('time_created', 'time', default=now)
-                      )
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
@@ -102,7 +98,7 @@ auth.settings.extra_fields['auth_user']= [
   Field('dob', 'date', label='Date of Birth'),
   Field('gender')
   ]
-auth.define_tables(username=False, signature=False)
+auth.define_tables(username=True, signature=False)
 
 db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
@@ -139,10 +135,48 @@ auth.settings.create_user_groups="Room_%(id)s"
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
+if auth.user:
+    username = auth.user.username
+else:
+    username = ''
+
+ChatRoom = db.define_table('chatRoom',
+                            Field('name', requires=IS_NOT_EMPTY())
+                            )
+
+Chat = db.define_table('chat',
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('author','string', 'reference auth_user', default=username),
+                        Field('time_created', 'datetime', default=datetime.datetime.now()),
+                        Field('room_id', 'reference chatRoom')
+                        )
+
+db.chat.time_created.writable = False
+db.chat.author.writable = False
+
+db.define_table('chatMembers',
+                Field('chat_room', 'reference chatRoom'),
+                Field('user_id', 'reference auth_user'),
+                )
+                
+db.define_table('followers',
+                Field('user_id', 'reference auth_user'),
+                Field('following_id', 'reference auth_user'),
+                )
+
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)
 
-# Alternate login, facebook, aol, google
+'''
+from gluon.contrib.login_methods.rpx_account import RPXAccount
+auth.settings.actions_disabled=['register','change_password','request_reset_password']
+auth.settings.login_form = RPXAccount(request,
+    api_key='8e3f8d76ae6a0387455af8f2e8bb9e34cab8aaf9',
+    domain='mixin',
+    url = "http://your-external-address/%s/default/user/login" % request.application)
+'''
+def name_of(user):
+    return '%(first_name)s %(last_name)s' % user

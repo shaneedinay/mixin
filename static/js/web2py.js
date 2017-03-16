@@ -477,15 +477,15 @@
             if (!myfield.hasClass('entropy_check')) myfield.on('keyup', validator).on('keydown', validator)
                 .addClass('entropy_check');
         },
-        web2py_websocket: function (url, onmessage, onopen, onclose) {
-            if ('WebSocket' in window) {
-                var ws = new WebSocket(url);
-                ws.onopen = onopen ? onopen : (function () {});
-                ws.onmessage = onmessage;
-                ws.onclose = onclose ? onclose : (function () {});
-                return true; /* supported */
-            } else return false; /* not supported */
-        },
+        // web2py_websocket: function (url, onmessage, onopen, onclose) {
+        //     if ('WebSocket' in window) {
+        //         var ws = new WebSocket(url);
+        //         ws.onopen = onopen ? onopen : (function () {});
+        //         ws.onmessage = onmessage;
+        //         ws.onclose = onclose ? onclose : (function () {});
+        //         return true; /* supported */
+        //     } else return false; /* not supported */
+        // },
         /* new from here */
         /* Form input elements bound by web2py.js */
         formInputClickSelector: 'input[type=submit], input[type=image], button[type=submit], button:not([type])',

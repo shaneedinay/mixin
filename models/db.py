@@ -149,6 +149,12 @@ db.chatRoom.up_votes.readable = False;
 db.chatRoom.down_votes.readable = False;
 db.chatRoom.up_votes.writable = False;
 db.chatRoom.down_votes.writable = False;
+
+db.define_table('chatMembers',
+                Field('chat_room', 'reference chatRoom'),
+                Field('user_id', 'reference auth_user'),
+                )
+
 Chat = db.define_table('chat',
                         Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=False),
                         Field('author','string', 'reference auth_user', default=username),
@@ -159,11 +165,6 @@ Chat = db.define_table('chat',
 db.chat.time_created.writable = False
 db.chat.author.writable = False
 
-db.define_table('chatMembers',
-                Field('chat_room', 'reference chatRoom'),
-                Field('user_id', 'reference auth_user'),
-                )
-                
 db.define_table('followers',
                 Field('user_id', 'reference auth_user'),
                 Field('following_id', 'reference auth_user'),

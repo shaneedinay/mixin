@@ -1,23 +1,12 @@
+# Mixin Default Controller
+# Version 1.0.0
+# March 17, 2017
 # -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
 
-# -------------------------------------------------------------------------
-# This is a sample controller
-# - index is the default action of any application
-# - user is required for authentication and authorization
-# - download is for downloading files uploaded in the db (does streaming)
-# -------------------------------------------------------------------------
-
-# from gluon.contrib.websocket_messaging import websocket_send
+# TORNADO SSD
+from gluon.contrib.websocket_messaging import websocket_send
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
     if (auth.is_logged_in()):
         redirect(URL('home'))
     form = auth()
@@ -25,10 +14,7 @@ def index():
         welcomemessage = "Welcome to %s" % response.title
     else:
         welcomemessage = "Welcome"
-    #if form.process().accepted:
-    #    redirect(URL('home'))
     return dict(message=T(welcomemessage), form=form)
-
 
 def user():
     return dict(form=auth())
@@ -58,32 +44,25 @@ def home():
         people = db(query).select(orderby=alphabetical)
     else:
         people = []
-
+    # Chatroom form
     chatform = SQLFORM(db.chatRoom)
     if chatform.process(keepvalues=True).accepted:
        redirect(URL('home'))
     chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)
+    # Add Member to Chatroom
     return dict(followerlist=followerlist, form=form, people=people, author=author, chatRooms=chatRooms, chatform=chatform, currentfollow=currentfollow)
 
 @auth.requires_login()
 def musicroom():
-
     r_id = request.args[0]
     check = db(db.chatRoom.id == r_id).select().first()
     if not (check):
         redirect(URL('home'))
 
     users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
-    #friendlist = (LI("%(first_name)s" % auth.user))
     friendlist = (LI(""))
-    #friendlist = (LI("%s" % users[0].first_name))
-    #friendlist = (LI("Start:"))
-    #images[0].title
-    #i = 0
     for i in users:
-        #friendlist.append(LI("%s" % i.first_name))
         friendlist += (LI("%s" % i.first_name))
-    #i = i + 1
     chatroomName = db(db.chatRoom.id == r_id).select(db.chatRoom.name)[0].name
     chats = db(db.chat.room_id == r_id).select(orderby=db.chat.time_created)
     chatRoomUp = db(db.chatRoom.id == r_id).select(db.chatRoom.up_votes)[0].up_votes
@@ -103,31 +82,7 @@ def about():
 def contact():
     return dict()
 
-@auth.requires_login()
-def mbrain():
-    return dict()
-
-@auth.requires_login()
-def sdinay():
-    return dict()
-
-@auth.requires_login()
-def ryanho():
-    return dict()
-
-@auth.requires_login()
-def jli306():
-    return dict()
-
-@auth.requires_login()
-def katakeda():
-    return dict()
-
-@auth.requires_login()
-def cdwheele():
-    return dict()
-
-# this is the Ajax callback
+# This is the Ajax callback to follow and unfollow users
 @auth.requires_login()
 def friendship():
     """AJAX callback!"""
@@ -135,19 +90,11 @@ def friendship():
     FT = db.followers
     if request.env.request_method!='POST': raise HTTP(400)
     if a0=='request' and not FT(user_id=a1, following_id=me):
-        # insert a new friendship request
+        # insert a new follow
         if not db(FT.user_id==me)(FT.following_id==request.args(1)).count():
             FT.insert(user_id=me, following_id=a1)
-    #elif a0=='accept':
-        # accept an existing friendship request
-    #    db(FT.friend_user_id==me)(FT.user_id==request.args(0)).update(accepted=True)
-    #    if not db(FT.user_id==me)(FT.friend_user_id==request.args(1)).count():
-    #        FT.insert(user_id=me,friend_user_id=a1)
-    #elif a0=='deny':
-        # deny an existing friendship request
-    #    db(FT.friend_user_id==me)(FT.user_id==a1).delete()
     elif a0=='delete':
-        # delete a previous friendship request
+        # delete a  follow
         db(FT.user_id==me)(FT.following_id==a1).delete()
 
     # Update Friends Lists
@@ -158,7 +105,6 @@ def friendship():
        if i.user_id == author:
            following = i.following_id
            followerlist += (DIV(BUTTON('', _id=following, _class='btn btn-sm btn-default glyphicon glyphicon-plus mi-add-to-mr'), name_of(following)))
-
     return str(followerlist)
 
 def new_message():
@@ -169,7 +115,8 @@ def new_message():
     chatroomId = request.vars.room_id
     websocketURL = request.vars.wsURL
     print (websocketURL)
-    # default  websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
+    # TORNADO SSD
+    default  websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
     if form.accepts(request, formname=None):
          websocket_send('http://' + websocketURL +':8888', messageSent, 'mykey', 'chatroom' + chatroomId )
     elif form.errors:
@@ -181,7 +128,6 @@ def voteup():
     new_votes = post.up_votes + 1
     post.update_record(up_votes=new_votes)
     return str(new_votes)
-
 
 def votedown():
     post = db.chatRoom[(request.vars.room_id)]
@@ -196,25 +142,14 @@ def addurlmes():
     messageSent = request.vars.mi_url
     print(request.vars.mi_url)
     chatroomId = request.vars.room_id
+    # TORNADO SSD
     websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId )
     CR.insert(your_message=messageSent, room_id=chatroomId)
     return ()
 
-
 @cache.action()
 def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
     return response.download(request, db)
 
-
 def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
     return service()

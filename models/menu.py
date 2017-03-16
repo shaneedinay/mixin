@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.logo = A(IMG(_src="/mixin/static/images/logo.png", _width="65"),
-                  _class="navbar-brand", _id="mi-navbar-logo", _href="http://www.mixin.com/")
+                  _class="navbar-brand", _id="mi-navbar-logo", _href="#")
 response.title = request.application.replace('_', ' ').title()
 response.subtitle = ''
 
@@ -51,19 +51,6 @@ def _():
         (T('About'), False, URL(app, 'default', 'about')),
         (T('Contact'), False, URL(app, 'default', 'contact')),
         (T('Settings'), False, URL(app, 'default', 'settings/profile')),
-        (T('Team Members'), False, '#', [
-            (T('Maximillian Brain'), False, URL(app, 'default', 'mbrain')),
-            LI(_class="divider"),
-            (T('Shanee Dinay'), False, URL(app, 'default', 'sdinay')),
-            LI(_class="divider"),
-            (T('Ryan Ho'), False, URL(app, 'default', 'ryanho')),
-            LI(_class="divider"),
-            (T('Jinlin Li'), False, URL(app, 'default', 'jli306')),
-            LI(_class="divider"),
-            (T('Kaitaku Takeda'), False, URL(app, 'default', 'katakeda')),
-            LI(_class="divider"),
-            (T('Cameron Wheeler'), False, URL(app, 'default', 'cdwheele')),
-        ]),
     ]
 
 

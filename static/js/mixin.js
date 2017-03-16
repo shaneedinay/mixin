@@ -85,7 +85,7 @@ $(document).ready( function () {
           return '<div class="mi-search-results-song row">'
                  + '<div class="mi-search-results-left">'
               //   + '<a target="_blank" href="' + tracks[j].permalink_url + '">'
-                 + '<button id="addSC'+ j +'" title="'+ tracks[j].permalink_url +'" type="button" class="btn btn-sm btn-default mi-search-results-add">'
+                 + '<button onclick="miSoundCloudAdd(addSC' + j + ')" id="addSC'+ j +'" title="'+ tracks[j].permalink_url +'" type="button" class="btn btn-sm btn-default mi-search-results-add">'
                  + '<span class="glyphicon glyphicon-plus"></span></button></div>'
                  + '<div class="mi-search-results-info">'
                  + '<p class="mi-search-results-title">' + tracks[j].title + '</p>'
@@ -93,31 +93,9 @@ $(document).ready( function () {
                  + '</div></div></div>';
         });
 
-
-
         $("#mi-search-results-player").append( $(resultDiv) );
       }
-    $('#addSC0,#addSC1,#addSC2,#addSC3,#addSC4,#addSC5,#addSC6,#addSC7,#addSC8,#addSC9').on("click", function(){
-      var urlSC = $(this).attr("title");
-      SC.initialize({
-                client_id: "M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW"
-            });
-            SC.oEmbed(urlSC, {
-                auto_play: false,
-                // maxwidth: 100%,
-                // maxheight: 100,
-            }).then(function (oEmbed) {
-                oEmbed.height = 100;
-                var newIframe = (oEmbed.html).replace('height="400"', 'height="100"');
-                console.log("Embeded: ", oEmbed);
-                $("#mi_url").val(newIframe);
-                ajax(dfadd_url, ['mi_url','room_id'], '');
-                $("#mi_url").val("");
-            });
-
-        });
     });
-
   }
   /* End of Soundcloud API usage */
 
@@ -164,10 +142,12 @@ $(document).ready( function () {
       $.each(srchItems, function(index, item)  {
       idx = idx + 1;
 
-      var link = '<a target="_blank" href="'+item.id.videoId+'"><button class="btn btn-sm btn-default mi-serach-results-add" type="button"> <span class="glyphicon glyphicon-plus"></span></button></a>';
+      // var link = '<a target="_blank" href="'+item.id.videoId+'"><button class="btn btn-sm btn-default mi-serach-results-add" type="button"> <span class="glyphicon glyphicon-plus"></span></button></a>';
+      // var info = '<p class="mi-search-results-title">' + item.snippet.title + '</p><p class="mi-search-results-author">' + item.snippet.channelTitle + '</p>';
+      // var html = '<div id="result'+idx+'"class="mi-search-results-song row"><div class="mi-search-results-song row"><div class="mi-search-results-left">'+link+'</div><div class="mi-search-results-info">'+info+'</div></div></div>';
 
+      var link = '<a target="_blank"><button class="btn btn-sm btn-default mi-serach-results-add" type="button"'+ "onclick='myYoutubeAdd(\""+item.id.videoId+"\")'>" +'<span class="glyphicon glyphicon-plus"></span></button></a>';
       var info = '<p class="mi-search-results-title">' + item.snippet.title + '</p><p class="mi-search-results-author">' + item.snippet.channelTitle + '</p>';
-
       var html = '<div id="result'+idx+'"class="mi-search-results-song row"><div class="mi-search-results-song row"><div class="mi-search-results-left">'+link+'</div><div class="mi-search-results-info">'+info+'</div></div></div>';
 
       $('#mi-search-results-player').append(html);

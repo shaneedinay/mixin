@@ -34,7 +34,7 @@
         float: right;
         position:relative;
  }
- #box{
+ #messageBox{
   margin: 0px;
   padding: 10px;
   background:#white;
@@ -46,7 +46,7 @@
 
 #outerBox{
     border:1px solid black;
-    margin:20px;
+    margin:20px 0 20px 0;
     padding:10px;
     height:400px;
     background-color: rgb(180, 180, 180);

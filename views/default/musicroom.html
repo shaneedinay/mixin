@@ -1,5 +1,4 @@
 {{extend 'layout.html'}}
-<link href="{{=URL('static', 'css/chat.css')}}" rel="stylesheet" type="text/css" />
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
     <!-- Blog Search Well -->
@@ -18,11 +17,10 @@
 
     <!-- User List -->
     <div class="well">
-        <h4>Members in this Music Room</h4>
+        <h4>Friends List</h4>
          <div class="row">
              <div class="col-lg-6">
                 <ul class="list-unstyled">
-                    {{=friendlist}}
                 </ul>
              </div>
          </div>
@@ -54,16 +52,20 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-        <h1 id="center" > {{=chatroomName}} </h1>
+        <div id="mi-music-room-info">
+            <img class="img-responsive" src="" width="100" height="100">
+            <h1 id="center" > {{=chatroomName}} </h1>
+        </div>
         <div id = "outerBox" >
             <div id="chatbox">
             <p>
             {{for chat in chats:}}
-              <div id = "box">
+              <div id = "messageBox">
                <span id="text" ><b> {{=chat.author}}: </b> {{=chat.your_message}} </span>
                <br>{{=chat.time_created}}
                </div>
             {{pass}}
+            <div id="last"> </div>
             </div>
             </p>
             <form id="sendMessage" method ="post">
@@ -71,33 +73,35 @@
             <input type = "hidden" name="room_id" id="room_id" value = {{=request.args(0)}} />
 
             <input type="submit" id="Submit" Value="Send" />
-            </form>
+            </form> 
         </div>
     </div>
 </div>
+
 
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
-    <!-- Blog Search Well -->
-    <div class="well">
-        <h4>Search for your Music</h4>
-        <div class="input-group">
-            <input type="text" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
-        <!-- /.input-group -->
-    </div>
-    <div class="well">
+  <!-- Blog Search Well -->
+  <div class="well">
+      <h4>Search for your Music</h4>
+      <div class="input-group">
+          <input id="mi-search-music-input" type="text" class="form-control">
+          <span id="mi-search-soundcloud-api" class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                  <span class="glyphicon glyphicon-search"></span>
+              </button>
+          </span>
+      </div>
+      <!-- /.input-group -->
+          <div class="well">
         <input type="text"  name="mi_url", id="mi_url", value=""/>
         <input id="mi-submit-url" type="button" value="Play" />
+        <input type="hidden" id ="mi-hidden-thisurl" value=""/>
     </div>
+  </div>
 
+  <div id="mi-search-results" class="well"></div>
 
-</div>
 
 
 
@@ -106,7 +110,7 @@
        $(document).ready(function(){
         var chatroomId = "chatroom" + {{=request.args[0]}}
         var log = $('#chatbox');
-        log.animate({ scrollTop: log.prop('scrollHeight')}, 1000);
+        log.animate({ scrollTop: log.prop('scrollHeight')}, 0);
         var callback=function(e){
             $("#chatbox").load(location.href+" #chatbox >*","");
         };
@@ -118,6 +122,13 @@
         return false;
     });    
     jQuery("#mi-submit-url").on("click", function(){
+        ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
+        return false;
+    }); 
+    jQuery(".mi-search-results-add").on("click", function(){
+        var thisurl = $(this).attr("href");
+        console.log(thisurl);
+        $("#mi-hidden-thisurl").val(thisurl);
         ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
         return false;
     }); 

@@ -31,31 +31,39 @@ def index():
 
 
 def user():
-    # Chapter 09 Authorization
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/bulk_register
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
-    """
     return dict(form=auth())
 
 @auth.requires_login()
 def home():
-    form = SQLFORM(db.chatRoom)
-    if form.process(keepvalues=True).accepted:
+    author = auth.user.id
+    authorfn = auth.user.first_name
+    authorln = auth.user.last_name
+    currentfollow = db().select(db.followers.ALL, orderby=db.followers.id)
+
+    # Friends Lists
+    followerlist = (DIV(""))
+    for i in currentfollow:
+       if i.user_id == author:
+           following = i.following_id
+           followerlist += (DIV(BUTTON('', _id=following, _class='btn btn-sm btn-default glyphicon glyphicon-plus mi-add-to-mr'), name_of(following)))
+    #Form Search friendlist
+    User = db.auth_user
+    alphabetical = db.auth_user.first_name|db.auth_user.last_name
+    form = SQLFORM.factory(Field('name',requires=IS_NOT_EMPTY()))
+    if form.accepts(request):
+        tokens = form.vars.name.split()
+        query = reduce(lambda a,b:a&b,
+                       [User.first_name.contains(k)|User.last_name.contains(k) \
+                            for k in tokens])
+        people = db(query).select(orderby=alphabetical)
+    else:
+        people = []
+
+    chatform = SQLFORM(db.chatRoom)
+    if chatform.process(keepvalues=True).accepted:
        redirect(URL('home'))
     chatRooms = db().select(db.chatRoom.ALL, orderby=db.chatRoom.id)
-    return dict(chatRooms=chatRooms, form=form)
+    return dict(followerlist=followerlist, form=form, people=people, author=author, chatRooms=chatRooms, chatform=chatform, currentfollow=currentfollow)
 
 @auth.requires_login()
 def musicroom():
@@ -117,6 +125,40 @@ def katakeda():
 @auth.requires_login()
 def cdwheele():
     return dict()
+
+# this is the Ajax callback
+@auth.requires_login()
+def friendship():
+    """AJAX callback!"""
+    me, a0, a1 = auth.user_id, request.args(0), request.args(1)
+    FT = db.followers
+    if request.env.request_method!='POST': raise HTTP(400)
+    if a0=='request' and not FT(user_id=a1, following_id=me):
+        # insert a new friendship request
+        if not db(FT.user_id==me)(FT.following_id==request.args(1)).count():
+            FT.insert(user_id=me, following_id=a1)
+    #elif a0=='accept':
+        # accept an existing friendship request
+    #    db(FT.friend_user_id==me)(FT.user_id==request.args(0)).update(accepted=True)
+    #    if not db(FT.user_id==me)(FT.friend_user_id==request.args(1)).count():
+    #        FT.insert(user_id=me,friend_user_id=a1)
+    #elif a0=='deny':
+        # deny an existing friendship request
+    #    db(FT.friend_user_id==me)(FT.user_id==a1).delete()
+    elif a0=='delete':
+        # delete a previous friendship request
+        db(FT.user_id==me)(FT.following_id==a1).delete()
+
+    # Update Friends Lists
+    author = auth.user.id;
+    currentfollow = db().select(db.followers.ALL, orderby=db.followers.id)
+    followerlist = (DIV(""))
+    for i in currentfollow:
+       if i.user_id == author:
+           following = i.following_id
+           followerlist += (DIV(BUTTON('', _id=following, _class='btn btn-sm btn-default glyphicon glyphicon-plus mi-add-to-mr'), name_of(following)))
+
+    return str(followerlist)
 
 def new_message():
     form = SQLFORM(Chat)

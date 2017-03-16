@@ -100,7 +100,6 @@ auth.settings.extra_fields['auth_user']= [
   ]
 auth.define_tables(username=True, signature=False)
 
-db.auth_user.dob.requires = IS_DATE(format=T('%m/%d/%Y'))
 db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------
@@ -155,6 +154,16 @@ Chat = db.define_table('chat',
 db.chat.time_created.writable = False
 db.chat.author.writable = False
 
+db.define_table('chatMembers',
+                Field('chat_room', 'reference chatRoom'),
+                Field('user_id', 'reference auth_user'),
+                )
+                
+db.define_table('followers',
+                Field('user_id', 'reference auth_user'),
+                Field('following_id', 'reference auth_user'),
+                )
+
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
@@ -169,3 +178,5 @@ auth.settings.login_form = RPXAccount(request,
     domain='mixin',
     url = "http://your-external-address/%s/default/user/login" % request.application)
 '''
+def name_of(user):
+    return '%(first_name)s %(last_name)s' % user

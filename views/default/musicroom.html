@@ -1,4 +1,12 @@
 {{extend 'layout.html'}}
+<script type="text/javascript">
+    var dfadd_link ="{{=URL('default', 'addurlmes')}}";
+</script>
+<script type="text/javascript">
+        SC.initialize({ // this will initialize the client id needed for access to the SC api
+        client_id: "M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW"
+    });
+</script>
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
     <!-- Blog Search Well -->
@@ -27,23 +35,6 @@
     <!-- /.row -->
     </div>
 
-    <!-- Music Player Test, development use only
-    <div id="mi-search-results" class="well">
-      <div class="mi-search-results-song row" style="background-color:#b5b6b4;width:100%;margin:0;">
-        <div style="width:20%;float:left">
-          <a target='_blank' href='#'>
-            <button type='button' class='btn btn-sm btn-default mi-serach-results-add' style="background-color:#ffffff;color:#b5b6b4;margin:5px;padding:3px 8px;display:inline;">
-              <span class='glyphicon glyphicon-plus'></span>
-            </button>
-          </a>
-        </div>
-        <div class="mi-search-results-info" style="width:80%;overflow:hidden;font-size:12px;margin-top:3px;">
-          <p style="display:inline">tracks[j].title</p><br>
-          <p style="display:inline">tracks[j].user.username</p>
-        </div>
-      </div>
-    </div>-->
-
     <!-- Music Room Voting Widget Well -->
     <div class="well">
         <h4>Vote for this Music Room</h4>
@@ -53,13 +44,13 @@
                     <button id="mi-music-room-like" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
-                    <span id="mi-music-room-like-count">0</span>
+                    <span id="mi-music-room-like-count">{{=chatRoomUp}}</span>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <button id="mi-music-room-dislike" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
-                    <span id="mi-music-room-dislike-count">0</span>
+                    <span id="mi-music-room-dislike-count">{{=chatRoomDown}}</span>
                 </div>
             </div>
         </div>
@@ -69,31 +60,143 @@
 <!-- Main Music Playlist Widget -->
 <div class="col-md-6">
     <div class="well">
-      <div id="mi-music-room-info">
-        <img class="img-responsive" src="" width="100" height="100">
-        <h1>{{=roomname}}</h1>
-      </div>
-      <div id="mi-music-room-chat-room-box">
-      </div>
+        <div id="mi-music-room-info">
+            <img class="img-responsive" src="" width="100" height="100">
+            <h1 id="center"> {{=chatroomName}} </h1>
+        </div>
+        <div id="outerBox">
+            <div id="chatbox">
+                {{for chat in chats:}}
+                    <div id="messageBox" class="mi-message-box">
+                        <span id="text">
+                            <b> {{=chat.author}}: </b>
+                           {{=XML(chat.your_message)}}
+                        </span>
+                        <br>
+                        {{=chat.time_created}}
+                    </div>
+                {{pass}}
+                <div id="last"> </div>
+            </div>
+            <!-- </p> -->
+            <form id="sendMessage" method ="post">
+                <textarea rows="2" cols="60" name="your_message" id="your_message" placeholder="New message"> </textarea>
+                <input type = "hidden" name="room_id" id="room_id" value={{=request.args(0)}} />
+                <input type="submit" id="Submit" Value="Send" />
+            </form>
+        </div>
     </div>
 </div>
+
 
 <!-- Blog Sidebar Widgets Column -->
 <div class="col-md-3">
   <!-- Blog Search Well -->
   <div class="well">
-      <h4>Search for your Music</h4>
+    <h4>Search for your Music</h4>
+    <div class="input-group">
+      <input id="mi-search-music-input" type="text" class="form-control">
+      <span id="mi-search-soundcloud-api" class="input-group-btn">
+        <button class="btn btn-soundcloud" type="button">
+          <span class="glyphicon glyphicon-cloud"></span>
+        </button>
+      </span>
+      <span id="mi-search-youtube-api" class="input-group-btn">
+        <button class="btn btn-youtube" type="button">
+          <span class="glyphicon glyphicon-search"></span>
+        </button>
+      </span>
+      <div id ="abc" > </div>
+
+    </div>
+    <!-- /.input-group -->
+
+    <div class="well">
+      <h4>Click or Drag SC URL</h4>
       <div class="input-group">
-          <input id="mi-search-music-input" type="text" class="form-control">
-          <span id="mi-search-soundcloud-api" class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                  <span class="glyphicon glyphicon-search"></span>
-              </button>
-          </span>
+        <input id="mi_url" type="text" class="form-control" name="mi_url"/>
+        <span id="mi-search-soundcloud-url" class="input-group-btn">
+          <button id="mi-submit-url" class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
       </div>
-      <!-- /.input-group -->
+      <!-- <input id="mi-submit-url" type="button" value="Play" /> -->
+      <!-- <input type="input" name="mi-hidden-thisurl" id ="mi-hidden-thisurl" value=""/> -->
+    </div>
   </div>
 
   <div id="mi-search-results" class="well"></div>
 
+  <!-- placeholder to store value of websocket URL -->
+  <input type="hidden" name="wsURL" id = "wsURL" value=""/>
 </div>
+
+
+<script>
+$(document).ready(function(){
+  // get current chatroomId
+  var chatroomId = "chatroom" + {{=request.args[0]}};
+  var websocketURL = location.hostname;
+  $("#wsURL").val(websocketURL);
+    // auto scroll to bottom of chat
+    var log = $('#chatbox');
+    log.animate({
+      scrollTop: log.prop('scrollHeight')
+    }, 0);
+    // whenever a new message is received refresh chat div
+    var callback = function(e) {
+      $("#chatbox").load(location.href+" #chatbox >*","");
+    };
+    if(!$.web2py.web2py_websocket('ws://' + location.hostname + ':8888/realtime/' + chatroomId , callback)) {
+      alert("html5 websocket not supported by your browser, try Google Chrome");
+    }
+    $("#mi-music-room-like").on("click", function () {
+      ajax("{{=URL('default', 'voteup')}}", ['room_id'], 'mi-music-room-like-count');
+    });
+    $("#mi-music-room-dislike").on("click", function () {
+      ajax("{{=URL('default', 'votedown')}}", ['room_id'], 'mi-music-room-dislike-count');
+    });
+});
+
+// send to websocket
+jQuery('#sendMessage').submit(function() {
+  ajax("{{=URL('new_message')}}", ['your_message','room_id','wsURL'], '');
+  return false;
+});
+
+// add url to chat
+jQuery("#mi-submit-url").on("click", function () {
+  var miInputURL = $('#mi_url').val();
+  // if( miInputURL.match(/(https:[//]soundcloud|https://www.soundcloud|http://soundcloud)/gi) ) {
+  if( miInputURL.match(/(https)/gi) ) {
+    console.log("Over here: " + miInputURL);
+
+    SC.initialize({
+      client_id: "M0gen3egUbJm4q7oXlWr8Dxt2Mr2ufCW"
+    });
+    SC.oEmbed(miInputURL, {
+      auto_play: false,
+    }).then(function (oEmbed) {
+      oEmbed.height = 100;
+      var newIframe = (oEmbed.html).replace('height="400"', 'height="100"');
+      console.log("Embeded: ", oEmbed);
+      $("#mi_url").val(newIframe);
+      ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
+      $("#mi_url").val("");
+    });
+  }
+  return false;
+});
+
+// jQuery(".mi-search-results-add").on("click", function(){
+//   var thisurl = $(this).attr("href");
+//   console.log(thisurl);
+//   alert(thisurl);
+//   $("#mi-hidden-thisurl").val(thisurl);
+//   ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
+//   return false;
+// });
+
+</script>
+<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>

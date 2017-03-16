@@ -1,0 +1,53 @@
+.main-container{
+  margin: 0;
+}
+
+.sidebar{
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 500px;
+  padding: 10px;
+  margin-top: 20px;
+  z-index: 10;
+}
+
+.col-md-2{
+  width: 16.6%;
+  float: left;
+}
+
+.sidebar-list{
+  background-color: rgba(255, 255, 255, 0.3);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 90%;
+  width: 100%;
+  padding: 5px;
+  margin: 10px 0;
+}
+
+.list-group{
+  height: 100%;
+}
+
+.list-group-item{
+  height: 40px;
+}
+
+.carousel-inner{
+  background-color: #bbb;
+  position: relative;
+  height: 500px;
+  width: 100%;
+  margin: 20px 0 10px;
+}
+
+.description{
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  margin: auto;
+}

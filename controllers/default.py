@@ -8,8 +8,16 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
+# from gluon.contrib.websocket_messaging import websocket_send
 
 def index():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simply replace the two lines below with:
+    return auth.wiki()
+    """
     if (auth.is_logged_in()):
         redirect(URL('home'))
     form = auth()
@@ -47,16 +55,10 @@ def home():
         query = reduce(lambda a,b:a&b,
                        [User.first_name.contains(k)|User.last_name.contains(k) \
                             for k in tokens])
-        # response.flash str(query)
         people = db(query).select(orderby=alphabetical)
-        # db(people.id == author).delete()
-        # for user in people:
-            # if db(user.first_name==authorfn, user.last_name==authorln).count():
-                # db(people.user==author).delete()
-        # if db(people.first_name==auth)(VU.uid==me).count():
     else:
         people = []
-    # return dict(friendlist=friendlist, requestlist=requestlist, form=form, people=people, friendtable=users, author=author)
+
     chatform = SQLFORM(db.chatRoom)
     if chatform.process(keepvalues=True).accepted:
        redirect(URL('home'))
@@ -65,23 +67,29 @@ def home():
 
 @auth.requires_login()
 def musicroom():
-    """author = auth.user.id;
-    users = db().select(db.friend_table.ALL, orderby=db.friend_table.id)
-    friendlist = (DIV(""))
-    for i in users:
-        if i.accepted:
-            if i.user_id == author:
-                friend = i.friend_user_id
-                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-            elif i.friend_user_id == author:
-                friend = i.user_id
-                friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-    return dict(friendlist=friendlist)"""
-    number = db.chatRoom[request.args(0)]
-    if not(number):
+
+    r_id = request.args[0]
+    check = db(db.chatRoom.id == r_id).select().first()
+    if not (check):
         redirect(URL('home'))
-    roomname = number.name
-    return dict(number=number, roomname=roomname)
+
+    users = db().select(db.auth_user.ALL, orderby=db.auth_user.id)
+    #friendlist = (LI("%(first_name)s" % auth.user))
+    friendlist = (LI(""))
+    #friendlist = (LI("%s" % users[0].first_name))
+    #friendlist = (LI("Start:"))
+    #images[0].title
+    #i = 0
+    for i in users:
+        #friendlist.append(LI("%s" % i.first_name))
+        friendlist += (LI("%s" % i.first_name))
+    #i = i + 1
+    chatroomName = db(db.chatRoom.id == r_id).select(db.chatRoom.name)[0].name
+    chats = db(db.chat.room_id == r_id).select(orderby=db.chat.time_created)
+    chatRoomUp = db(db.chatRoom.id == r_id).select(db.chatRoom.up_votes)[0].up_votes
+    chatRoomDown = db(db.chatRoom.id == r_id).select(db.chatRoom.down_votes)[0].down_votes
+    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist,chats=chats,chatroomName=chatroomName,chatRoomUp=chatRoomUp,chatRoomDown=chatRoomDown)
+    #return users
 
 @auth.requires_login()
 def settings():
@@ -93,6 +101,30 @@ def about():
 
 @auth.requires_login()
 def contact():
+    return dict()
+
+@auth.requires_login()
+def mbrain():
+    return dict()
+
+@auth.requires_login()
+def sdinay():
+    return dict()
+
+@auth.requires_login()
+def ryanho():
+    return dict()
+
+@auth.requires_login()
+def jli306():
+    return dict()
+
+@auth.requires_login()
+def katakeda():
+    return dict()
+
+@auth.requires_login()
+def cdwheele():
     return dict()
 
 # this is the Ajax callback
@@ -129,43 +161,45 @@ def friendship():
 
     return str(followerlist)
 
-@auth.requires_login()
-def mbrain():
-    return dict()
+def new_message():
+    form = SQLFORM(Chat)
+    # not working
+    #db(Chat).author=auth.user.first_name
+    messageSent = request.vars.your_message
+    chatroomId = request.vars.room_id
+    websocketURL = request.vars.wsURL
+    print (websocketURL)
+    # default  websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
+    if form.accepts(request, formname=None):
+         websocket_send('http://' + websocketURL +':8888', messageSent, 'mykey', 'chatroom' + chatroomId )
+    elif form.errors:
+        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
+    return ()
 
-@auth.requires_login()
-def sdinay():
-    # author = auth.user.id;
-    # users = db().select(db.friend_table.ALL, orderby=db.friend_table.id)
-    # friendlist = (DIV(""))
-    # for i in users:
-        # if i.accepted:
-            # if i.user_id == author:
-                # friend = i.friend_user_id
-                # friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-            # elif i.friend_user_id == author:
-                # friend = i.user_id
-                # friendlist += (DIV("%s %s" % (friend.first_name, friend.last_name)))
-    # return dict(friendlist=friendlist)
-    number = db.chatRoom[request.args(0)]
-    roomname = number.name
-    return dict(number=number, roomname=roomname)
+def voteup():
+    post = db.chatRoom[(request.vars.room_id)]
+    new_votes = post.up_votes + 1
+    post.update_record(up_votes=new_votes)
+    return str(new_votes)
 
-@auth.requires_login()
-def ryanho():
-    return dict()
 
-@auth.requires_login()
-def jli306():
-    return dict()
+def votedown():
+    post = db.chatRoom[(request.vars.room_id)]
+    new_votes = post.down_votes + 1
+    post.update_record(down_votes=new_votes)
+    return str(new_votes)
 
-@auth.requires_login()
-def katakeda():
-    return dict()
+def addurlmes():
+    # not working
+    #db(Chat).author=auth.user.first_name
+    CR = db.chat
+    messageSent = request.vars.mi_url
+    print(request.vars.mi_url)
+    chatroomId = request.vars.room_id
+    websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId )
+    CR.insert(your_message=messageSent, room_id=chatroomId)
+    return ()
 
-@auth.requires_login()
-def cdwheele():
-    return dict()
 
 @cache.action()
 def download():

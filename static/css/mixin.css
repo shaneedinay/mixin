@@ -4,7 +4,8 @@
  */
 
  /* boostrap.min.css overrides */
- .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+ .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group,
+ .input-group-btn>.btn {
    margin-left: 5px;
  }
  .panel {
@@ -33,6 +34,12 @@
  }
  .main-container {
      margin-top: 40px;
+ }
+ .btn-youtube {
+   background-color: #cc181e;
+ }
+ .btn-soundcloud {
+   background-color: #ff5500;
  }
 
  /* custom navbar styling */
@@ -250,11 +257,12 @@
   display: block;
   margin: 0 0 2px 0;
 }
-#mi-music-room-chat-room-box {
+/*#mi-music-room-chat-room-box {
   border: 1px solid black;
   padding: 10px;
   height: 400px;
 }
+*/
 
 /* about.html, contact.html, settings.html */
 .mi-settings a {
@@ -290,3 +298,68 @@
 .mi-settings-main-container {
  margin-top: 10px;
 }
+
+
+
+#wrapper, #loginform {
+    margin:0 auto;
+    padding-bottom:25px;
+    background:#EBF4FB;
+    width:504px;
+    border:1px solid #ACD8F0; }
+
+#loginform { padding-top:18px; }
+
+    #loginform p { margin: 5px; }
+
+#center{
+    text-align: center;
+}
+
+#chatbox {
+    text-align:left;
+    margin:0 auto;
+    margin-bottom:25px;
+    padding:5px;
+    background:#fff;
+    height:300px;
+    width:95%;
+    border:1px solid #ACD8F0;
+    overflow-y: scroll;
+    overflow-x:hidden; }
+
+#usermsg {
+    width:395px;
+    border:1px solid #ACD8F0; }
+
+#Submit {
+        height:45px;
+        float: right;
+        position:relative;
+ }
+ #messageBox{
+  margin: 0px;
+  padding: 10px;
+  background:#white;
+  border-style: solid;
+  border-width: 1px;
+  display:block;
+  overflow-x:scroll;
+ }
+
+#outerBox{
+    border:1px solid black;
+    margin:20px;
+    padding:10px;
+    height:400px;
+    background-color: rgb(180, 180, 180);
+}
+.error { color: #ff0000; }
+
+#menu { padding:12.5px 25px 12.5px 25px; }
+
+.welcome { float:left; }
+
+.logout { float:right; }
+
+.msgln { margin:0 0 2px 0; }

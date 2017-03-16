@@ -98,10 +98,8 @@ auth.settings.extra_fields['auth_user']= [
   Field('dob', 'date', label='Date of Birth'),
   Field('gender')
   ]
-#auth.define_tables(username=False, signature=False)
-auth.define_tables(username=True, signature=False )
+auth.define_tables(username=True, signature=False)
 
-db.auth_user.dob.requires = IS_DATE()
 db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------
@@ -137,7 +135,6 @@ auth.settings.create_user_groups="Room_%(id)s"
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
-
 if auth.user:
     username = auth.user.username
 else:
@@ -145,11 +142,15 @@ else:
 
 ChatRoom = db.define_table('chatRoom',
                             Field('name', requires=IS_NOT_EMPTY()),
-                            format='%(name)s'
+                            Field('up_votes', 'integer', default=0),
+                            Field('down_votes', 'integer', default=0),
                             )
-
+db.chatRoom.up_votes.readable = False;
+db.chatRoom.down_votes.readable = False;
+db.chatRoom.up_votes.writable = False;
+db.chatRoom.down_votes.writable = False;
 Chat = db.define_table('chat',
-                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=False),
                         Field('author','string', 'reference auth_user', default=username),
                         Field('time_created', 'datetime', default=datetime.datetime.now()),
                         Field('room_id', 'reference chatRoom')
@@ -168,16 +169,19 @@ db.define_table('followers',
                 Field('following_id', 'reference auth_user'),
                 )
 
+
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
 auth.enable_record_versioning(db)
 
-
-# By default user email does not appear in any forms.
-#db.friend_table.friend_user_id.requires = IS_IN_DB(db, db.auth_user.id)
-#db.friend_table.user_id.requires = IS_IN_DB(db, db.auth_user.id)
-
-# Some Functions
+'''
+from gluon.contrib.login_methods.rpx_account import RPXAccount
+auth.settings.actions_disabled=['register','change_password','request_reset_password']
+auth.settings.login_form = RPXAccount(request,
+    api_key='8e3f8d76ae6a0387455af8f2e8bb9e34cab8aaf9',
+    domain='mixin',
+    url = "http://your-external-address/%s/default/user/login" % request.application)
+'''
 def name_of(user):
     return '%(first_name)s %(last_name)s' % user

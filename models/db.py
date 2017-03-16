@@ -141,11 +141,16 @@ else:
     username = ''
 
 ChatRoom = db.define_table('chatRoom',
-                            Field('name', requires=IS_NOT_EMPTY())
+                            Field('name', requires=IS_NOT_EMPTY()),
+                            Field('up_votes', 'integer', default=0),
+                            Field('down_votes', 'integer', default=0),
                             )
-
+db.chatRoom.up_votes.readable = False;
+db.chatRoom.down_votes.readable = False;
+db.chatRoom.up_votes.writable = False;
+db.chatRoom.down_votes.writable = False;
 Chat = db.define_table('chat',
-                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=False),
                         Field('author','string', 'reference auth_user', default=username),
                         Field('time_created', 'datetime', default=datetime.datetime.now()),
                         Field('room_id', 'reference chatRoom')

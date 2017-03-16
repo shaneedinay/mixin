@@ -86,8 +86,9 @@ def musicroom():
     #i = i + 1
     chatroomName = db(db.chatRoom.id == r_id).select(db.chatRoom.name)[0].name
     chats = db(db.chat.room_id == r_id).select(orderby=db.chat.time_created)
-
-    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist,chats=chats,chatroomName=chatroomName)
+    chatRoomUp = db(db.chatRoom.id == r_id).select(db.chatRoom.up_votes)[0].up_votes
+    chatRoomDown = db(db.chatRoom.id == r_id).select(db.chatRoom.down_votes)[0].down_votes
+    return dict(message=T('%(first_name)s\'s music room' % auth.user), friendlist=friendlist,chats=chats,chatroomName=chatroomName,chatRoomUp=chatRoomUp,chatRoomDown=chatRoomDown)
     #return users
 
 @auth.requires_login()
@@ -166,12 +167,27 @@ def new_message():
     #db(Chat).author=auth.user.first_name
     messageSent = request.vars.your_message
     chatroomId = request.vars.room_id
+    websocketURL = request.vars.wsURL
+    print (websocketURL)
     # default  websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'mygroup')
     if form.accepts(request, formname=None):
-         websocket_send('http://127.0.0.1:8888', messageSent, 'mykey', 'chatroom' + chatroomId )
+         websocket_send('http://' + websocketURL +':8888', messageSent, 'mykey', 'chatroom' + chatroomId )
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
     return ()
+
+def voteup():
+    post = db.chatRoom[(request.vars.room_id)]
+    new_votes = post.up_votes + 1
+    post.update_record(up_votes=new_votes)
+    return str(new_votes)
+
+
+def votedown():
+    post = db.chatRoom[(request.vars.room_id)]
+    new_votes = post.down_votes + 1
+    post.update_record(down_votes=new_votes)
+    return str(new_votes)
 
 def addurlmes():
     # not working

@@ -36,13 +36,13 @@
                     <button id="mi-music-room-like" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
-                    <span id="mi-music-room-like-count">0</span>
+                    <span id="mi-music-room-like-count">{{=chatRoomUp}}</span>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <button id="mi-music-room-dislike" class="btn btn-default" type="button">
                         <span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
-                    <span id="mi-music-room-dislike-count">0</span>
+                    <span id="mi-music-room-dislike-count">{{=chatRoomDown}}</span>
                 </div>
             </div>
         </div>
@@ -96,31 +96,48 @@
           <div class="well">
         <input type="text"  name="mi_url", id="mi_url", value=""/>
         <input id="mi-submit-url" type="button" value="Play" />
-        <input type="hidden" id ="mi-hidden-thisurl" value=""/>
+        <input type="input" name="mi-hidden-thisurl" id ="mi-hidden-thisurl" value=""/>
     </div>
   </div>
 
   <div id="mi-search-results" class="well"></div>
 
-
+  <!-- placeholder to store value of websocket URL -->
+  <input type="hidden" name="wsURL" id = "wsURL" value=""/>
 
 
 
 <script>
+
        $(document).ready(function(){
-        var chatroomId = "chatroom" + {{=request.args[0]}}
+        // get current chatroomId
+        var chatroomId = "chatroom" + {{=request.args[0]}};
+        var websocketURL = location.hostname;
+        $("#wsURL").val(websocketURL);
+        // auto scroll to bottom of chat
         var log = $('#chatbox');
         log.animate({ scrollTop: log.prop('scrollHeight')}, 0);
+        // whenever a new message is received refresh chat div
         var callback=function(e){
-            $("#chatbox").load(location.href+" #chatbox >*","");
+            $("#chatbox").load(location.href+" #chatbox >*",""); 
         };
-      if(!$.web2py.web2py_websocket('ws://127.0.0.1:8888/realtime/' + chatroomId , callback))
+      if(!$.web2py.web2py_websocket('ws://' + location.hostname + ':8888/realtime/' + chatroomId , callback))
          alert("html5 websocket not supported by your browser, try Google Chrome");
+
+    $("#mi-music-room-like").on("click", function () {
+     ajax("{{=URL('default', 'voteup')}}", ['room_id'], 'mi-music-room-like-count');
+  });
+
+  $("#mi-music-room-dislike").on("click", function () {
+     ajax("{{=URL('default', 'votedown')}}", ['room_id'], 'mi-music-room-dislike-count');
+  });
    });
+    // send to websocket
     jQuery('#sendMessage').submit(function() {
-        ajax("{{=URL('new_message')}}", ['your_message','room_id'], '');
+        ajax("{{=URL('new_message')}}", ['your_message','room_id','wsURL'], '');
         return false;
-    });    
+    });
+    // add url to chat    
     jQuery("#mi-submit-url").on("click", function(){
         ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
         return false;
@@ -128,6 +145,7 @@
     jQuery(".mi-search-results-add").on("click", function(){
         var thisurl = $(this).attr("href");
         console.log(thisurl);
+        alert(thisurl);
         $("#mi-hidden-thisurl").val(thisurl);
         ajax("{{=URL('default', 'addurlmes')}}", ['mi_url','room_id'], '');
         return false;

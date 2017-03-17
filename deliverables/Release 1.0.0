@@ -40,7 +40,6 @@ Cannot follow and then unfollow someone without refreshing the page in between
 Reset password send to email not working
 Adding a large amount of songs causes lag
 Putting a non-soundcloud link in the soundcloud link text field fails silently, no error is thrown
-Liking or disliking disables both buttons after click, however upon refreshing the page you can vote again
 After refreshing home page on form submit, you get a form data error
 
 

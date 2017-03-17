@@ -41,5 +41,5 @@ Reset password send to email not working
 Adding a large amount of songs causes lag
 Putting a non-soundcloud link in the soundcloud link text field fails silently, no error is thrown
 After refreshing home page on form submit, you get a form data error
-
+Synchronization issues on vote count
 

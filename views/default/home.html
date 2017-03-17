@@ -64,19 +64,23 @@
       <table class="mi-follow-result-table">
         {{for user in people:}}
          <tr>
+         {{if user.id != auth.user_id:}}
            <td>{{=name_of(user)}}</td>
            <td>
              {{if not db(db.followers.user_id==auth.user_id)(db.followers.following_id==user).count():}}
-               <button class="btn-sm btn btn-default" onclick="ajax('{{=URL('friendship',args=('request',user.id))}}',[], 'mi-friends-list');$(this).text('Following');">
+               <button id="follow" class="btn-sm btn btn-default" onclick="ajax('{{=URL('friendship',args=('request',user.id))}}',[], 'mi-friends-list');$(this).text('Unfollow');">
                  Follow
                </button>
              {{else:}}
-               <button class="btn-sm btn btn-default" onclick="ajax('{{=URL('friendship',args=('delete',user.id))}}',[], 'mi-friends-list');$(this).text('Follow');">
-                 Following
+               <button id="unfollow" class="btn-sm btn btn-default" onclick="ajax('{{=URL('friendship',args=('delete',user.id))}}',[], 'mi-friends-list');$(this).text('Follow');">
+                 Unfollow
                </button>
+               <script>
+               </script>
              {{pass}}
            </td>
          </tr>
+        {{pass}}
         {{pass}}
       </table>
     </div>

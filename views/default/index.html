@@ -1,5 +1,13 @@
 {{extend 'layout.html'}}
-
+<style>
+body{
+  background: url("{{=URL('static','images/band.jpg')}}") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
 <div class="row mi-index-row">
   <div class="col-lg-8 col-md-8 mi-index-description">
     <h2>{{=message}}</h2>

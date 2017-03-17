@@ -1,40 +1,27 @@
-#wrapper, #loginform {
-    margin:0 auto;
-    padding-bottom:25px;
-    background:#EBF4FB;
-    width:504px;
-    border:1px solid #ACD8F0; }
-  
-#loginform { padding-top:18px; }
-  
-    #loginform p { margin: 5px; }
-
-#center{
-    text-align: center;
-}
-  
+/*SSD Changed*/
 #chatbox {
     text-align:left;
     margin:0 auto;
-    margin-bottom:25px;
-    padding:5px;
+    margin-bottom:10px;
+    padding: 0;
     background:#fff;
     height:300px;
-    width:95%;
+    width:100%;
     border:1px solid #ACD8F0;
-    overflow-y: scroll; 
+    overflow-y: scroll;
     overflow-x:hidden; }
-  
+
 #usermsg {
     width:395px;
     border:1px solid #ACD8F0; }
-  
-#Submit { 
+
+#Submit {
         height:45px;
         float: right;
         position:relative;
  }
- #messageBox{
+ /*SSD Changed*/
+ .mi-message-box{
   margin: 0px;
   padding: 10px;
   background:#white;
@@ -43,20 +30,67 @@
   display:block;
   overflow-x:scroll;
  }
-
+/*SSD Changed*/
 #outerBox{
     border:1px solid black;
     margin:20px 0 20px 0;
-    padding:10px;
+    padding: 10px;
     height:400px;
     background-color: rgb(180, 180, 180);
 }
-.error { color: #ff0000; }
-  
-#menu { padding:12.5px 25px 12.5px 25px; }
-  
-.welcome { float:left; }
-  
-.logout { float:right; }
-  
-.msgln { margin:0 0 2px 0; }
+/*SSD Changed*/
+#sendMessage .btn {
+  margin: 0 0 0 5px;
+}
+/*SSD Changed*/
+
+@media (max-width: 1280px) {
+  #sendMessage textarea {
+    width: 86%;
+  }
+}
+@media (max-width: 1190px) {
+  #sendMessage textarea {
+    width: 83%;
+  }
+}
+@media (max-width: 1020px) {
+  #sendMessage textarea {
+    width: 80%;
+  }
+}
+@media (max-width: 885px) {
+  #sendMessage textarea {
+    width: 74%;
+  }
+}
+@media (max-width: 767px) {
+  #sendMessage textarea {
+    width: 85%;
+  }
+}
+@media (max-width: 585px) {
+  #sendMessage textarea {
+    width: 80%;
+  }
+}
+@media (max-width: 472px) {
+  #sendMessage textarea {
+    width: 74%;
+  }
+}
+@media (max-width: 395px) {
+  #sendMessage textarea {
+    width: 70%;
+  }
+}
+@media (max-width: 395px) {
+  #sendMessage textarea {
+    width: 70%;
+  }
+}
+@media (max-width: 365px) {
+  #sendMessage textarea {
+    width: 60%;
+  }
+}

@@ -4,8 +4,12 @@
  */
 
  /* boostrap.min.css overrides */
- .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+ .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group,
+ .input-group-btn>.btn,
+ #mi-search-soundcloud-api .btn,
+ #mi-search-youtube-api .btn {
    margin-left: 5px;
+   margin-top: 5px;
  }
  .panel {
    -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
@@ -13,7 +17,7 @@
    border: 1px solid #f1f1f1;
  }
  .well {
-   background-color: #ffffff;
+   background-color: rgba(255,255,255,0.65);
    -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
    box-shadow: 2px 3px 5px rgba(0,0,0,0.05);
    padding: 15px;
@@ -34,7 +38,18 @@
  .main-container {
      margin-top: 40px;
  }
-
+ .btn-youtube {
+   background-color: #cc181e;
+ }
+ .btn-soundcloud {
+   background-color: #ff5500;
+ }
+ @media (max-width: 394px) {
+  .copyright, .poweredBy {
+    text-align: center;
+    float: none;
+  }
+}
  /* custom navbar styling */
  #mi-navbar-logo:hover {
      opacity: 0.5;
@@ -43,7 +58,11 @@
 
  /* HTML overrides */
  body {
-   background-color: #f1f1f1;
+    background: #bec6de  ;  
+    background: -webkit-radial-gradient(#c1d5de , #7e9fbb , #432948 ); /* Safari 5.1 to 6.0 */
+    background: -o-radial-gradient(#c1d5de , #7e9fbb , #432948 ); /* For Opera 11.6 to 12.0 */
+    background: -moz-radial-gradient(#c1d5de , #7e9fbb , #432948 ); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(#c1d5de , #7e9fbb , #432948 ) /* Standard syntax */
  }
 
 /* index.html */
@@ -75,7 +94,11 @@
  /* home.html */
 .mi-add-to-mr {
   margin-bottom: 5px;
-  margin-left: 5px;
+  margin-right: 5px;
+  margin-left:5px;
+}
+.mi-friends-list > div {
+  margin: 5px 0 5px 0;
 }
 .mi-home-chat-room-list {
   background-color: rgba(255, 255, 255, 0.3);
@@ -223,7 +246,8 @@
 }
 .mi-search-results-left {
   width: 20%;
-  float: left
+  float: left;
+  margin-top: 14px;
 }
 .mi-serach-results-add {
   background-color: #ffffff;
@@ -240,6 +264,10 @@
   font-size: 12px;
   margin-top: 3px;
   height: 57px;
+}
+#mi-search-soundcloud-api,
+#mi-search-youtube-api {
+  color: #ffffff;
 }
 .mi-search-results-author {
   display: block;
@@ -291,6 +319,5 @@
 .mi-settings-main-container {
  margin-top: 10px;
 }
-
 
 

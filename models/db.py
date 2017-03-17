@@ -137,15 +137,32 @@ auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 if auth.user:
     username = auth.user.username
+    newList = [auth.user.id]
+    voteslist = []
 else:
     username = ''
+    newList = []
+    voteslist = []
 
 ChatRoom = db.define_table('chatRoom',
-                            Field('name', requires=IS_NOT_EMPTY())
+                            Field('name', requires=IS_NOT_EMPTY()),
+                            Field('members', 'list:integer', default=newList),
+                            Field('vote_up_list', 'list:integer', default=voteslist),
+                            Field('vote_down_list', 'list:integer', default=voteslist),
+                            Field('up_votes', 'integer', default=0),
+                            Field('down_votes', 'integer', default=0),
                             )
 
+db.chatRoom.vote_up_list.writable = db.chatRoom.vote_up_list.readable = False
+db.chatRoom.vote_down_list.writable = db.chatRoom.vote_down_list.readable = False
+
+db.chatRoom.members.writable = db.chatRoom.members.readable = False
+db.chatRoom.up_votes.readable = False;
+db.chatRoom.down_votes.readable = False;
+db.chatRoom.up_votes.writable = False;
+db.chatRoom.down_votes.writable = False;
 Chat = db.define_table('chat',
-                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=True),
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=False),
                         Field('author','string', 'reference auth_user', default=username),
                         Field('time_created', 'datetime', default=datetime.datetime.now()),
                         Field('room_id', 'reference chatRoom')
@@ -153,12 +170,7 @@ Chat = db.define_table('chat',
 
 db.chat.time_created.writable = False
 db.chat.author.writable = False
-
-db.define_table('chatMembers',
-                Field('chat_room', 'reference chatRoom'),
-                Field('user_id', 'reference auth_user'),
-                )
-                
+                  
 db.define_table('followers',
                 Field('user_id', 'reference auth_user'),
                 Field('following_id', 'reference auth_user'),

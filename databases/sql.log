@@ -1,0 +1,110 @@
+timestamp: 2017-03-05T10:58:24.542000
+CREATE TABLE chat(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    your_message TEXT NOT NULL,
+    author TEXT,
+    time_created TIME
+);
+success!
+timestamp: 2017-03-05T10:58:24.874000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512),
+    dob DATE,
+    gender CHAR(512)
+);
+success!
+timestamp: 2017-03-05T10:58:25.492000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-03-05T10:58:25.641000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-03-05T10:58:25.760000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2017-03-05T10:58:25.909000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-03-05T10:58:26.038000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+success!
+success!
+timestamp: 2017-03-05T15:24:15.441000
+ALTER TABLE auth_user ADD username CHAR(128);
+success!
+timestamp: 2017-03-11T19:46:57.336000
+CREATE TABLE chatRoom(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+timestamp: 2017-03-11T19:46:57.569000
+ALTER TABLE chat ADD room_id INTEGER REFERENCES chatRoom (id) ON DELETE CASCADE  ;
+success!
+timestamp: 2017-03-15T16:04:15.341000
+CREATE TABLE chatMembers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chat_room INTEGER REFERENCES chatRoom (id) ON DELETE CASCADE  ,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-03-15T16:04:15.542000
+CREATE TABLE followers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    following_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-03-15T23:02:44.722000
+ALTER TABLE chatRoom ADD down_votes INTEGER;
+timestamp: 2017-03-15T23:02:44.913000
+ALTER TABLE chatRoom ADD up_votes INTEGER;
+success!
+success!
+success!
+success!
+success!
+timestamp: 2017-03-17T11:31:19.360000
+ALTER TABLE chatRoom ADD members TEXT;
+success!
+timestamp: 2017-03-17T15:27:59.042000
+ALTER TABLE chatRoom ADD vote_up_list TEXT;
+timestamp: 2017-03-17T15:27:59.263000
+ALTER TABLE chatRoom ADD vote_down_list TEXT;
+success!

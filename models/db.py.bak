@@ -80,7 +80,11 @@ response.form_label_separator = myconf.get('forms.separator') or ''
 # (more options discussed in gluon/tools.py)
 # -------------------------------------------------------------------------
 
-from gluon.tools import Auth, Service, PluginManager
+from gluon.tools import Auth, Service, PluginManager, datetime
+
+# temporary, in order for chat to work
+now = datetime.datetime.today()
+db = DAL('sqlite://db.db')
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
@@ -90,7 +94,13 @@ plugins = PluginManager()
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
 # -------------------------------------------------------------------------
-auth.define_tables(username=False, signature=False)
+auth.settings.extra_fields['auth_user']= [
+  Field('dob', 'date', label='Date of Birth'),
+  Field('gender')
+  ]
+auth.define_tables(username=True, signature=False)
+
+db.auth_user.gender.requires = IS_IN_SET(["Male", "Female", "Non-binary"])
 
 # -------------------------------------------------------------------------
 # configure email
@@ -108,7 +118,7 @@ mail.settings.ssl = myconf.get('smtp.ssl') or False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-
+auth.settings.create_user_groups="Room_%(id)s"
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
 #
@@ -125,10 +135,60 @@ auth.settings.reset_password_requires_verification = True
 # >>> rows = db(db.mytable.myfield == 'value').select(db.mytable.ALL)
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
-db.define_table('images',Field('picture','upload'))
+if auth.user:
+    username = auth.user.username
+    newList = [auth.user.id]
+    voteslist = []
+else:
+    username = ''
+    newList = []
+    voteslist = []
+
+ChatRoom = db.define_table('1chatRoom',
+                            Field('name', requires=IS_NOT_EMPTY()),
+                            Field('members', 'list:integer', default=newList),
+                            Field('vote_up_list', 'list:integer', default=voteslist),
+                            Field('vote_down_list', 'list:integer', default=voteslist),
+                            Field('up_votes', 'integer', default=0),
+                            Field('down_votes', 'integer', default=0),
+                            )
+
+db.chatRoom.vote_up_list.writable = db.chatRoom.vote_up_list.readable = False
+db.chatRoom.vote_down_list.writable = db.chatRoom.vote_down_list.readable = False
+
+db.chatRoom.members.writable = db.chatRoom.members.readable = False
+db.chatRoom.up_votes.readable = False;
+db.chatRoom.down_votes.readable = False;
+db.chatRoom.up_votes.writable = False;
+db.chatRoom.down_votes.writable = False;
+Chat = db.define_table('1chat',
+                        Field('your_message', 'text', requires=IS_NOT_EMPTY(), notnull=False),
+                        Field('author','string', 'reference auth_user', default=username),
+                        Field('time_created', 'datetime', default=datetime.datetime.now()),
+                        Field('room_id', 'reference chatRoom')
+                        )
+
+db.chat.time_created.writable = False
+db.chat.author.writable = False
+                  
+db.define_table('1followers',
+                Field('user_id', 'reference auth_user'),
+                Field('following_id', 'reference auth_user'),
+                )
+
+
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
 auth.enable_record_versioning(db)
 
-# Alternate login, facebook, aol, google
+'''
+from gluon.contrib.login_methods.rpx_account import RPXAccount
+auth.settings.actions_disabled=['register','change_password','request_reset_password']
+auth.settings.login_form = RPXAccount(request,
+    api_key='8e3f8d76ae6a0387455af8f2e8bb9e34cab8aaf9',
+    domain='mixin',
+    url = "http://your-external-address/%s/default/user/login" % request.application)
+'''
+def name_of(user):
+    return '%(first_name)s %(last_name)s' % user

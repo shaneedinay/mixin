@@ -17,7 +17,7 @@ As the developer, I want to link the web app to a server for online access
 As a user, I want to have an account so I can save preferences and followers
 As a developer I want to link my domain name to our server for easy access to the web app
 As a user I want to have a music room to share music with my friends
-As a developer I want to researching and familiarizing with web2py framework
+As a developer I want research and familiarize myself with web2py framework
 As a user, I need a homepage so I can have all my features centralized
 As a user, I want to be able to access a music database to play and share music
 As a user, I need a settings page to edit my account information
@@ -25,14 +25,11 @@ As a user I want a messaging system so I can talk to and send my friends music
 As a user I want a contact page for MixIn application to contact the developers with any issues
 As a user I want to view a presentable and clean website to be able to navigate the site easily
 As a user I want to be able to access a music database to play and share music
-As a user, I want to be able to collaboratively create a chatroom with the other users, so that we can all easily share music
+As a user, I want to create a chatroom with the other users, so that we can all share music
 As a user I want a chat interface so I can talk to other people in the room
 As a user, I want to be able to upvote and downvote chat rooms so I can express how I feel about the content in them
 As a user I want a music messaging feature so I can send other people songs to listen to
 As a user, I want to be able to search music within the chatroom so I can easily pick songs to play
-As a user, I want to be able to listen to music in the browser so that I can easily listen to and share songs
-As a developer I want to link my users to their friends and their own music rooms.
-As a user, I want to be able to make a chat room with my friends
 
 Known Bugs for Release 1.0
 Can create multiple chatrooms with the same name (have different IDs though)
